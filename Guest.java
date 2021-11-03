@@ -32,9 +32,4 @@ public class Guest extends User {
 		return sb.toString();
 	}
 	
-	public static void main (String [] arg) {
-		Address add = new Address("71", "Cherry Court", "SOUTHHAMPTON", "SO53 5PD");
-		Guest alec = new Guest("Hardison", "Alec", add, "hardison12@gmail.com", "ageofthegeekbaby36482");
-		System.out.println(alec);
-	}
 }

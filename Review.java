@@ -83,21 +83,5 @@ public class Review {
 		
 		return sb.toString();
 	}
-	
-	public static void main (String [] arg) {
-		RatingMap ratings = new RatingMap();
-		ratings.put(RatingCategory.Cleanliness, 5);
-		ratings.put(RatingCategory.Communication, 4);
-		ratings.put(RatingCategory.CheckIn, 5);
-		ratings.put(RatingCategory.Accuracy, 3);
-		ratings.put(RatingCategory.Location, 5);
-		ratings.put(RatingCategory.Value, 5);
-		Address add = new Address("3A", "Cash Street", "America", "53100");
-		Guest parker = new Guest("Parker", "Alice?", add, "thief45457@gmail.com", "glenreader4000isbest");
-		Review r = new Review(parker, "Kinda nice. Vent is small.", ratings);
-		
-		System.out.println(r);
-	}
-	
-	
+
 }

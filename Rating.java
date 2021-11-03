@@ -94,29 +94,5 @@ public class Rating {
 		return sb.toString();
 	}
 	
-	public static void main (String [] arg) {
-		List<RatingMap> rate = new ArrayList<RatingMap>();
-		RatingMap ratings = new RatingMap();
-		ratings.put(RatingCategory.Cleanliness, 5);
-		ratings.put(RatingCategory.Communication, 4);
-		ratings.put(RatingCategory.CheckIn, 5);
-		ratings.put(RatingCategory.Accuracy, 3);
-		ratings.put(RatingCategory.Location, 5);
-		ratings.put(RatingCategory.Value, 5);
-		rate.add(ratings);
-		
-		RatingMap ratings2 = new RatingMap();
-		ratings2.put(RatingCategory.Cleanliness, 5);
-		ratings2.put(RatingCategory.Communication, 4);
-		ratings2.put(RatingCategory.CheckIn, 2);
-		ratings2.put(RatingCategory.Accuracy, 3);
-		ratings2.put(RatingCategory.Location, 1);
-		ratings2.put(RatingCategory.Value, 4);
-		rate.add(ratings2);
-		
-		Rating hostRating = new Rating(rate);
-		System.out.println(hostRating);
-		
-	}
 	
 }
