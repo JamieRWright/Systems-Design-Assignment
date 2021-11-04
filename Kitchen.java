@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
  * Class designed to be used to create Kitchen objects
  * 
@@ -8,47 +10,29 @@
  */
 
 public class Kitchen {
-	final boolean fridge;
-	final boolean microwave;
-	final boolean oven;
-	final boolean stove;
-	final boolean dishwasher;
-	final boolean tableware;
-	final boolean cookware;
-	final boolean basicProvisions;
+	final Amenities amenities;
 	
-	public Kitchen(boolean fridge, boolean microwave, boolean oven, boolean stove, boolean dishwasher, boolean tableware, boolean cookware, boolean basicProvisions) {
-		this.fridge = fridge;
-		this.microwave = microwave;
-		this.oven = oven;
-		this.stove = stove;
-		this.dishwasher = dishwasher;
-		this.tableware = tableware;
-		this.cookware = cookware;
-		this.basicProvisions = basicProvisions;
+	public Kitchen(Amenities amenities) {
+		this.amenities = amenities;
 	}
 	
-	public boolean getFridge() {return this.fridge;}
-	public boolean getMicrowave() {return this.microwave;}
-	public boolean getOven() {return this.oven;}
-	public boolean getStove() {return this.stove;}
-	public boolean getDishwasher() {return this.dishwasher;}
-	public boolean getTableware() {return this.tableware;}
-	public boolean getCookware() {return this.cookware;}
-	public boolean getBasicProvisions() {return this.basicProvisions;}
+	public Amenities getAmenities() {return this.amenities;}
 	
 	public String toString() {
-		String str;
-		str = "Amenities provided" + "\n";
-		str += "Fridge: " + getFridge() + "\n";
-		str += "Microwave: " + getMicrowave() + "\n";
-		str += "Oven: " + getOven() + "\n";
-		str += "Stove: " + getStove() + "\n";
-		str += "Dishwasher: " + getDishwasher() + "\n";
-		str += "Tableware: " + getTableware() + "\n";
-		str += "Cookware: " + getCookware() + "\n";
-		str += "Basic Provisions: " + getBasicProvisions() + "\n";
+		StringBuilder sb = new StringBuilder();
 		
-		return str;
+		Amenities amenities = getAmenities();
+		
+        Iterator<String> amenityIterator = amenities.categorySet().iterator();
+		
+		while (amenityIterator.hasNext()) {
+			String a = amenityIterator.next();
+			sb.append(a);
+			sb.append(": ");
+			sb.append(amenities.get(a));
+			sb.append("\n");
+		}
+		
+		return sb.toString();
 	}
 }
