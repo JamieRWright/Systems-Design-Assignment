@@ -8,9 +8,9 @@
  */
 
 public class Address {
-	private final String houseNumber;
+	private final String houseName;
 	private final String streetName;
-	private final String postTown;
+	private final String placeName;
 	private final String postcode;
 	
 	/**
@@ -21,23 +21,23 @@ public class Address {
      * @param postcode, i.e SO31 4NG
      *
      */
-	public Address(String houseNumber, String streetName, String postTown, String postcode) {
-		this.houseNumber = houseNumber;
+	public Address(String houseName, String streetName, String placeName, String postcode) {
+		this.houseName = houseName;
 		this.streetName = streetName;
-		this.postTown = postTown;
+		this.placeName = placeName;
 		this.postcode = postcode;
 	}
 	
-	public String getHouseNo() {
-		return this.houseNumber;
+	public String getHouseName() {
+		return this.houseName;
 	}
 	
 	public String getStreetName() {
 		return this.streetName;
 	}
 	
-	public String getPostTown() {
-		return this.postTown;
+	public String getPlaceName() {
+		return this.placeName;
 	}
 	
 	public String getPostcode() {
@@ -46,12 +46,12 @@ public class Address {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getHouseNo());
+		sb.append(getHouseName());
 		sb.append(", ");
 		sb.append(getStreetName());
 		sb.append(", ");
 		sb.append("\n");
-		sb.append(getPostTown());
+		sb.append(getPlaceName());
 		sb.append(", ");
 		sb.append("\n");
 		sb.append(getPostcode());

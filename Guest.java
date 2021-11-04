@@ -12,15 +12,16 @@ public class Guest extends User {
 	/**
      * Constructor
      * 
-     * @param surname guest last name
-     * @param forename guest first name, provided during sign-up, i.e "Sandra"
-     * @param guest's address, confidential
+     * @param surname, guest last name
+     * @param forename, guest first name, provided during sign-up, i.e "Sandra"
+     * @param address, guest's address, confidential
+     * @param phone, guest's phone number for contact, confidential
      * @param userId, provided when the user inputs their email
-     * @param password as provided by the user when they sign up
+     * @param password, as provided by the user when they sign up
      *
      */
-	public Guest(String surname, String forename, Address address, String userID, String password) {
-		super(surname, forename, address, userID, password);
+	public Guest(String surname, String forename, Address address, String phone, String userID, String password) {
+		super(surname, forename, address, phone, userID, password);
 	}
 
 	
@@ -31,5 +32,4 @@ public class Guest extends User {
 		
 		return sb.toString();
 	}
-	
 }

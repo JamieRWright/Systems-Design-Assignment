@@ -41,7 +41,7 @@ public class Review {
 	
 	
 	// calculate overall rating from the six categories
-	public double getOverall() {
+	public double overallRating() {
 		double totalRating = 0;
 		
 		Iterator<RatingCategory> categoryIterator = ratingMap.categorySet().iterator();
@@ -63,7 +63,7 @@ public class Review {
 		sb.append(getGuest().getName());
 		sb.append("\n");
 		sb.append("Overall rating: ");
-		sb.append(getOverall());
+		sb.append(overallRating());
 		sb.append("\n");
 		
 		RatingCategory[] categories = {RatingCategory.Cleanliness, RatingCategory.Communication, RatingCategory.CheckIn, RatingCategory.Accuracy, RatingCategory.Location,RatingCategory.Value};
@@ -82,6 +82,6 @@ public class Review {
 		}
 		
 		return sb.toString();
-	}
-
+	}	
+	
 }

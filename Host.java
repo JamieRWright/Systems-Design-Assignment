@@ -13,15 +13,16 @@ public class Host extends User {
      * Constructor
      * @param surname host's last name, provided during sign-up
      * @param forename host's first name
-     * @param host's address, confidential
-     *  @param userId, provided when the user inputs their email
+     * @param address, host's address, confidential
+     * @param phone, host's phone number for contact, confidential
+     * @param userId, provided when the user inputs their email
      * @param password as provided by the user when they sign up
      * @param rating of type Rating
      * @param boolean whether they are a superhost or not; if new then defaults as false
      *
      */
-	public Host(String surname, String forename, Address address, String userID, String password, Rating rating) {
-		super(surname, forename, address, userID, password);
+	public Host(String surname, String forename, Address address, String phone, String userID, String password, Rating rating) {
+		super(surname, forename, address, phone, userID, password);
 		this.rating = rating;
 	}
 
