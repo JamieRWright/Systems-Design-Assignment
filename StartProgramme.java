@@ -1,8 +1,11 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class StartProgramme {
+public class StartProgramme implements ActionListener {
 	JFrame frame = new JFrame();
 	JButton host, guest, enquirer;
 	
@@ -23,8 +26,10 @@ public class StartProgramme {
 		contentPane.setLayout(new CardLayout());
 		
 		GuestLogin gl = new GuestLogin(f);
-		contentPane.add("a", createHomePanel(contentPane));
-		contentPane.add("b", gl.createGuestLoginPanel());
+		GuestSignUp gsu = new GuestSignUp(f);
+		contentPane.add("Home", createHomePanel(contentPane));
+		contentPane.add("Guest Login", gl.createGuestLoginPanel());
+		contentPane.add("Guest Sign Up", gsu.createGuestSignUpPanel());
 		
 		frame.setVisible(true);
 	}
@@ -55,6 +60,8 @@ public class StartProgramme {
 		guest.setFont(plain);
 		enquirer.setFont(plain);
 		
+		guest.addActionListener(this);
+		
 		labels = new JPanel();
 		buttons = new JPanel();
 		hp = new JPanel();
@@ -77,6 +84,10 @@ public class StartProgramme {
 		home.add(buttons);
 		
 		return home;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		((CardLayout) frame.getContentPane().getLayout()).show(frame.getContentPane(), "Guest Login");
 	}
 	
 	public static void main (String [] args) {
