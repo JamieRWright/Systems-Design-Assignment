@@ -1,8 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GuestLogin {
-	JFrame f = new JFrame();
+public class GuestLogin implements ActionListener {
+	JFrame f;
+	protected JButton signUp;
+	protected Container c;
+	protected GuestSignUp gsu;
+	protected CardLayout card;
 	
 	public GuestLogin(JFrame f) {
 		this.f = f;
@@ -12,15 +18,25 @@ public class GuestLogin {
 		return this.f;
 	}
 	
+	public Container getContainer() {
+		return this.c;
+	}
+	
 	public JPanel createGuestLoginPanel() {
 		JPanel guestLogin = new JPanel();
-		Container c = getFrame().getContentPane();
+		
+		c = f.getContentPane();
+		card = new CardLayout();
+		c.setLayout(card);
+		gsu = new GuestSignUp(f);
+		c.add("Guest Login", guestLogin);
+		c.add("Guest Sign Up", gsu.createGuestSignUpPanel());
 		
 		final Font plain = new Font("Verdana", Font.PLAIN, 30);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel login, id, pw;
-		JButton signUp, loginButton;
+		JButton loginButton;
 		JPanel buttons, hp1, hp2, hp3, hp4;
 		JTextField id_input, pw_input;
 		
@@ -43,6 +59,11 @@ public class GuestLogin {
 		signUp.setContentAreaFilled(false);
 		signUp.setBorderPainted(false);
 		signUp.setFont(plain);
+		signUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				card.show(c, "Guest Sign Up");
+			}
+		});
 		
 		loginButton = new JButton("Log in");
 		loginButton.setFont(plain);
@@ -72,4 +93,11 @@ public class GuestLogin {
 		
 		return guestLogin;
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+	
+
+	
 }

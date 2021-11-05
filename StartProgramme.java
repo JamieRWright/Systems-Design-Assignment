@@ -9,6 +9,7 @@ public class StartProgramme implements ActionListener {
 	JFrame frame = new JFrame();
 	JButton host, guest, enquirer;
 	
+	
 	public StartProgramme(JFrame frame) {
 		this.frame = frame;
 		startGUI(frame);
@@ -25,11 +26,10 @@ public class StartProgramme implements ActionListener {
 		
 		contentPane.setLayout(new CardLayout());
 		
-		GuestLogin gl = new GuestLogin(f);
-		GuestSignUp gsu = new GuestSignUp(f);
+		GuestLogin g = new GuestLogin(f);
+		
 		contentPane.add("Home", createHomePanel(contentPane));
-		contentPane.add("Guest Login", gl.createGuestLoginPanel());
-		contentPane.add("Guest Sign Up", gsu.createGuestSignUpPanel());
+		contentPane.add("Guest Login", g.createGuestLoginPanel());
 		
 		frame.setVisible(true);
 	}

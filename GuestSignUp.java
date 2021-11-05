@@ -30,7 +30,7 @@ public class GuestSignUp implements ActionListener {
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
-		JButton login, loginButton;
+		JButton loginButton;
 		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
 		
 		signUp = new JLabel("Login a Guest");
@@ -91,11 +91,6 @@ public class GuestSignUp implements ActionListener {
 		confirm_input = new JTextField(20);
 		confirm_input.setFont(plain);
 		
-		login = new JButton("Already have an account? Log in!");
-		login.setContentAreaFilled(false);
-		login.setBorderPainted(false);
-		login.setFont(plain);
-		
 		loginButton = new JButton("Sign up");
 		loginButton.setFont(plain);
 		loginButton.addActionListener(this);
@@ -140,7 +135,6 @@ public class GuestSignUp implements ActionListener {
 		hp12.add(confirm_pw);
 		hp12.add(confirm_input);
 		hp13.add(warning);
-		hp4.add(login);
 		buttons.add(loginButton);
 		
 		guestSignUp.add(hp1);
