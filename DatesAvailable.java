@@ -35,4 +35,42 @@ public class DatesAvailable {
 	}
 	
 	
+	/*
+	 *  This is my original DatesAvailable, which gave out of memory error when I tried to run it
+	 public class DatesAvailable {
+   	private final LocalDate startVacancy;
+   	private final LocalDate endVacancy;
+   	
+   	public DatesAvailable(LocalDate startVacancy, LocalDate endVacancy) {
+         	this.startVacancy = startVacancy;
+         	this.endVacancy= endVacancy;
+   	}
+   	
+   	public LocalDate getStartVacancy() {
+         	return this.startVacancy;
+   	}
+   	
+   	public LocalDate getEndVacancy() {
+         	return this.endVacancy;
+   	}
+   	
+   	public List<LocalDate> getVacancyWindow() {
+         	List<LocalDate> vacancyWindow = new ArrayList<LocalDate>();
+         	LocalDate start = getStartVacancy();
+         	LocalDate end = getEndVacancy();
+         	if (start == end) {
+                	vacancyWindow.add(start);
+         	}
+         	else {
+                	for (LocalDate date = start; date.isBefore(end); date.plusDays(1)) {
+                       	vacancyWindow.add(date);
+                	}
+         	}
+         	
+         	return vacancyWindow;
+   	}
+}
+
+	 */
+	
 }
