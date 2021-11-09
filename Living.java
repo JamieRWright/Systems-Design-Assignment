@@ -1,5 +1,5 @@
 /**
- * Class designed to create Outdoor Amenity
+ * Class designed to create Living Amenity
  * 
  * @version 1.0 
  *
