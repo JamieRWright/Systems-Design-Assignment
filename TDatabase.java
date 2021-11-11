@@ -46,6 +46,21 @@ public class TDatabase {
 			e.printStackTrace();
 		}
      }
+	 
+	private void SearchUser(String TableName, String UserID) {
+		 ResultSet table;
+		 Statement stmt;
+        	 String Command = "SELECT " +UserID+ " FROM "+TableName+";";
+                 
+         try {
+        	stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+		} 
+        catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+     }
 }
 
 //Statement stmt = null;
