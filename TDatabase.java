@@ -50,7 +50,22 @@ public class TDatabase {
 	private void SearchUser(String TableName, String UserID) {
 		 ResultSet table;
 		 Statement stmt;
-        	 String Command = "SELECT " +UserID+ " FROM "+TableName+";";
+        	 String Command = "SELECT * FROM "+TableName+" WHERE " +Tablename+"ID = " +UserID+";";
+                 
+         try {
+        	stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+		} 
+        catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+     }
+	
+	private void SearchUserColumn(String TableName, String UserID, String Column) {
+		 ResultSet table;
+		 Statement stmt;
+        	 String Command = "SELECT "+Column+" FROM "+TableName+" WHERE " +Tablename+"ID = " +UserID+";";
                  
          try {
         	stmt = con.createStatement();
