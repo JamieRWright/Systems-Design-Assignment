@@ -8,14 +8,13 @@
  */
 
 public class Facilities {
-	final Property property;
-	final Bedroom[] sleeping;
-	final Bathroom[] bathing;
-	final Kitchen kitchen;
-	final Living living;
-	final Utility utility;
-	final Outdoor outdoor;
-	TDatabase t = new TDatabase();
+	private Property property;
+	private Bedroom[] sleeping;
+	private Bathroom[] bathing;
+	private Kitchen kitchen;
+	private Living living;
+	private Utility utility;
+	private Outdoor outdoor;
 	
 	/**
      * Constructor
@@ -37,7 +36,7 @@ public class Facilities {
 		this.utility = utility;
 		this.outdoor = outdoor;
 		
-		t.addFacility(property.getID(), sleeping, bathing, kitchen, living, utility, outdoor);
+		//t.addFacility(property.getID(), sleeping, bathing, kitchen, living, utility, outdoor);
 	}
 	
 	public int getBedroomNum() {

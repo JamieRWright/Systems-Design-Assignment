@@ -1,5 +1,5 @@
 /**
- * Class designed to be used to Bedroom objects
+ * Class designed to be used to create Bedroom objects
  * 
  * @version 1.0 
  *
@@ -8,10 +8,10 @@
  */
 
 public class Bedroom {
-	final boolean bedLinen;
-	final boolean towels;
-	final BedType bedOne;
-	final BedType bedTwo;
+	private boolean bedLinen;
+	private boolean towels;
+	private BedType bedOne;
+	private BedType bedTwo;
 	
 	// Bedroom with only one bed
 	public Bedroom(boolean bedLinen, boolean towels, BedType bedOne) {

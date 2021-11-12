@@ -8,13 +8,13 @@
  */
 
 public class Bathroom {
-	final boolean hairDrier;
-	final boolean shampoo;
-	final boolean toiletPaper;
-	final boolean toilet;
-	final boolean bath;
-	final boolean shower;
-	final boolean shared;
+	private boolean hairDrier;
+	private boolean shampoo;
+	private boolean toiletPaper;
+	private boolean toilet;
+	private boolean bath;
+	private boolean shower;
+	private boolean shared;
 	
 	public Bathroom(boolean hairDrier, boolean shampoo, boolean toiletPaper, boolean toilet, boolean bath, boolean shower, boolean shared) {
 		this.hairDrier = hairDrier;

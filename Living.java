@@ -1,19 +1,10 @@
-/**
- * Class designed to create Living Amenity
- * 
- * @version 1.0 
- *
- * @author aca17rhp
- *
- */
-
 public class Living {
-	final boolean wifi;
-	final boolean television;
-	final boolean satellite;
-	final boolean streaming;
-	final boolean dvdPlayer;
-	final boolean boardGames;
+	private boolean wifi;
+	private boolean television;
+	private boolean satellite;
+	private boolean streaming;
+	private boolean dvdPlayer;
+	private boolean boardGames;
 	
 	// living space creator
 	public Living(boolean wifi, boolean television, boolean satellite, boolean streaming, boolean dvdPlayer, 

@@ -8,9 +8,9 @@
  */
 
 public class Outdoor {
-	final boolean patio;
-	final boolean bbq;
-	final ParkType parking;
+	private boolean patio;
+	private boolean bbq;
+	private ParkType parking;
 	
 	// Outdoor with parking
 	public Outdoor(boolean patio, boolean bbq, ParkType parking) {

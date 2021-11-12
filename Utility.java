@@ -1,19 +1,10 @@
-/**
- * Class designed to create Utility Amenity
- * 
- * @version 1.0 
- *
- * @author aca17rhp
- *
- */
-
 public class Utility {
-	final boolean centralHeating;
-	final boolean washingMachine;
-	final boolean dryingMachine;
-	final boolean fireExtinguisher;
-	final boolean smokeAlarm;
-	final boolean firstAid;
+	private boolean centralHeating;
+	private boolean washingMachine;
+	private boolean dryingMachine;
+	private boolean fireExtinguisher;
+	private boolean smokeAlarm;
+	private boolean firstAid;
 	
 	// utility space creator
 	public Utility(boolean centralHeating, boolean washingMachine, boolean dryingMachine, boolean fireExtinguisher, boolean smokeAlarm, 
@@ -73,5 +64,4 @@ public class Utility {
 	
 		return sb.toString();
 	}
-		
 }

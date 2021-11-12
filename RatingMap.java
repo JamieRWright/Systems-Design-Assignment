@@ -12,7 +12,7 @@ import java.util.Set;
  */
 
 public class RatingMap {
-	public final Map<RatingCategory, Integer> categoryToRatingMap = new HashMap<>();
+	public Map<RatingCategory, Integer> categoryToRatingMap = new HashMap<>();
 	
     /**
      * Add a rating and its category

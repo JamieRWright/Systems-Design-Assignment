@@ -13,8 +13,8 @@ public enum BedType {
 	King("King-sized bed", 2),
 	Bunk("Bunk beds", 2);
 	
-	private final String bedType;
-	private final int numSleeper;
+	private String bedType;
+	private int numSleeper;
 	BedType(String n, int sleeper) {
 		bedType = n;
 		numSleeper = sleeper;

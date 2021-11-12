@@ -10,9 +10,9 @@ import java.util.Iterator;
  */
 
 public class Review {
-	final Guest guest;
-    final String reviewText;
-	final RatingMap ratingMap;
+	private Guest guest;
+    private String reviewText;
+	private RatingMap ratingMap;
 	
 	/**
      * Constructor

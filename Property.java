@@ -11,16 +11,15 @@ import java.util.List;
  */
 
 public class Property {
-	final String shortName;
-	final String description;
-	final Host host;
-	final String publicLocation;
-	final Address address;
-	final boolean breakfast;
-	final int maxSleepers;
-	final Rating pRating;
-	final List<DatesAvailable> datesAvailable;
-	TDatabase t = new TDatabase();
+	private String shortName;
+	private String description;
+	private Host host;
+	private String publicLocation;
+	private Address address;
+	private boolean breakfast;
+	private int maxSleepers;
+	private Rating pRating;
+	private List<DatesAvailable> datesAvailable;
 	
 	/**
      * Constructor
@@ -42,9 +41,9 @@ public class Property {
 		this.pRating = pRating;
 		this.datesAvailable = datesAvailable;
 		
-		hostID = host.getHostID();
+		//hostID = host.getHostID();
 		
-		t.addProperty(shortName, description, hostID, publicLocation, address, breakfast, maxSleepers, pRating, datesAvailable);
+		//t.addProperty(shortName, description, hostID, publicLocation, address, breakfast, maxSleepers, pRating, datesAvailable);
 		
 	}
 	
@@ -81,7 +80,8 @@ public class Property {
 	}
 	
 	public int getID() {
-		t.getPropertyID((this.host).getID(), this.shortName);
+		//t.getPropertyID((this.host).getID(), this.shortName);
+		return 0;
 	}
 	
 	
