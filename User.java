@@ -8,11 +8,12 @@
  */
 
 public class User {
-	protected final String surname;
-	protected final String forename;
-	protected final String userID;
-	protected final String password;
-	protected final Address address;
+	protected String surname;
+	protected String forename;
+	protected String userID;
+	protected String password;
+	protected String phone;
+	//protected final Address address;
 	
 	/**
      * Constructor
@@ -24,20 +25,25 @@ public class User {
      * @param address User's confidential address
      *
      */
-	public User(String surname, String forename, Address address, String userID, String password) {
+	public User(String surname, String forename, String phone, String userID, String password) {
 		this.surname = surname;
 		this.forename = forename;
+		this.phone = phone;
 		this.userID = userID;
 		this.password = password;
-		this.address = address;
+		//this.address = address;
 	}
 	
 	public String getName() {
 		return (this.forename) + " " + (this.surname);
 	}
-	
+	/*
 	public Address getAddress() {
 		return this.address;
+	}
+	*/
+	public String getPhone() {
+		return this.phone;
 	}
 	
 	public String getID() {

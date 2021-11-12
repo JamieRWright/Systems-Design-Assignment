@@ -5,11 +5,26 @@ import java.util.List;
 /**
  * Class designed to be used to create Rating objects from the user reviews
  *
- * @version 1.0 
+ * @version 1.1 
  *
  * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
  *
  */
+
+enum RatingCategory {
+	Cleanliness("Cleanliness"),
+	Communication("Communication (response time)"),
+	CheckIn("Check-In (how easy)"),
+	Accuracy("Accuracy (of public info)"),
+	Location("Location (quality)"),
+	Value("Value (for money)");
+	
+	private final String name;
+	RatingCategory(String n) {name = n;}
+	
+	public String getName() {return name;}
+	
+}
 
 public class Rating {
 	
