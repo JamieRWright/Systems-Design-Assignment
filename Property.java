@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class Property {
-	final String propertyName;
+	final String shortName;
 	final String description;
 	final Host host;
 	final String publicLocation;
@@ -19,7 +19,8 @@ public class Property {
 	final boolean breakfast;
 	final int maxSleepers;
 	final Rating pRating;
-	final List<DatesAvailable> availableList;
+	final List<DatesAvailable> datesAvailable;
+	TDatabase t = new TDatabase();
 	
 	/**
      * Constructor
@@ -30,8 +31,8 @@ public class Property {
      * @param availableList, containing the DatesAvailable lists, for every date the property is available for
      *
      */
-	public Property(String propertyName, String description, Host host, String publicLocation, Address address, boolean breakfast, int maxSleepers, Rating pRating, List<DatesAvailable> availableList) {
-		this.propertyName = propertyName;
+	public Property(String shortName, String description, Host host, String publicLocation, Address address, boolean breakfast, int maxSleepers, Rating pRating, List<DatesAvailable> datesAvailable) {
+		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
 		this.publicLocation = publicLocation;
@@ -39,11 +40,16 @@ public class Property {
 		this.breakfast = breakfast;
 		this.maxSleepers = maxSleepers;
 		this.pRating = pRating;
-		this.availableList = availableList;
+		this.datesAvailable = datesAvailable;
+		
+		hostID = host.getHostID();
+		
+		t.addProperty(shortName, description, hostID, publicLocation, address, breakfast, maxSleepers, pRating, datesAvailable);
+		
 	}
 	
-	public String getPropertyName() {
-		return this.propertyName;
+	public String getShortName() {
+		return this.shortName;
 	}
 	
 	public String getDescription() {
@@ -71,12 +77,17 @@ public class Property {
 	}
 	
 	public List<DatesAvailable> getAvailableDates() {
-		return this.availableList;
+		return this.datesAvailable;
 	}
+	
+	public int getID() {
+		t.getPropertyID((this.host).getID(), this.shortName);
+	}
+	
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getPropertyName());
+		sb.append(getShortName());
 		sb.append("\n");
 		sb.append(getDescription());
 		sb.append("\n");
@@ -95,32 +106,4 @@ public class Property {
 		return sb.toString();
 	}
 	
-	public static void main (String [] args) {
-		Address add = new Address("71", "Cherry Court", "SOUTHHAMPTON", "SO53 5PD");
-		List<DatesAvailable> l = new ArrayList<DatesAvailable>();
-		l.add(new DatesAvailable("3/11/21", "16/11/21"));
-        List<RatingMap> rate = new ArrayList<RatingMap>();
-		
-		RatingCategory[] categories = {RatingCategory.Cleanliness, RatingCategory.Communication, RatingCategory.CheckIn, RatingCategory.Accuracy, RatingCategory.Location,RatingCategory.Value};
-		int[] r = {5, 5, 4, 4, 5, 5};
-		int[] r1 = {4, 5, 4, 4, 5, 4};
-		int[] r2 = {3, 5, 1, 5, 5, 4};
-		int[] r3 = {1, 5, 5, 5, 5, 4};
-		int[] r4 = {5, 5, 5, 5, 5, 5};
-		int[][] ratingsSet = {r, r1, r2, r3, r4};
-		
-		for (int i = 0; i < ratingsSet.length; i++) {
-			RatingMap ratings = new RatingMap();
-			for (int j = 0; j < r.length; j++) {
-				ratings.put(categories[j], ratingsSet[i][j]);
-			}
-			rate.add(ratings);
-		}
-        Rating rating = new Rating(rate);
-        Host soph = new Host("Devereaux", "Sophie", add, "charlotteprentis_32@gmail.com", "hafuiewhfb", rating);
-		
-		Property mine = new Property("Small room", "Just a small room", soph, "Gombak", add, false, 2, rating, l);
-		System.out.println(mine);
-		
-	}
 }
