@@ -13,7 +13,7 @@ public class User {
 	protected String userID;
 	protected String password;
 	protected String phone;
-	//protected final Address address;
+	protected Address address;
 	
 	/**
      * Constructor
@@ -25,23 +25,24 @@ public class User {
      * @param address User's confidential address
      *
      */
-	public User(String surname, String forename, String phone, String userID, String password) {
+	public User(String surname, String forename, Address address, String phone, String userID, String password) {
 		this.surname = surname;
 		this.forename = forename;
 		this.phone = phone;
 		this.userID = userID;
 		this.password = password;
-		//this.address = address;
+		this.address = address;
 	}
 	
+	// Accessor methods
 	public String getName() {
 		return (this.forename) + " " + (this.surname);
 	}
-	/*
+	
 	public Address getAddress() {
 		return this.address;
 	}
-	*/
+	
 	public String getPhone() {
 		return this.phone;
 	}
@@ -54,5 +55,19 @@ public class User {
 		return this.password;
 	}
 	
+	// Set methods
+	
+	public void setName(String fname, String sname) {
+        this.forename = fname;
+        this.surname = sname;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public void setPassword(String pw) {
+		this.password = pw;
+	}
 	
 }
