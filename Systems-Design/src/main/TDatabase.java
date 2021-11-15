@@ -35,6 +35,29 @@ public final class TDatabase {
         _SQLBeds = "SELECT * FROM Beds";
 	}	
 	
+	private static void getConnection()
+	{
+		//Initialised the static class with the connection string
+		con = null;
+		try {
+			con = DriverManager.getConnection(connectionString, username, password);
+			
+
+			// use the open connection
+			// for one or more queries
+			}
+			catch (Exception ex) {
+			ex.printStackTrace();
+			}
+		
+		
+
+        _SQLGuest = "SELECT * FROM Guest;";
+        _SQLHost = "SELECT * FROM Host;";
+        _SQLProperty = "SELECT * FROM Property;";
+        _SQLBeds = "SELECT * FROM Beds";
+	}	
+	
 	//Returns a full table, this may return Array in future
 	 public static ResultSet SearchFullTable(String TableName)
      {
@@ -67,6 +90,28 @@ public final class TDatabase {
 			e.printStackTrace();
 		}
          return table;
+     }
+	 
+	 public static String SearchUserID(String TableName, String email) {
+		 ResultSet table=null;
+		 Statement stmt;
+		 String GuestID=null;
+        	 String Command = "SELECT "+ TableName+"ID FROM "+TableName+" WHERE Email = '" +email+"';";
+                 
+         try {
+        	stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+		    while (table.next()) {
+		        GuestID = table.getString(1);
+		        System.out.println(GuestID);
+		    }
+		} 
+        catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         return GuestID;
+
      }
 	 
 	 //Returns true if user exists
@@ -139,21 +184,24 @@ public final class TDatabase {
 
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
-		public static void singUpGuest(String fName,String lName,String phone, String email,String guestPW){
+		
+		public static void signUpGuest(String fName,String lName,String phone, String email,String guestPW){
 			try {
 				
-				
+				getConnection();
 				String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
-				String sql2="INSERT INTO Guest_Passwords(Passwords) VALUES(?)";
+				String sql2="INSERT INTO Guest_Passwords(GuestID, Passwords) VALUES(?,?)";
 				PreparedStatement pst=con.prepareStatement(sql);
 				pst.setString(1,fName);
 				pst.setString(2,lName);
 				pst.setString(3,phone);
 				pst.setString(4,email);
-			
-				PreparedStatement pst2=con.prepareStatement(sql2);
-				pst2.setString(1,guestPW);
 				pst.execute();
+				
+				PreparedStatement pst2=con.prepareStatement(sql2);
+				pst2.setString(1, SearchUserID("Guest", email));
+				pst2.setString(2,guestPW);
+
 				pst2.execute();
 	
 			}
@@ -161,5 +209,6 @@ public final class TDatabase {
 			}
 		}
 }
+
 
 
