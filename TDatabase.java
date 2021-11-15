@@ -136,6 +136,47 @@ public final class TDatabase {
 				ex.printStackTrace();
 			}
 		}
+
+		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
+ */
+public static void singUpGuest{
+	try {
+		String fName=fName_input.getText();
+		String lName=lName_input.getText();
+		String phone=phone_input.getText();
+		String email=id_input.getText();
+		String guestPW=confirm_input.getText();
+		if (loginButton.isSelected())
+			String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES ('"+fName+"','"+lName+"','"
+					+phone+"','"+email+"')";
+		    String sql2="INSERT INTO Guest_Passwords(Passwords) VALUES('"+guestPW+"')";
+		    Preparestatement pst=conn.prepareStatement(sql);
+		    Preparestatement pst2=conn.prepareStatement(sql2);
+		    pst.excute();
+		    pst2.excute();
+	}
+}
+catch (Exception e) {
+}
+public static void singUpHost{
+	try {
+		String fName=fName_input.getText();
+		String lName=lName_input.getText();
+		String phone=phone_input.getText();
+		String email=id_input.getText();
+		String guestPW=confirm_input.getText();
+		if (loginButton.isSelected())
+			String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES ('"+fName+"','"+lName+"','"
+					+phone+"','"+email+"')";
+		    String sql2="INSERT INTO Host_Passwords(Passwords) VALUES('"+guestPW+"')";
+		    Preparestatement pst=conn.prepareStatement(sql);
+		    Preparestatement pst2=conn.prepareStatement(sql2);
+		    pst.excute();
+		    pst2.excute();
+	}
+}
+catch (Exception e) {
+}
 	
 		
 }
