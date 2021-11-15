@@ -139,24 +139,26 @@ public final class TDatabase {
 
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
-public static void singUpGuest{
+public static void singUpGuest(String fName,String lName,String phone, String email,String guestPW){
 	try {
-		String fName=fName_input.getText();
-		String lName=lName_input.getText();
-		String phone=phone_input.getText();
-		String email=id_input.getText();
-		String guestPW=confirm_input.getText();
-		if (loginButton.isSelected())
-			String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES ('"+fName+"','"+lName+"','"
-					+phone+"','"+email+"')";
-		    String sql2="INSERT INTO Guest_Passwords(Passwords) VALUES('"+guestPW+"')";
-		    Preparestatement pst=conn.prepareStatement(sql);
-		    Preparestatement pst2=conn.prepareStatement(sql2);
+		
+		
+			String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
+		    String sql2="INSERT INTO Guest_Passwords(Passwords) VALUES(?)";
+		    PreparedStatement pst=conn.prepareStatement(sql);
+			pst.setString(1,fName);
+			pst.setString(2,lName);
+			pst.setString(3,phone);
+			pst.setString(4,email);
+			
+		    PreparedStatement pst2=conn.prepareStatement(sql2);
+			pst2.setString(1,guestPW);
 		    pst.excute();
 		    pst2.excute();
-	}
+	
 }
 catch (Exception e) {
+}
 }
 public static void singUpHost{
 	try {
