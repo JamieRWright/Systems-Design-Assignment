@@ -22,6 +22,9 @@ public class Guest extends User {
      */
 	public Guest(String surname, String forename, Address address, String phone, String userID, String password) {
 		super(surname, forename, address, phone, userID, password);
+		
+		TDatabase.signUpGuest(surname, forename, phone, userID, password);
+	
 	}
 
 	
