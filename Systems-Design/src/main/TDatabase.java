@@ -6,56 +6,44 @@ import java.sql.*;
 //Methods are called like this: TDatabase.SearchFullTable("Guest")
 //Global
 public final class TDatabase {
-	private static final String connectionString="jdbc:mysql://localhost:3306/SystemsDesign";
-	private static final String username="root";
-	private static final String password="ShairAt2owwij!";
+	private static final String connectionString="jdbc:mysql://stusql.dcs.shef.ac.uk/team054";
+	private static final String username="team054";
+	private static final String password="c77880a3";
 	private static Connection con;
-	private static String _SQLHost, _SQLStudentAttempts, _SQLProperty, _SQLGuest, _SQLBeds;
+	private static String _SQLGuest = "SELECT * FROM Guest;";
+	private static String _SQLHost = "SELECT * FROM Host;";
+	private static String _SQLProperty = "SELECT * FROM Property;";
+	private static String _SQLBeds = "SELECT * FROM Beds";
 
-	private TDatabase()
+	//connections and disconnections should only be made within static class methods
+	private static boolean getConnection()
 	{
 		//Initialised the static class with the connection string
 		con = null;
 		try {
 			con = DriverManager.getConnection(connectionString, username, password);
 			
-
-			// use the open connection
-			// for one or more queries
+			return true;
 			}
 			catch (Exception ex) {
-			ex.printStackTrace();
+			return false;
 			}
-		
-		
-
-        _SQLGuest = "SELECT * FROM Guest;";
-        _SQLHost = "SELECT * FROM Host;";
-        _SQLProperty = "SELECT * FROM Property;";
-        _SQLBeds = "SELECT * FROM Beds";
 	}	
-	
-	private static void getConnection()
+	private static void disconnect()
 	{
 		//Initialised the static class with the connection string
-		con = null;
-		try {
-			con = DriverManager.getConnection(connectionString, username, password);
-			
-
-			// use the open connection
-			// for one or more queries
+		if (con != null)
+		{
+			try 
+			{
+				con.close();
 			}
-			catch (Exception ex) {
-			ex.printStackTrace();
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
 			}
-		
-		
-
-        _SQLGuest = "SELECT * FROM Guest;";
-        _SQLHost = "SELECT * FROM Host;";
-        _SQLProperty = "SELECT * FROM Property;";
-        _SQLBeds = "SELECT * FROM Beds";
+			con = null;
+		}
 	}	
 	
 	//Returns a full table, this may return Array in future
@@ -185,7 +173,7 @@ public final class TDatabase {
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
 		
-		public static void signUpGuest(String fName,String lName,String phone, String email,String guestPW){
+		public static boolean signUpGuest(String fName,String lName,String phone, String email,String guestPW){
 			try {
 				
 				getConnection();
@@ -203,9 +191,11 @@ public final class TDatabase {
 				pst2.setString(2,guestPW);
 
 				pst2.execute();
+				return true;
 	
 			}
 			catch (Exception e) {
+				return false;
 			}
 		}
 }
