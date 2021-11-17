@@ -1,6 +1,8 @@
 package main;
 
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -61,7 +63,7 @@ public class GuestSignUp implements ActionListener {
 		addB.setFont(plain);
 		add2 = new JTextField(20);
 		add2.setFont(plain);
-		addC = new JLabel("Place Name: ");
+		addC = new JLabel("Postcode: ");
 		addC.setFont(plain);
 		add3 = new JTextField(20);
 		add3.setFont(plain);
@@ -174,6 +176,9 @@ public class GuestSignUp implements ActionListener {
 			Guest guest = new Guest(fName, lName, add, phone, userID, password);
 			
 			System.out.println(guest);
+			if (!(guest.getSuccess())) {
+				showMessageDialog(null, "Sign up failed.");
+			}
 		}
 		else {
 			warning.setText("Please fill all blanks!");

@@ -25,7 +25,7 @@ public class User {
      * @param address User's confidential address
      *
      */
-	public User(String surname, String forename, Address address, String phone, String userID, String password) {
+	public User(String forename, String surname, Address address, String phone, String userID, String password) {
 		this.surname = surname;
 		this.forename = forename;
 		this.phone = phone;
