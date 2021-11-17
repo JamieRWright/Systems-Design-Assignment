@@ -28,20 +28,20 @@ public final class TDatabase {
 		con = null;
 		try {
 			con = DriverManager.getConnection(connectionString, username, password);
-<<<<<<< HEAD
+
 
 
 			// use the open connection
 			// for one or more queries
-=======
-			
+
+
 			return true;
->>>>>>> 4b2f95995ff7b83b89a988fbce810eb3b4048022
+
 			}
 			catch (Exception ex) {
 			return false;
 			}
-<<<<<<< HEAD
+
 
 
 
@@ -51,14 +51,14 @@ public final class TDatabase {
         _SQLBeds = "SELECT * FROM Beds";
 	}
 
-=======
-	}	
+
+
 	private static void disconnect()
 	{
 		//Initialised the static class with the connection string
 		if (con != null)
 		{
-			try 
+			try
 			{
 				con.close();
 			}
@@ -68,9 +68,9 @@ public final class TDatabase {
 			}
 			con = null;
 		}
-	}	
-	
->>>>>>> 4b2f95995ff7b83b89a988fbce810eb3b4048022
+	}
+
+
 	//Returns a full table, this may return Array in future
 	 public static ResultSet SearchFullTable(String TableName)
      {
@@ -104,16 +104,16 @@ public final class TDatabase {
 		}
          return table;
      }
-<<<<<<< HEAD
 
-=======
-	 
+
+
+
 	 public static String SearchUserID(String TableName, String email) {
 		 ResultSet table=null;
 		 Statement stmt;
 		 String GuestID=null;
         	 String Command = "SELECT "+ TableName+"ID FROM "+TableName+" WHERE Email = '" +email+"';";
-                 
+
          try {
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
@@ -121,7 +121,7 @@ public final class TDatabase {
 		        GuestID = table.getString(1);
 		        System.out.println(GuestID);
 		    }
-		} 
+		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,8 +129,8 @@ public final class TDatabase {
          return GuestID;
 
      }
-	 
->>>>>>> 4b2f95995ff7b83b89a988fbce810eb3b4048022
+
+
 	 //Returns true if user exists
 	 public static Boolean IsUser(String TableName, String UserID) {
 		 int rows=0;
@@ -201,29 +201,9 @@ public final class TDatabase {
 
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
-<<<<<<< HEAD
-public static void signUpGuest(String fName,String lName,String phone, String email,String guestPW){
-	try {
 
 
-			String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
-		    String sql2="INSERT INTO Guest_Passwords(Passwords) VALUES(?)";
-		    PreparedStatement pst=con.prepareStatement(sql);
-			pst.setString(1,fName);
-			pst.setString(2,lName);
-			pst.setString(3,phone);
-			pst.setString(4,email);
-
-		    PreparedStatement pst2=con.prepareStatement(sql2);
-			pst2.setString(1,guestPW);
-		    pst.excute();
-		    pst2.excute();
-
-}
-catch (Exception e) {
-}
-}
-public static void signUpHost(String fName,String lName, String email,String hostPW){
+public static boolean signUpHost(String fName,String lName, String email,String hostPW){
 	try {
 		String sql="INSERT INTO Host(FirstName, LastName,Email) VALUES (?,?,?)";
 	    String sql2="INSERT INTO Host_Passwords(Passwords) VALUES(?)";
@@ -231,44 +211,46 @@ public static void signUpHost(String fName,String lName, String email,String hos
 		pst.setString(1,fName);
 		pst.setString(2,lName);
 		pst.setString(4,email);
-
+		pst.execute();
 	    PreparedStatement pst2=con.prepareStatement(sql2);
 		pst2.setString(1,hostPW);
-	    pst.excute();
-	    pst2.excute();
+
+	    pst2.execute();
+	    return true;
 
 	}
 catch (Exception e) {
+	return false;
 }
 
 
 }
-=======
-		
+
+
 		public static boolean signUpGuest(String fName,String lName,String phone, String email,String guestPW){
 			try {
-				
+
 				getConnection();
-				String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
-				String sql2="INSERT INTO Guest_Passwords(GuestID, Passwords) VALUES(?,?)";
+				String sql="INSERT INTO Host(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
+				String sql2="INSERT INTO Host_Passwords(GuestID, Passwords) VALUES(?,?)";
 				PreparedStatement pst=con.prepareStatement(sql);
 				pst.setString(1,fName);
 				pst.setString(2,lName);
 				pst.setString(3,phone);
 				pst.setString(4,email);
 				pst.execute();
-				
+
 				PreparedStatement pst2=con.prepareStatement(sql2);
-				pst2.setString(1, SearchUserID("Guest", email));
+				pst2.setString(1, SearchUserID("Host", email));
 				pst2.setString(2,guestPW);
 
 				pst2.execute();
 				return true;
-	
+
 			}
 			catch (Exception e) {
 				return false;
 			}
 		}
->>>>>>> 4b2f95995ff7b83b89a988fbce810eb3b4048022
+
 }
