@@ -173,9 +173,40 @@ public final class TDatabase {
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
 		
+public static boolean signUpHost(String fName,String lName, String email,String hostPW){
+	try {
+		getConnection();
+		String sql="INSERT INTO Host(FirstName, LastName, IsSuperHost, Email) VALUES (?,?,?,?)";
+		String sql2="INSERT INTO Host_Passwords(HostID, Passwords) VALUES(?,?)";
+	    PreparedStatement pst=con.prepareStatement(sql);
+		pst.setString(1,fName);
+		pst.setString(2,lName);
+		//default isSuperHost is false
+		pst.setInt(3,0);
+		pst.setString(4,email);
+		pst.execute();
+
+		PreparedStatement pst2=con.prepareStatement(sql2);
+		pst2.setString(1, SearchUserID("Host", email));
+		pst2.setString(2,hostPW);
+
+		pst2.execute();
+		disconnect();
+		return true;
+
+
+	}
+catch (Exception e) {
+	return false;
+}
+
+
+}
+
+
 		public static boolean signUpGuest(String fName,String lName,String phone, String email,String guestPW){
 			try {
-				
+
 				getConnection();
 				String sql="INSERT INTO Guest(FirstName, LastName,MobileNumber,Email) VALUES (?,?,?,?)";
 				String sql2="INSERT INTO Guest_Passwords(GuestID, Passwords) VALUES(?,?)";
@@ -185,14 +216,15 @@ public final class TDatabase {
 				pst.setString(3,phone);
 				pst.setString(4,email);
 				pst.execute();
-				
+
 				PreparedStatement pst2=con.prepareStatement(sql2);
 				pst2.setString(1, SearchUserID("Guest", email));
 				pst2.setString(2,guestPW);
 
 				pst2.execute();
+				disconnect();
 				return true;
-	
+
 			}
 			catch (Exception e) {
 				return false;
