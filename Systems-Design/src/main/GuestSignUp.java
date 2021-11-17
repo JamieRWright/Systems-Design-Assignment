@@ -171,19 +171,21 @@ public class GuestSignUp implements ActionListener {
 		String userID = id_input.getText();
 		String password = pw_input.getText();
 		
-		if (fName != null && lName != null && add1 != null && add2 != null && add3 != null && add4 != null && phone_input != null && id_input != null && pw_input != null) {
+		if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
+			showMessageDialog(null, "Please fill in all blanks.");
+		}
+		else if (password != confirm_input.getText()) {
+			showMessageDialog(null, "Password and confirmed password do not match.");
+		}
+		else {
 			Address add = new Address(houseName, streetName, placeName, postcode);
 			Guest guest = new Guest(fName, lName, add, phone, userID, password);
 			
 			System.out.println(guest);
+			
 			if (!(guest.getSuccess())) {
 				showMessageDialog(null, "Sign up failed.");
 			}
-		}
-		else {
-			warning.setText("Please fill all blanks!");
-			warning.setFont(new Font("Verdana", Font.PLAIN, 20));
-			warning.setForeground(Color.RED);
 		}
 	}
 	
