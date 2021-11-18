@@ -1,9 +1,9 @@
 package main;
 
 
+import java.awt.Color;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,13 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-public class GuestSignUp implements ActionListener {
+public class GuestSignUp implements ActionListener, DocumentListener {
     
 	JFrame f = new JFrame();
 	
-	JTextField fName_input, lName_input, add1, add2, add3, add4, phone_input, id_input, pw_input, confirm_input;
+	JButton loginButton;
+	JTextField fName_input, lName_input, add1, add2, add3, add4, phone_input, id_input;
 	JLabel warning = new JLabel("");
+	JPasswordField pw_input, confirm_input;
 	
 	public GuestSignUp(JFrame f) {
 		this.f = f;
@@ -35,10 +39,9 @@ public class GuestSignUp implements ActionListener {
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
-		JButton loginButton;
 		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
 		
-		signUp = new JLabel("Login a Guest");
+		signUp = new JLabel("Sign up as Guest");
 		signUp.setFont(bold);
 		
 		// Input for user's name
@@ -87,14 +90,18 @@ public class GuestSignUp implements ActionListener {
 		// Input for password
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
-		pw_input = new JTextField(20);
+		pw_input = new JPasswordField(20);
 		pw_input.setFont(plain);
+		pw_input.setEchoChar('*');
+		pw_input.getDocument().addDocumentListener(this);
 		
 		// Input for confirm password
 		confirm_pw = new JLabel("Confirm Password: ");
 		confirm_pw.setFont(plain);
-		confirm_input = new JTextField(20);
+		confirm_input = new JPasswordField(20);
 		confirm_input.setFont(plain);
+		confirm_input.setEchoChar('*');
+		confirm_input.getDocument().addDocumentListener(this);
 		
 		loginButton = new JButton("Sign up");
 		loginButton.setFont(plain);
@@ -174,9 +181,6 @@ public class GuestSignUp implements ActionListener {
 		if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
 			showMessageDialog(null, "Please fill in all blanks.");
 		}
-		else if (password != confirm_input.getText()) {
-			showMessageDialog(null, "Password and confirmed password do not match.");
-		}
 		else {
 			Address add = new Address(houseName, streetName, placeName, postcode);
 			Guest guest = new Guest(fName, lName, add, phone, userID, password);
@@ -200,5 +204,40 @@ public class GuestSignUp implements ActionListener {
 		f.setSize(screen.width, screen.height);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		checkPasswords();
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		checkPasswords();
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void checkPasswords() {
+		String password = pw_input.getText();
+		String repassword = confirm_input.getText();
+		
+	    if (!password.equals(repassword)) {
+	    	warning.setFont(new Font("Verdana", Font.PLAIN, 20));
+	    	warning.setForeground(Color.RED);
+			warning.setText("Passwords do not match!");
+			loginButton.setEnabled(false);
+			
+		}
+	    else {
+	    	warning.setText("");
+	    	loginButton.setEnabled(true);
+	    }
 	}
 }

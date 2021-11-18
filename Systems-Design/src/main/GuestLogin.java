@@ -1,15 +1,20 @@
 package main;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GuestLogin implements ActionListener {
+public class GuestLogin implements DocumentListener, ActionListener {
 	JFrame f;
 	protected JButton signUp;
 	protected Container c;
 	protected GuestSignUp gsu;
 	protected CardLayout card;
+	JTextField id_input;
+	JPasswordField pw_input;
 	
 	public GuestLogin(JFrame f) {
 		this.f = f;
@@ -31,7 +36,7 @@ public class GuestLogin implements ActionListener {
 		c.setLayout(card);
 		gsu = new GuestSignUp(f);
 		c.add("Guest Login", guestLogin);
-		c.add("Guest Sign Up", gsu.createGuestSignUpPanel());
+		//c.add("Guest Sign Up", gsu.createGuestSignUpPanel());
 		
 		final Font plain = new Font("Verdana", Font.PLAIN, 30);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
@@ -39,7 +44,6 @@ public class GuestLogin implements ActionListener {
 		JLabel login, id, pw;
 		JButton loginButton;
 		JPanel buttons, hp1, hp2, hp3, hp4;
-		JTextField id_input, pw_input;
 		
 		login = new JLabel("Login a Guest");
 		login.setFont(bold);
@@ -49,12 +53,14 @@ public class GuestLogin implements ActionListener {
 		
 		id_input = new JTextField(20);
 		id_input.setFont(plain);
+		id_input.getDocument().addDocumentListener(this);
 		
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
 		
-		pw_input = new JTextField(20);
+		pw_input = new JPasswordField(20);
 		pw_input.setFont(plain);
+		pw_input.setEchoChar('*');
 		
 		signUp = new JButton("Don't have an account? Sign up!");
 		signUp.setContentAreaFilled(false);
@@ -68,6 +74,7 @@ public class GuestLogin implements ActionListener {
 		
 		loginButton = new JButton("Log in");
 		loginButton.setFont(plain);
+		loginButton.addActionListener(this);
 		
 		hp1 = new JPanel();
 		hp2 = new JPanel();
@@ -96,9 +103,44 @@ public class GuestLogin implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		
+		check();
 	}
 	
+	public static void main (String [] args) {
+		JFrame f = new JFrame();
+		GuestLogin g = new GuestLogin(f);
+		Container c = f.getContentPane();
+		c.add(g.createGuestLoginPanel());
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screen = tk.getScreenSize();
+				
+		f.setSize(screen.width, screen.height);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setVisible(true);
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		//check();
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		//check();
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		//check();
+	}
+	
+	public void check() {
+		if (id_input.getText().isEmpty() || pw_input.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "All fields must not be blank");
+		}
+	}
 
 	
 }
