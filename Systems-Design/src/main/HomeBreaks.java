@@ -1,0 +1,657 @@
+package main;
+
+import static javax.swing.JOptionPane.showMessageDialog;
+
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+
+public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
+	CardLayout cards;
+	Container c = getContentPane();
+	String current = "";
+	JPanel home, guestLogin, hostLogin;
+	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU; // Figure out where to put home button
+	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
+	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
+	JLabel warning_gsu = new JLabel("");
+	JLabel warning_hsu = new JLabel("");
+	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
+	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
+	
+	public HomeBreaks() {
+		startGUI();
+	}
+	
+	public void startGUI() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension screen = tk.getScreenSize();
+				
+		setSize(screen.width, screen.height);
+		setTitle("HomeBreaks Plc");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		cards = new CardLayout();
+		c.setLayout(cards);
+		c.add("Home", home());
+		c.add("Guest Sign Up", guestSU());
+		c.add("Host Sign Up", hostSU());
+		c.add("Guest Login", guestLogin());
+		c.add("Host Login", hostLogin());
+		
+		setVisible(true);
+	}
+	
+	public JPanel home() {
+		JPanel home = new JPanel();
+		current = "Home";
+		
+        JPanel buttons, labels, hp;
+		
+		Font plain = new Font("Verdana", Font.PLAIN, 30);
+		Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel welc, opt;
+
+		welc = new JLabel("Welcome");
+		opt = new JLabel("To start, choose a role");
+		welc.setFont(bold);
+		opt.setFont(plain);
+		EmptyBorder border = new EmptyBorder(30, 0, 0, 0);
+		opt.setBorder(border);
+		EmptyBorder border2 = new EmptyBorder(20, 40, 0, 0);
+		welc.setBorder(border2);
+
+		host = new JButton("Host");
+		guest = new JButton("Guest");
+		enquirer = new JButton("Enquirer");
+		
+		host.setFont(plain);
+		guest.setFont(plain);
+		enquirer.setFont(plain);
+		
+		host.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Host Login");
+				current = "HL";
+				setTitle("Host Login");
+			}
+		});
+		
+		guest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Guest Login");
+				current = "GL";
+				setTitle("Guest Login");
+			}
+		});
+		
+		labels = new JPanel();
+		buttons = new JPanel();
+		hp = new JPanel();
+		
+		
+		BoxLayout b2 = new BoxLayout(labels, BoxLayout.Y_AXIS);
+		labels.setLayout(b2);
+		
+		host.setPreferredSize(new Dimension(400, 500));
+		guest.setPreferredSize(new Dimension(400, 500));
+		enquirer.setPreferredSize(new Dimension(400, 500));
+		
+		labels.add(welc);
+		labels.add(opt);
+		buttons.add(host);
+		buttons.add(guest);
+		buttons.add(enquirer);
+		hp.add(labels);
+		home.add(hp);
+		home.add(buttons);
+		
+		return home;
+	}
+	
+	public JPanel guestSU() {
+		JPanel gsu = new JPanel();
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
+		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
+		
+		signUp = new JLabel("Sign up as Guest");
+		signUp.setFont(bold);
+		
+		// Input for user's name
+		fName = new JLabel("First Name: ");
+		fName.setFont(plain);
+		
+		fName_input_gsu = new JTextField(20);
+		fName_input_gsu.setFont(plain);
+		
+		lName = new JLabel("Last Name: ");
+		lName.setFont(plain);
+		
+		lName_input_gsu = new JTextField(20);
+		lName_input_gsu.setFont(plain);
+		
+		// Input for user's address
+		addA = new JLabel("House No.: ");
+		addA.setFont(plain);
+		add1_gsu = new JTextField(20);
+		add1_gsu.setFont(plain);
+		addB = new JLabel("Street Name: ");
+		addB.setFont(plain);
+		add2_gsu = new JTextField(20);
+		add2_gsu.setFont(plain);
+		addC = new JLabel("Postcode: ");
+		addC.setFont(plain);
+		add3_gsu = new JTextField(20);
+		add3_gsu.setFont(plain);
+		addD = new JLabel("Place Name: ");
+		addD.setFont(plain);
+		add4_gsu = new JTextField(20);
+		add4_gsu.setFont(plain);
+		
+		// Input for phone number
+		phone = new JLabel("Phone No.: ");
+		phone.setFont(plain);
+		phone_input_gsu = new JTextField(20);
+		phone_input_gsu.setFont(plain);
+		
+		// Input for email
+		id = new JLabel("Email: ");
+		id.setFont(plain);
+		id_input_gsu = new JTextField(20);
+		id_input_gsu.setFont(plain);
+		
+		// Input for password
+		pw = new JLabel("Password: ");
+		pw.setFont(plain);
+		pw_input_gsu = new JPasswordField(20);
+		pw_input_gsu.setFont(plain);
+		pw_input_gsu.setEchoChar('*');
+		pw_input_gsu.getDocument().addDocumentListener(this);
+		
+		// Input for confirm password
+		confirm_pw = new JLabel("Confirm Password: ");
+		confirm_pw.setFont(plain);
+		confirm_input_gsu = new JPasswordField(20);
+		confirm_input_gsu.setFont(plain);
+		confirm_input_gsu.setEchoChar('*');
+		confirm_input_gsu.getDocument().addDocumentListener(this);
+		
+		gsuBtn = new JButton("Sign up");
+		gsuBtn.setFont(plain);
+		gsuBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fName = fName_input_gsu.getText();
+				String lName = lName_input_gsu.getText();
+				String houseName = add1_gsu.getText();
+				String streetName = add2_gsu.getText();
+				String placeName = add3_gsu.getText();
+				String postcode = add4_gsu.getText();
+				String phone = phone_input_gsu.getText();
+				String userID = id_input_gsu.getText();
+				String password = pw_input_gsu.getText();
+				
+				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
+					showMessageDialog(null, "Please fill in all blanks.");
+				}
+				else {
+					Address add = new Address(houseName, streetName, placeName, postcode);
+					Guest guest = new Guest(fName, lName, add, phone, userID, password);
+					
+					System.out.println(guest);
+					
+					if (!(guest.getSuccess())) {
+						showMessageDialog(null, "Sign up failed.");
+					}
+				}
+			}
+		});
+			
+			
+		hp1 = new JPanel();
+		hp2 = new JPanel();
+		hp3 = new JPanel();
+		hp4 = new JPanel();
+		hp5 = new JPanel();
+		hp6 = new JPanel();
+		hp7 = new JPanel();
+		hp8 = new JPanel();
+		hp9 = new JPanel();
+		hp10 = new JPanel();
+		hp11 = new JPanel();
+		hp12 = new JPanel();
+		hp13 = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout b = new BoxLayout(gsu, BoxLayout.Y_AXIS);
+		gsu.setLayout(b);
+		
+		hp1.add(signUp);
+		hp2.add(fName);
+		hp2.add(fName_input_gsu);
+		hp3.add(lName);
+		hp3.add(lName_input_gsu);
+		hp5.add(addA);
+		hp5.add(add1_gsu);
+		hp6.add(addB);
+		hp6.add(add2_gsu);
+		hp7.add(addC);
+		hp7.add(add3_gsu);
+		hp8.add(addD);
+		hp8.add(add4_gsu);
+		hp9.add(phone);
+		hp9.add(phone_input_gsu);
+		hp10.add(id);
+		hp10.add(id_input_gsu);
+		hp11.add(pw);
+		hp11.add(pw_input_gsu);
+		hp12.add(confirm_pw);
+		hp12.add(confirm_input_gsu);
+		hp13.add(warning_gsu);
+		buttons.add(gsuBtn);
+		
+		gsu.add(hp1);
+		gsu.add(hp2);
+		gsu.add(hp3);
+		gsu.add(hp5);
+		gsu.add(hp6);
+		gsu.add(hp7);
+		gsu.add(hp8);
+		gsu.add(hp9);
+		gsu.add(hp10);
+		gsu.add(hp11);
+		gsu.add(hp12);
+		gsu.add(hp13);
+		gsu.add(buttons);
+		gsu.add(hp4);
+		
+		return gsu;
+	}
+	
+	public JPanel hostSU() {
+		JPanel hsu = new JPanel();
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
+		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
+		
+		signUp = new JLabel("Sign up as Host");
+		signUp.setFont(bold);
+		
+		// Input for user's name
+		fName = new JLabel("First Name: ");
+		fName.setFont(plain);
+		
+		fName_input_hsu = new JTextField(20);
+		fName_input_hsu.setFont(plain);
+			
+		lName = new JLabel("Last Name: ");
+		lName.setFont(plain);
+				
+		lName_input_hsu = new JTextField(20);
+		lName_input_hsu.setFont(plain);
+				
+				// Input for user's address
+		addA = new JLabel("House No.: ");
+		addA.setFont(plain);
+		add1_hsu = new JTextField(20);
+		add1_hsu.setFont(plain);
+		addB = new JLabel("Street Name: ");
+		addB.setFont(plain);
+		add2_hsu = new JTextField(20);
+		add2_hsu.setFont(plain);
+		addC = new JLabel("Postcode: ");
+		addC.setFont(plain);
+		add3_hsu = new JTextField(20);
+		add3_hsu.setFont(plain);
+		addD = new JLabel("Place Name: ");
+		addD.setFont(plain);
+		add4_hsu = new JTextField(20);
+		add4_hsu.setFont(plain);
+		
+		// Input for phone number
+		phone = new JLabel("Phone No.: ");
+		phone.setFont(plain);
+		phone_input_hsu = new JTextField(20);
+		phone_input_hsu.setFont(plain);
+		
+		// Input for email
+		id = new JLabel("Email: ");
+		id.setFont(plain);
+		id_input_hsu = new JTextField(20);
+		id_input_hsu.setFont(plain);
+			
+		// Input for password
+		pw = new JLabel("Password: ");
+		pw.setFont(plain);
+		pw_input_hsu = new JPasswordField(20);
+		pw_input_hsu.setFont(plain);
+		pw_input_hsu.setEchoChar('*');
+		pw_input_hsu.getDocument().addDocumentListener(this);
+			
+		// Input for confirm password
+		confirm_pw = new JLabel("Confirm Password: ");
+		confirm_pw.setFont(plain);
+		confirm_input_hsu = new JPasswordField(20);
+		confirm_input_hsu.setFont(plain);
+		confirm_input_hsu.setEchoChar('*');
+		confirm_input_hsu.getDocument().addDocumentListener(this);
+		
+		hsuBtn = new JButton("Sign up");
+		hsuBtn.setFont(plain);
+		hsuBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fName = fName_input_hsu.getText();
+				String lName = lName_input_hsu.getText();
+				String houseName = add1_hsu.getText();
+				String streetName = add2_hsu.getText();
+				String placeName = add3_hsu.getText();
+				String postcode = add4_hsu.getText();
+				String phone = phone_input_hsu.getText();
+				String userID = id_input_hsu.getText();
+				String password = pw_input_hsu.getText();
+				
+				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
+					showMessageDialog(null, "Please fill in all blanks.");
+				}
+				else {
+					Address add = new Address(houseName, streetName, placeName, postcode);
+					Host host = new Host(fName, lName, add, phone, userID, password, new Rating());
+					
+					System.out.println(host);
+					
+					if (!(host.getSuccess())) {
+						showMessageDialog(null, "Sign up failed.");
+					}
+				}
+			}
+		});
+				
+		hp1 = new JPanel();
+		hp2 = new JPanel();
+		hp3 = new JPanel();
+		hp4 = new JPanel();
+		hp5 = new JPanel();
+		hp6 = new JPanel();
+		hp7 = new JPanel();
+		hp8 = new JPanel();
+		hp9 = new JPanel();
+		hp10 = new JPanel();
+		hp11 = new JPanel();
+		hp12 = new JPanel();
+		hp13 = new JPanel();
+		buttons = new JPanel();
+			
+		BoxLayout b = new BoxLayout(hsu, BoxLayout.Y_AXIS);
+		hsu.setLayout(b);
+			
+		hp1.add(signUp);
+		hp2.add(fName);
+		hp2.add(fName_input_hsu);
+		hp3.add(lName);
+		hp3.add(lName_input_hsu);
+		hp5.add(addA);
+		hp5.add(add1_hsu);
+		hp6.add(addB);
+		hp6.add(add2_hsu);
+		hp7.add(addC);
+		hp7.add(add3_hsu);
+		hp8.add(addD);
+		hp8.add(add4_hsu);
+		hp9.add(phone);
+		hp9.add(phone_input_hsu);
+		hp10.add(id);
+		hp10.add(id_input_hsu);
+		hp11.add(pw);
+		hp11.add(pw_input_hsu);
+		hp12.add(confirm_pw);
+		hp12.add(confirm_input_hsu);
+		hp13.add(warning_hsu);
+		buttons.add(hsuBtn);
+			
+		
+		hsu.add(hp1);
+		hsu.add(hp2);
+		hsu.add(hp3);
+		hsu.add(hp5);
+		hsu.add(hp6);
+		hsu.add(hp7);
+		hsu.add(hp8);
+		hsu.add(hp9);
+		hsu.add(hp10);
+		hsu.add(hp11);
+		hsu.add(hp12);
+		hsu.add(hp13);
+		hsu.add(buttons);
+		hsu.add(hp4);
+		
+		return hsu;
+	}
+	
+	public JPanel guestLogin() {
+		JPanel gl = new JPanel();
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 30);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel login, id, pw;
+		JPanel buttons, hp1, hp2, hp3, hp4;
+		
+		login = new JLabel("Login as Guest");
+		login.setFont(bold);
+		
+		id = new JLabel("User ID: ");
+		id.setFont(plain);
+		
+		id_input_gl = new JTextField(20);
+		id_input_gl.setFont(plain);
+		id_input_gl.getDocument().addDocumentListener(this);
+		
+		pw = new JLabel("Password: ");
+		pw.setFont(plain);
+		
+		pw_input_gl = new JPasswordField(20);
+		pw_input_gl.setFont(plain);
+		pw_input_gl.setEchoChar('*');
+		
+		toGSU = new JButton("Don't have an account? Sign up!");
+		toGSU.setContentAreaFilled(false);
+		toGSU.setBorderPainted(false);
+		toGSU.setFont(plain);
+		toGSU.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Guest Sign Up");
+				current = "GSU";
+				setTitle("Guest Sign Up");
+			}
+		});
+		
+		glBtn = new JButton("Log in");
+		glBtn.setFont(plain);
+		glBtn.addActionListener(this); 
+		
+		hp1 = new JPanel();
+		hp2 = new JPanel();
+		hp3 = new JPanel();
+		hp4 = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout b = new BoxLayout(gl, BoxLayout.Y_AXIS);
+		gl.setLayout(b);
+		
+		hp1.add(login);
+		hp2.add(id);
+		hp2.add(id_input_gl);
+		hp3.add(pw);
+		hp3.add(pw_input_gl);
+		hp4.add(toGSU);
+		buttons.add(glBtn);
+		
+		gl.add(hp1);
+		gl.add(hp2);
+		gl.add(hp3);
+		gl.add(buttons);
+		gl.add(hp4);
+		
+		return gl;
+	}
+	
+	public JPanel hostLogin() {
+		JPanel hl = new JPanel();
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 30);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel login, id, pw;
+		JPanel buttons, hp1, hp2, hp3, hp4;
+		
+		login = new JLabel("Login as Host");
+		login.setFont(bold);
+		
+		id = new JLabel("User ID: ");
+		id.setFont(plain);
+		
+		id_input_hl = new JTextField(20);
+		id_input_hl.setFont(plain);
+		id_input_hl.getDocument().addDocumentListener(this);
+		
+		pw = new JLabel("Password: ");
+		pw.setFont(plain);
+		
+		pw_input_hl = new JPasswordField(20);
+		pw_input_hl.setFont(plain);
+		pw_input_hl.setEchoChar('*');
+		
+		toHSU = new JButton("Don't have an account? Sign up!");
+		toHSU.setContentAreaFilled(false);
+		toHSU.setBorderPainted(false);
+		toHSU.setFont(plain);
+		toHSU.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Host Sign Up");
+				current = "HSU";
+				setTitle("Host Sign Up");
+			}
+		});
+		
+		hlBtn = new JButton("Log in");
+		hlBtn.setFont(plain);
+		hlBtn.addActionListener(this); // change
+		
+		hp1 = new JPanel();
+		hp2 = new JPanel();
+		hp3 = new JPanel();
+		hp4 = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout b = new BoxLayout(hl, BoxLayout.Y_AXIS);
+		hl.setLayout(b);
+		
+		hp1.add(login);
+		hp2.add(id);
+		hp2.add(id_input_hl);
+		hp3.add(pw);
+		hp3.add(pw_input_hl);
+		hp4.add(toHSU);
+		buttons.add(hlBtn);
+		
+		hl.add(hp1);
+		hl.add(hp2);
+		hl.add(hp3);
+		hl.add(buttons);
+		hl.add(hp4);
+		
+		return hl;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void main (String [] args) {
+		new HomeBreaks();
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		checkPasswords();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		checkPasswords();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		checkPasswords();
+	}
+	
+	public void checkPasswordsGSU() {
+		String password = pw_input_gsu.getText();
+		String repassword = confirm_input_gsu.getText();
+		
+	    if (!password.equals(repassword)) {
+	    	warning_gsu.setFont(new Font("Verdana", Font.PLAIN, 20));
+	    	warning_gsu.setForeground(Color.RED);
+			warning_gsu.setText("Passwords do not match!");
+			gsuBtn.setEnabled(false);
+			
+		}
+	    else {
+	    	warning_gsu.setText("");
+	    	gsuBtn.setEnabled(true);
+	    }
+	}
+	
+	public void checkPasswordsHSU() {
+		String password = pw_input_hsu.getText();
+		String repassword = confirm_input_hsu.getText();
+		
+	    if (!password.equals(repassword)) {
+	    	warning_hsu.setFont(new Font("Verdana", Font.PLAIN, 20));
+	    	warning_hsu.setForeground(Color.RED);
+			warning_hsu.setText("Passwords do not match!");
+			hsuBtn.setEnabled(false);
+			
+		}
+	    else {
+	    	warning_gsu.setText("");
+	    	hsuBtn.setEnabled(true);
+	    }
+	}
+	
+	public void checkPasswords() {
+		if (current == "HSU") {
+			checkPasswordsHSU();
+		}
+		else if (current == "GSU") {
+			checkPasswordsGSU();
+		}
+	}
+}
