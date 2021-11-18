@@ -1,6 +1,12 @@
 package main;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 //Static class created to be used throughout the project
 //Methods are called like this: TDatabase.SearchFullTable("Guest")
@@ -22,19 +28,37 @@ public final class TDatabase {
 		con = null;
 		try {
 			con = DriverManager.getConnection(connectionString, username, password);
-			
+
+
+
+			// use the open connection
+			// for one or more queries
+
+
 			return true;
+
 			}
 			catch (Exception ex) {
 			return false;
 			}
-	}	
+
+
+
+
+        _SQLGuest = "SELECT * FROM Guest;";
+        _SQLHost = "SELECT * FROM Host;";
+        _SQLProperty = "SELECT * FROM Property;";
+        _SQLBeds = "SELECT * FROM Beds";
+	}
+
+
+
 	private static void disconnect()
 	{
 		//Initialised the static class with the connection string
 		if (con != null)
 		{
-			try 
+			try
 			{
 				con.close();
 			}
@@ -44,19 +68,20 @@ public final class TDatabase {
 			}
 			con = null;
 		}
-	}	
-	
+	}
+
+
 	//Returns a full table, this may return Array in future
 	 public static ResultSet SearchFullTable(String TableName)
      {
 		 ResultSet table=null;
 		 Statement stmt;
          String Command = "SELECT * FROM "+TableName+";";
-                 
+
          try {
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
-		} 
+		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,58 +93,27 @@ public final class TDatabase {
 		 ResultSet table=null;
 		 Statement stmt;
         	 String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
-                 
+
          try {
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
-		} 
+		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
          return table;
      }
-	 
-	 //Returns all properties owned by a given HostID
-	 public static ResultSet SearchProperty(String TableName, String UserID) {
-		 ResultSet table=null;
-		 Statement stmt;
-        	 String Command = "SELECT * FROM Property WHERE HostID = " +UserID+";";
-                 
-         try {
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-		} 
-        catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         return table;
-     }
-	 
-	 //Returns all properties
-	 public static ResultSet SearchProperty(String TableName) {
-		 ResultSet table=null;
-		 Statement stmt;
-        	 String Command = "SELECT * FROM Property;";
-                 
-         try {
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-		} 
-        catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         return table;
-     }
-	 
+
+
+
+
 	 public static String SearchUserID(String TableName, String email) {
 		 ResultSet table=null;
 		 Statement stmt;
 		 String GuestID=null;
         	 String Command = "SELECT "+ TableName+"ID FROM "+TableName+" WHERE Email = '" +email+"';";
-                 
+
          try {
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
@@ -127,7 +121,7 @@ public final class TDatabase {
 		        GuestID = table.getString(1);
 		        System.out.println(GuestID);
 		    }
-		} 
+		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,18 +129,18 @@ public final class TDatabase {
          return GuestID;
 
      }
-	 
-	 
+
+
 	 //Returns true if user exists
 	 public static Boolean IsUser(String TableName, String UserID) {
 		 int rows=0;
 		 Statement stmt;
         String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
-                 
+
          try {
         	stmt = con.createStatement();
 			rows = stmt.executeUpdate(Command);
-		} 
+		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,33 +148,33 @@ public final class TDatabase {
         if (rows==0) return false;
         else return true;
      }
-	 
-		public static Array SearchUserColumn(String TableName, String UserID, String Column) 
+
+		public static Array SearchUserColumn(String TableName, String UserID, String Column)
 		{
 			 ResultSet table=null;
 			 Array output=null;
 			 Statement stmt;
 	        String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
-	                 
+
 	         try {
 	        	stmt = con.createStatement();
 				table = stmt.executeQuery(Command);
 				output=table.getArray(Column);
-			} 
+			}
 	        catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	        return output;
 	     }
-		
+
 		//Overloaded function, depending on the value being updated this may be an integer or a String
-		public static void UpdateValue(String TableName, String ColumnName, String UserID, String Value)
+		public void UpdateValue(String TableName, String ColumnName, String UserID, String Value)
 		{
 			Statement stmt = null;
 			int count=0;
 			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE "+TableName+"ID = " +UserID+";";
-			try 
+			try
 			{
 				stmt = con.createStatement();
 				count = stmt.executeUpdate(Command);
@@ -189,13 +183,13 @@ public final class TDatabase {
 				ex.printStackTrace();
 			}
 		}
-		
-		public static void UpdateValue(String TableName, String ColumnName, String UserID, int Value)
+
+		public void UpdateValue(String TableName, String ColumnName, String UserID, int Value)
 		{
 			Statement stmt = null;
 			int count=0;
 			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE "+TableName+"ID = " +UserID+";";
-			try 
+			try
 			{
 				stmt = con.createStatement();
 				count = stmt.executeUpdate(Command);
@@ -270,14 +264,14 @@ public final class TDatabase {
 						getConnection();
 						String sql="INSERT INTO Property(HostID, HouseNumber, Street, Postcode, City, Country, ShortName, Descriptions) VALUES (?,?,?,?,?,?,?,?)";
 						PreparedStatement pst=con.prepareStatement(sql);
-						pst.setInt(1,HostID);
-						pst.setString(2,HouseNumber);
-						pst.setString(3,Street);
-						pst.setString(4,Postcode);
-						pst.setString(5,City);
-						pst.setString(6,Country);
-						pst.setString(7,ShortName);
-						pst.setString(8,Descriptions);
+						pst.setInt(2,HostID);
+						pst.setString(4,HouseNumber);
+						pst.setString(5,Street);
+						pst.setString(6,Postcode);
+						pst.setString(7,City);
+						pst.setString(8,Country);
+						pst.setString(9,ShortName);
+						pst.setString(10,Descriptions);
 						pst.execute();
 						disconnect();
 						return true;
@@ -301,7 +295,6 @@ public final class TDatabase {
 					//It'd be awesome to see some encryption working but don't worry if not possible :)
 					return false;
 				}
+
+
 }
-
-
-

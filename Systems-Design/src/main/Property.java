@@ -41,18 +41,13 @@ public class Property {
 		this.maxSleepers = maxSleepers;
 		this.pRating = pRating;
 		this.datesAvailable = datesAvailable;
-		String hostID = host.getID();
 		
-		TDatabase.addProperty(maxSleepers, hostID, hostID, hostID, publicLocation, hostID, shortName, description);
-		//TDatabase.addFacilities
+		//hostID = host.getHostID();
+		
+		//t.addProperty(shortName, description, hostID, publicLocation, address, breakfast, maxSleepers, pRating, datesAvailable);
 		
 	}
 	
-	public Property(int i, String houseNo, String street, String postcode, String city, String country, String s_name,
-			String description) {
-		TDatabase.addProperty(i, houseNo, street, postcode, city, country, s_name, description);
-	}
-
 	public String getShortName() {
 		return this.shortName;
 	}

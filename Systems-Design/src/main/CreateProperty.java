@@ -127,7 +127,8 @@ public class CreateProperty implements ActionListener {
 		String s_name = shortName.getText();
 		String description = desc.getText();
 		
-		Property property = new Property(1, houseNo, street, postcode, city, city, s_name, description);
+		System.out.println(TDatabase.addProperty(1, houseNo, street, postcode, city, city, s_name, description));
+		System.out.println("enters");
 	}
 	
 	public static void main (String [] args) {
