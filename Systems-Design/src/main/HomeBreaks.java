@@ -1,22 +1,30 @@
 package main;
 
+
 import static javax.swing.JOptionPane.showMessageDialog;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -28,13 +36,18 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	Container c = getContentPane();
 	String current = "";
 	JPanel home, guestLogin, hostLogin;
-	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU; // Figure out where to put home button
+	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
+	JTextField searchProperty;
 	JLabel warning_gsu = new JLabel("");
 	JLabel warning_hsu = new JLabel("");
 	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
+	
+	final Font plain = new Font("Verdana", Font.PLAIN, 25);
+	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
+	final Font bold = new Font("Verdana", Font.BOLD, 50);
 	
 	public HomeBreaks() {
 		startGUI();
@@ -55,6 +68,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
 		c.add("Host Login", hostLogin());
+		c.add("Inquiry", inquiry());
+		c.add("Host Home", hostHome());
 		
 		setVisible(true);
 	}
@@ -64,9 +79,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		current = "Home";
 		
         JPanel buttons, labels, hp;
-		
-		Font plain = new Font("Verdana", Font.PLAIN, 30);
-		Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel welc, opt;
 
@@ -103,6 +115,14 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			}
 		});
 		
+		enquirer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Inquiry");
+				current = "Inquiry";
+				setTitle("Inquiry");
+			}
+		});
+		
 		labels = new JPanel();
 		buttons = new JPanel();
 		hp = new JPanel();
@@ -129,9 +149,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public JPanel guestSU() {
 		JPanel gsu = new JPanel();
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 20);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
@@ -285,15 +302,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		gsu.add(hp13);
 		gsu.add(buttons);
 		gsu.add(hp4);
+		gsu.add(createHomeBtnPanel());
 		
 		return gsu;
 	}
 	
 	public JPanel hostSU() {
 		JPanel hsu = new JPanel();
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 20);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
@@ -447,16 +462,14 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hsu.add(hp13);
 		hsu.add(buttons);
 		hsu.add(hp4);
+		hsu.add(createHomeBtnPanel());
 		
 		return hsu;
 	}
 	
 	public JPanel guestLogin() {
 		JPanel gl = new JPanel();
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 30);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		
+	
 		JLabel login, id, pw;
 		JPanel buttons, hp1, hp2, hp3, hp4;
 		
@@ -515,15 +528,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		gl.add(hp3);
 		gl.add(buttons);
 		gl.add(hp4);
+		gl.add(createHomeBtnPanel());
 		
 		return gl;
 	}
 	
 	public JPanel hostLogin() {
 		JPanel hl = new JPanel();
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 30);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
 		JLabel login, id, pw;
 		JPanel buttons, hp1, hp2, hp3, hp4;
@@ -559,7 +570,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		hlBtn = new JButton("Log in");
 		hlBtn.setFont(plain);
-		hlBtn.addActionListener(this); // change
+		hlBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Host Home");
+			}
+		}); // TODO change
 		
 		hp1 = new JPanel();
 		hp2 = new JPanel();
@@ -583,8 +598,204 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hl.add(hp3);
 		hl.add(buttons);
 		hl.add(hp4);
+		hl.add(createHomeBtnPanel());
 		
 		return hl;
+	}
+	
+	public JPanel inquiry() {
+		JPanel i = new JPanel();
+		JPanel searchBar = new JPanel();
+		JPanel searchResult = new JPanel();
+		
+		searchProperty = new JTextField(20);
+		searchProperty.setFont(plain);
+		search = new JButton("Seach Area");
+		search.setFont(plain);
+		
+		searchBar.add(searchProperty);
+		searchBar.add(search);
+		//searchBar.add(createHomeBtn());
+		
+		// TODO add search results into the searchResult panel
+		
+		i.setLayout(new BorderLayout());
+		i.add(searchBar, BorderLayout.CENTER);
+		i.add(createHomeBtnPanel(), BorderLayout.SOUTH);
+		
+		return i;
+	}
+	
+	public JPanel hostHome() {
+		JPanel hh = new JPanel();
+		JPanel hp1, hp2, properties, createProperty, p1;
+		JLabel title;
+		hh.setLayout(new BorderLayout());
+		JButton newProperty;
+		
+		JTabbedPane hostTabs = new JTabbedPane();
+		
+		JPanel myProperties = new JPanel();
+		CardLayout c = new CardLayout();
+		myProperties.setLayout(c);
+		
+		p1 = new JPanel();
+		newProperty = new JButton("Create New Property");
+		p1.add(newProperty);
+		
+		JPanel pBookings = new JPanel();
+		JPanel myAccount = new JPanel();
+		JPanel propertiesList = new JPanel();
+		//propertiesList.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		myProperties.add("All Properties", p1);
+		myProperties.add("New", newProperty());
+		
+		newProperty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.show(myProperties, "New");
+			}
+		});
+		
+		hp1 = new JPanel();
+		hp2 = new JPanel();
+		properties = new JPanel();
+		createProperty = new JPanel();
+		
+		hostTabs.add("My Properties", myProperties); // shows list of properties, and a button to create a new property
+		hostTabs.add("Provisional Bookings", pBookings);
+		hostTabs.add("My Account", myAccount);
+		
+		hh.add(hostTabs, BorderLayout.CENTER);
+		
+		return hh;
+	}
+
+	public JPanel newProperty() {
+		JPanel np = new JPanel();
+		JLabel title, name, description, houseNo, stNo, postcode, place, bfast;
+		JTextField shortName, add1, add2, add3, add4;
+		JTextArea desc;
+		JButton create;
+		
+		title = new JLabel("Create New Property");
+		title.setFont(plain);
+		JPanel hp = new JPanel();
+		hp.add(title);
+		
+		name = new JLabel("Property name: ");
+		name.setFont(plain);
+		shortName = new JTextField(20);
+		shortName.setFont(plain);
+		JPanel hp1 = new JPanel();
+		hp1.add(name);
+		hp1.add(shortName);
+		
+		description = new JLabel("Description: ");
+		description.setFont(plain);
+		desc = new JTextArea(5, 20);
+		desc.setFont(plain);
+		JPanel hp2 = new JPanel();
+		hp2.add(description);
+		hp2.add(desc);
+		
+		houseNo = new JLabel("House Number: ");
+		houseNo.setFont(plain);
+		add1 = new JTextField(20);
+		add1.setFont(plain);
+		JPanel hp3 = new JPanel();
+		hp3.add(houseNo);
+		hp3.add(add1);
+		stNo = new JLabel("Street Name: ");
+		stNo.setFont(plain);
+		add2 = new JTextField(20);
+		add2.setFont(plain);
+		JPanel hp4 = new JPanel();
+		hp4.add(stNo);
+		hp4.add(add2);
+		postcode = new JLabel("Postcode: ");
+		postcode.setFont(plain);
+		add3 = new JTextField(20);
+		add3.setFont(plain);
+		JPanel hp5 = new JPanel();
+		hp5.add(postcode);
+		hp5.add(add3);
+		place = new JLabel("Area: ");
+		place.setFont(plain);
+		add4 = new JTextField(20);
+		add4.setFont(plain);
+		JPanel hp6 = new JPanel();
+		hp6.add(place);
+		hp6.add(add4);
+		
+		bfast = new JLabel("Is breakfast served?");	
+		bfast.setFont(plain);
+		ButtonGroup grp = new ButtonGroup();
+		JRadioButton yes_bfast = new JRadioButton("Yes");
+		yes_bfast.setActionCommand("Yes");
+		yes_bfast.setFont(plain);
+		JRadioButton no_bfast = new JRadioButton("No");
+		no_bfast.setActionCommand("No");
+		no_bfast.setFont(plain);
+		grp.add(yes_bfast);
+		grp.add(no_bfast);
+		JPanel hp7 = new JPanel();
+		hp7.add(bfast);
+		hp7.add(yes_bfast);
+		hp7.add(no_bfast);
+		
+		create = new JButton("Create Property");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// get inputs
+				String sName = shortName.getText();
+				String descr = desc.getText();
+				String houseNo = add1.getText();
+				String street = add2.getText();
+				String postcode = add3.getText();
+				String place = add4.getText();
+				boolean breakfast;
+				String isSelected = "";
+				
+				if (grp.getSelection().getActionCommand() == "Yes") {
+					breakfast = true;
+				}
+				else if (grp.getSelection().getActionCommand() == "No") {
+					breakfast = false;
+				}
+				else {
+					isSelected = "No";
+				}
+				
+				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || place.isEmpty();
+				boolean notSelected = isSelected == "No";
+				
+				if (notAllFilled && notSelected) {
+					showMessageDialog(null, "All fields are mandatory.");
+				}
+				else {
+					//create property
+				}
+			}
+		});
+		JPanel hp8 = new JPanel();
+		hp8.add(create);
+		
+		BoxLayout b = new BoxLayout(np, BoxLayout.Y_AXIS);
+		np.setLayout(b);
+		
+		np.add(hp);
+		np.add(hp1);
+		np.add(hp2);
+		np.add(hp3);
+		np.add(hp4);
+		np.add(hp5);
+		np.add(hp6);
+		np.add(hp7);
+		np.add(hp8);
+		
+		return np;
 	}
 	
 	@Override
@@ -653,5 +864,23 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		else if (current == "GSU") {
 			checkPasswordsGSU();
 		}
+	}
+	
+	public JPanel createHomeBtnPanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout());
+		
+		homeBtn = new JButton("Home");
+		homeBtn.setFont( new Font("Verdana", Font.PLAIN, 20));
+		homeBtn.setContentAreaFilled(false);
+		homeBtn.setBorderPainted(false);
+		homeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Home");
+			}
+		});
+		
+		p.add(homeBtn);
+		return p;
 	}
 }
