@@ -80,6 +80,40 @@ public final class TDatabase {
          return table;
      }
 	 
+	 //Returns all properties owned by a given HostID
+	 public static ResultSet SearchProperty(String TableName, String UserID) {
+		 ResultSet table=null;
+		 Statement stmt;
+        	 String Command = "SELECT * FROM Property WHERE HostID = " +UserID+";";
+                 
+         try {
+        	stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+		} 
+        catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         return table;
+     }
+	 
+	 //Returns all properties
+	 public static ResultSet SearchProperty(String TableName) {
+		 ResultSet table=null;
+		 Statement stmt;
+        	 String Command = "SELECT * FROM Property;";
+                 
+         try {
+        	stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+		} 
+        catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         return table;
+     }
+	 
 	 public static String SearchUserID(String TableName, String email) {
 		 ResultSet table=null;
 		 Statement stmt;
@@ -101,6 +135,7 @@ public final class TDatabase {
          return GuestID;
 
      }
+	 
 	 
 	 //Returns true if user exists
 	 public static Boolean IsUser(String TableName, String UserID) {
@@ -140,7 +175,7 @@ public final class TDatabase {
 	     }
 		
 		//Overloaded function, depending on the value being updated this may be an integer or a String
-		public void UpdateValue(String TableName, String ColumnName, String UserID, String Value)
+		public static void UpdateValue(String TableName, String ColumnName, String UserID, String Value)
 		{
 			Statement stmt = null;
 			int count=0;
@@ -155,7 +190,7 @@ public final class TDatabase {
 			}
 		}
 		
-		public void UpdateValue(String TableName, String ColumnName, String UserID, int Value)
+		public static void UpdateValue(String TableName, String ColumnName, String UserID, int Value)
 		{
 			Statement stmt = null;
 			int count=0;
@@ -235,14 +270,14 @@ public final class TDatabase {
 						getConnection();
 						String sql="INSERT INTO Property(HostID, HouseNumber, Street, Postcode, City, Country, ShortName, Descriptions) VALUES (?,?,?,?,?,?,?,?)";
 						PreparedStatement pst=con.prepareStatement(sql);
-						pst.setInt(2,HostID);
-						pst.setString(4,HouseNumber);
-						pst.setString(5,Street);
-						pst.setString(6,Postcode);
-						pst.setString(7,City);
-						pst.setString(8,Country);
-						pst.setString(9,ShortName);
-						pst.setString(10,Descriptions);
+						pst.setInt(1,HostID);
+						pst.setString(2,HouseNumber);
+						pst.setString(3,Street);
+						pst.setString(4,Postcode);
+						pst.setString(5,City);
+						pst.setString(6,Country);
+						pst.setString(7,ShortName);
+						pst.setString(8,Descriptions);
 						pst.execute();
 						disconnect();
 						return true;
