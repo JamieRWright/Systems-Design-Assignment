@@ -4,9 +4,10 @@
  * 
  */
 
-ppackage main;
+package main;
 public class Host extends User {
 	private final Rating rating;
+	boolean signupSuccess;
 	
 	 /**
      * Constructor
@@ -20,27 +21,24 @@ public class Host extends User {
      * @param boolean whether they are a superhost or not; if new then defaults as false
      *
      */
-	
-	public Host(String surname, String forename, Address address, String phone, String userID, String password, Rating rating) {
+	public Host(String surname, String forename, Address address, String phone, String userID, String password) {
 		super(surname, forename, address, phone, userID, password);
-		this.rating = rating;
-	}
-	
-	public String getID()
-	{
-		return TDatabase.SearchUserID("Host", forename);
+		this.rating = null;
+		this.signupSuccess = TDatabase.signUpHost(forename, surname, userID, password);
 	}
 
 	
 	public Rating getRating() {
 		return this.rating;
 	}
+	
+	public boolean getSuccess() {
+		return this.signupSuccess;
+	}
 
-	// check if a host achieved the superhost title, if so, update in DB aswell
+	// check if a host achieved the superhost title
 	public boolean isSuperhost() {
-		if (getRating().getHostOverall() >= 4.7) {
-			TDatabase.UpdateValue("Host", "isSuperHost", this.getID(), 1);
-			return true;}
+		if (getRating().getHostOverall() >= 4.7) {return true;}
 		else {return false;}
 	}
 	
