@@ -14,6 +14,7 @@ public class Property {
 	private String shortName;
 	private String description;
 	private Host host;
+	String hostID;
 	private String publicLocation;
 	private Address address;
 	private boolean breakfast;
@@ -30,20 +31,19 @@ public class Property {
      * @param availableList, containing the DatesAvailable lists, for every date the property is available for
      *
      */
-	public Property(String shortName, String description, Host host, String publicLocation, Address address, boolean breakfast, int maxSleepers, Rating pRating, List<DatesAvailable> datesAvailable) {
+	public Property(String shortName, String description, Host host, String publicLocation, Address address, boolean breakfast) {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
 		this.publicLocation = publicLocation;
 		this.address = address;
 		this.breakfast = breakfast;
-		this.maxSleepers = maxSleepers;
-		this.pRating = pRating;
-		this.datesAvailable = datesAvailable;
-		String hostID = host.getID();
+		this.maxSleepers = 0;
+		this.pRating = null;
+		this.datesAvailable = null;
+		hostID = host.getID();
 		
 		TDatabase.addProperty(maxSleepers, hostID, hostID, hostID, publicLocation, hostID, shortName, description);
-		//TDatabase.addFacilities
 		
 	}
 	
