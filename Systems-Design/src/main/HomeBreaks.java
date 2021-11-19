@@ -74,7 +74,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
 		c.add("Host Login", hostLogin());
-		c.add("Inquiry", inquiry());
+		c.add("Inquiry", enquirer());
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
 		
@@ -719,6 +719,18 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return hp;
 	}
+
+	public JPanel enquirer() {
+		JPanel e = new JPanel();
+		e.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		e.add(inquiry(), g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		e.add(createHomeBtnPanel(), g);
+		
+		return e;
+	}
 	
 	public JPanel hostHome() {
 		JPanel hh = new JPanel();
@@ -887,10 +899,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					showMessageDialog(null, "All fields are mandatory.");
 				}
 				else {
-					Address propAddress = new Address(houseNo, street, postcode, place);
-					Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
-					Property property = new Property(sName, descr, testHost, place, propAddress, bfast);
-					System.out.println(property);
+					//Address propAddress = new Address(houseNo, street, postcode, place);
+					//Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
+					Property property = new Property(1, houseNo, street, postcode, place, "England", sName, descr);
 				}
 			}
 		});
@@ -1013,6 +1024,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		});
 		
 		guestTabs.add("Provisional Bookings", pBookings);
+		guestTabs.add("Book a property", inquiry());
 		guestTabs.add("My Account", myAccount);
 		
 		gh.add(guestTabs, BorderLayout.CENTER);
@@ -1059,6 +1071,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		logOut = new JButton("Log Out");
 		logOut.setFont(plain);
 		logOut.setPreferredSize(new Dimension(400, 50));
+		logOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Home");
+				currentHost = null;
+				currentGuest = null;
+			}
+		});
 		ma.add(logOut, g);
 		
 		return ma;
