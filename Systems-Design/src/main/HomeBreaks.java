@@ -39,7 +39,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	CardLayout cards, myAccountCards;
 	Container c = getContentPane();
 	String current = "";
-	JPanel home, guestLogin, hostLogin, myAccount;
+	JPanel home, guestLogin, hostLogin, myAccount, searchResult;
 	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
@@ -76,6 +76,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Login", hostLogin());
 		c.add("Inquiry", inquiry());
 		c.add("Host Home", hostHome());
+		c.add("Guest Home", guestHome());
 		
 		pack();
 		setVisible(true);
@@ -516,7 +517,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		glBtn = new JButton("Log in");
 		glBtn.setFont(plain);
-		glBtn.addActionListener(this); 	
+		glBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Guest Home");
+			}
+		}); 	
 		gl.add(glBtn, gbc);
 		
 		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
@@ -610,25 +615,109 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public JPanel inquiry() {
 		JPanel i = new JPanel();
-		JPanel searchBar = new JPanel();
-		JPanel searchResult = new JPanel();
+		JPanel hp = new JPanel();
+		JPanel x = new JPanel();
 		
-		searchProperty = new JTextField(20);
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		x.setBorder(createTitledBorder("Find properties"));
+		i.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JTextField startDD, endDD, startMM, endMM, startYY, endYY;
+		setConstraints(gbc, 0, 0, GridBagConstraints.CENTER);		
+		searchProperty = new JTextField("Area (i.e. Sheffield)", 20);
 		searchProperty.setFont(plain);
+		i.add(searchProperty, gbc);
+		
+		setConstraints(gbc, 0, 1, GridBagConstraints.CENTER);
+		JLabel start = new JLabel("Start date: ");
+		start.setFont(plain);
+		i.add(start, gbc);
+		
+		JPanel startDate = new JPanel();
+		startDate.setLayout(new GridBagLayout());
+		GridBagConstraints g2 = new GridBagConstraints();
+		
+		setConstraints(g2, 0, 0, GridBagConstraints.WEST);
+		startDD = new JTextField("DD", 2);
+		startDD.setFont(plain);
+		startDate.add(startDD, g2);
+		setConstraints(g2, 1, 0, GridBagConstraints.WEST);
+		JLabel d1 = new JLabel("-");
+		d1.setFont(plain);
+		startDate.add(d1, g2);
+		setConstraints(g2, 2, 0, GridBagConstraints.WEST);
+		startMM = new JTextField("MM", 2);
+		startMM.setFont(plain);
+		startDate.add(startMM, g2);
+		setConstraints(g2, 3, 0, GridBagConstraints.WEST);
+		JLabel d2 = new JLabel("-");
+		d2.setFont(plain);
+		startDate.add(d2, g2);
+		setConstraints(g2, 4, 0, GridBagConstraints.WEST);
+		startYY = new JTextField("YY", 2);
+		startYY.setFont(plain);
+		startDate.add(startYY, g2);
+		
+		setConstraints(gbc, 0, 2, GridBagConstraints.CENTER);
+		i.add(startDate, gbc);
+		
+		setConstraints(gbc, 0, 3, GridBagConstraints.CENTER);
+		JLabel end = new JLabel("End date: ");
+		end.setFont(plain);
+		i.add(end, gbc);
+		
+		JPanel endDate = new JPanel();
+		endDate.setLayout(new GridBagLayout());
+		GridBagConstraints g3 = new GridBagConstraints();
+		
+		setConstraints(g3, 0, 0, GridBagConstraints.WEST);
+		endDD = new JTextField("DD", 2);
+		endDD.setFont(plain);
+		endDate.add(endDD, g3);
+		setConstraints(g3, 1, 0, GridBagConstraints.WEST);
+		JLabel d3 = new JLabel("-");
+		d3.setFont(plain);
+		endDate.add(d3, g3);
+		setConstraints(g3, 2, 0, GridBagConstraints.WEST);
+		endMM = new JTextField("MM", 2);
+		endMM.setFont(plain);
+		endDate.add(endMM, g3);
+		setConstraints(g3, 3, 0, GridBagConstraints.WEST);
+		JLabel d4 = new JLabel("-");
+		d4.setFont(plain);
+		endDate.add(d4, g3);
+		setConstraints(g3, 4, 0, GridBagConstraints.WEST);
+		endYY = new JTextField("YY", 2);
+		endYY.setFont(plain);
+		endDate.add(endYY, g3);
+		
+		setConstraints(gbc, 0, 4, GridBagConstraints.CENTER);
+		i.add(endDate, gbc);
+		
+		JPanel btn = new JPanel();
+		setConstraints(gbc, 0, 5, GridBagConstraints.CENTER);
+		btn.setBorder(new EmptyBorder(50, 0, 0, 0));
 		search = new JButton("Seach Area");
 		search.setFont(plain);
-		
-		searchBar.add(searchProperty);
-		searchBar.add(search);
-		//searchBar.add(createHomeBtn());
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btn.add(search);
+		i.add(btn, gbc);
 		
 		// TODO add search results into the searchResult panel
+		i.setBorder(new EmptyBorder(0, 100, 0, 100));
+		x.add(i);
+		hp.add(x, g);
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		hp.add(searchResultPanel(), g);
 		
-		i.setLayout(new BorderLayout());
-		i.add(searchBar, BorderLayout.CENTER);
-		i.add(createHomeBtnPanel(), BorderLayout.SOUTH);
-		
-		return i;
+		return hp;
 	}
 	
 	public JPanel hostHome() {
@@ -882,6 +971,54 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return hp;
 	}
+	
+	public JPanel guestHome() {
+		JPanel gh = new JPanel();
+		JPanel p1;
+		
+		gh.setLayout(new BorderLayout());
+		JButton newProperty;
+		
+		JTabbedPane guestTabs = new JTabbedPane();
+		guestTabs.setFont(plain);
+		
+		JPanel myProperties = new JPanel();
+		CardLayout c = new CardLayout();
+		myProperties.setLayout(c);
+		
+		p1 = new JPanel();
+		newProperty = new JButton("Create New Property");
+		newProperty.setFont(plain);
+		p1.add(newProperty);
+		
+		JPanel pBookings = new JPanel();
+		pBookings.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		myAccount = new JPanel();
+		myAccountCards = new CardLayout();
+		myAccount.setLayout(myAccountCards);
+		myAccount.add("My Account", myAccount());
+		myAccount.add("Edit Info", changeInfo());
+		JPanel propertiesList = new JPanel();
+		
+		myProperties.add("All Properties", p1);
+		myProperties.add("New", newProperty());
+		
+		newProperty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.show(myProperties, "New");
+			}
+		});
+		
+		guestTabs.add("Provisional Bookings", pBookings);
+		guestTabs.add("My Account", myAccount);
+		
+		gh.add(guestTabs, BorderLayout.CENTER);
+		
+		return gh;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -925,6 +1062,28 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ma.add(logOut, g);
 		
 		return ma;
+	}
+	
+	public JPanel searchResultPanel() {
+		JPanel sr = new JPanel();
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		sr.setBorder(createTitledBorder("Properties"));
+		JPanel x = new JPanel();
+		x.setBorder(new EmptyBorder(0, 70, 0, 70));
+		
+		// Default label
+		JLabel dl = new JLabel("Start searching to see relevant properties...");
+		dl.setFont(plain);
+		x.add(dl);
+		sr.add(x);
+		
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		hp.add(sr, g);
+		
+		return hp;
 	}
 	
 	public static void main (String [] args) {
