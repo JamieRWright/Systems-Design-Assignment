@@ -36,10 +36,10 @@ import javax.swing.event.DocumentListener;
 
 
 public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
-	CardLayout cards;
+	CardLayout cards, myAccountCards;
 	Container c = getContentPane();
 	String current = "";
-	JPanel home, guestLogin, hostLogin;
+	JPanel home, guestLogin, hostLogin, myAccount;
 	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
@@ -48,6 +48,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	JLabel warning_hsu = new JLabel("");
 	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
+	Host currentHost;
+	Guest currentGuest;
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
@@ -649,9 +651,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		p1.add(newProperty);
 		
 		JPanel pBookings = new JPanel();
-		JPanel myAccount = myAccount();
+		myAccount = new JPanel();
+		myAccountCards = new CardLayout();
+		myAccount.setLayout(myAccountCards);
+		myAccount.add("My Account", myAccount());
+		myAccount.add("Edit Info", changeInfo());
 		JPanel propertiesList = new JPanel();
-		//propertiesList.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		myProperties.add("All Properties", p1);
 		myProperties.add("New", newProperty());
@@ -678,77 +683,99 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 
 	public JPanel newProperty() {
 		JPanel np = new JPanel();
-		JLabel title, name, description, houseNo, stNo, postcode, place, bfast;
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		np.setBorder(createTitledBorder("New Property"));
+		np.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JLabel name, description, houseNo, stNo, postcode, place, bfast;
 		JTextField shortName, add1, add2, add3, add4;
 		JTextArea desc;
 		JButton create;
 		
-		title = new JLabel("Create New Property");
-		title.setFont(plain);
-		JPanel hp = new JPanel();
-		hp.add(title);
-		
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
 		name = new JLabel("Property name: ");
 		name.setFont(plain);
+		np.add(name, gbc);
+		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		shortName = new JTextField(20);
 		shortName.setFont(plain);
-		JPanel hp1 = new JPanel();
-		hp1.add(name);
-		hp1.add(shortName);
+		np.add(shortName, gbc);
 		
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
 		description = new JLabel("Description: ");
 		description.setFont(plain);
+		np.add(description, gbc);
+		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		desc = new JTextArea(5, 20);
 		desc.setFont(plain);
-		JPanel hp2 = new JPanel();
-		hp2.add(description);
-		hp2.add(desc);
+		np.add(desc, gbc);
 		
+		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);	
 		houseNo = new JLabel("House Number: ");
 		houseNo.setFont(plain);
+		np.add(houseNo, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
 		add1 = new JTextField(20);
 		add1.setFont(plain);
-		JPanel hp3 = new JPanel();
-		hp3.add(houseNo);
-		hp3.add(add1);
+		np.add(add1, gbc);
+		
+		setConstraints(gbc, 0, 4, GridBagConstraints.EAST);
 		stNo = new JLabel("Street Name: ");
 		stNo.setFont(plain);
+		np.add(stNo, gbc);
+		
+		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
 		add2 = new JTextField(20);
 		add2.setFont(plain);
-		JPanel hp4 = new JPanel();
-		hp4.add(stNo);
-		hp4.add(add2);
+		np.add(add2, gbc);
+		
+		setConstraints(gbc, 0, 5, GridBagConstraints.EAST);
 		postcode = new JLabel("Postcode: ");
 		postcode.setFont(plain);
+		np.add(postcode, gbc);
+		
+		setConstraints(gbc, 1, 5, GridBagConstraints.WEST);
 		add3 = new JTextField(20);
 		add3.setFont(plain);
-		JPanel hp5 = new JPanel();
-		hp5.add(postcode);
-		hp5.add(add3);
+		np.add(add3, gbc);
+		
+		setConstraints(gbc, 0, 6, GridBagConstraints.EAST);
 		place = new JLabel("Area: ");
 		place.setFont(plain);
+		np.add(place, gbc);
+		
+		setConstraints(gbc, 1, 6, GridBagConstraints.WEST);
 		add4 = new JTextField(20);
 		add4.setFont(plain);
-		JPanel hp6 = new JPanel();
-		hp6.add(place);
-		hp6.add(add4);
+		np.add(add4, gbc);
 		
+		setConstraints(gbc, 0, 7, GridBagConstraints.EAST);
 		bfast = new JLabel("Is breakfast served?");	
 		bfast.setFont(plain);
+		np.add(bfast, gbc);
+		
+		setConstraints(gbc, 1, 7, GridBagConstraints.WEST);
 		ButtonGroup grp = new ButtonGroup();
 		JRadioButton yes_bfast = new JRadioButton("Yes");
-		yes_bfast.setActionCommand("Yes");
 		yes_bfast.setFont(plain);
 		JRadioButton no_bfast = new JRadioButton("No");
-		no_bfast.setActionCommand("No");
 		no_bfast.setFont(plain);
 		grp.add(yes_bfast);
 		grp.add(no_bfast);
-		JPanel hp7 = new JPanel();
-		hp7.add(bfast);
-		hp7.add(yes_bfast);
-		hp7.add(no_bfast);
+		JPanel breakfast = new JPanel();
+		breakfast.add(yes_bfast);
+		breakfast.add(no_bfast);
+		np.add(breakfast, gbc);		
 		
+		setConstraints(gbc, 1, 8, GridBagConstraints.WEST);
 		create = new JButton("Create Property");
 		create.setFont(plain);
 		create.addActionListener(new ActionListener() {
@@ -760,16 +787,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String street = add2.getText();
 				String postcode = add3.getText();
 				String place = add4.getText();
-				boolean breakfast = false;
-				
-				if (grp.getSelection().getActionCommand() == "Yes") {
-					breakfast = true;
-				}
-				else if (grp.getSelection().getActionCommand() == "No") {
-					breakfast = false;
-				}
-				
+				boolean bfast = false;
 				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || place.isEmpty();
+				
+				if (yes_bfast.isSelected()) {
+					bfast = true;
+				}
 				
 				if (notAllFilled) {
 					showMessageDialog(null, "All fields are mandatory.");
@@ -777,30 +800,88 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					Address propAddress = new Address(houseNo, street, postcode, place);
 					Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
-					Property property = new Property(sName, descr, testHost, place, propAddress, breakfast);
+					Property property = new Property(sName, descr, testHost, place, propAddress, bfast);
 					System.out.println(property);
 				}
 			}
 		});
-		JPanel hp8 = new JPanel();
-		hp8.add(create);
+		np.add(create, gbc);
 		
-		BoxLayout b = new BoxLayout(np, BoxLayout.Y_AXIS);
-		np.setLayout(b);
+		hp.add(np, g);
 		
-		np.add(hp);
-		np.add(hp1);
-		np.add(hp2);
-		np.add(hp3);
-		np.add(hp4);
-		np.add(hp5);
-		np.add(hp6);
-		np.add(hp7);
-		np.add(hp8);
-		
-		return np;
+		return hp;
 	}
 	
+	public JPanel changeInfo() {
+		JPanel ci = new JPanel();
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		ci.setBorder(createTitledBorder("My info"));
+		ci.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JLabel fName, lName, phone;
+		JTextField f, l, p;
+		
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
+		fName = new JLabel("First Name: ");
+		fName.setFont(plain);
+		ci.add(fName, gbc);
+		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
+		f = new JTextField(20); //TODO add host's name as default text
+		f.setFont(plain);
+		ci.add(f, gbc);
+		
+		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
+		lName = new JLabel("Last Name: ");
+		lName.setFont(plain);
+		ci.add(lName, gbc);
+		
+		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
+		l = new JTextField(20);
+		l.setFont(plain);
+		ci.add(l, gbc);
+		
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
+		phone = new JLabel("Phone Number: ");
+		phone.setFont(plain);
+		ci.add(phone, gbc);
+		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
+		p = new JTextField(20);
+		p.setFont(plain);
+		ci.add(p, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
+		JButton confirm = new JButton("Confirm");
+		confirm.setFont(plain);
+		confirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fn = f.getText();
+				String ln = f.getText();
+				String pn = p.getText();
+				
+				if (fn.isEmpty() || ln.isEmpty() || pn.isEmpty()) {
+					showMessageDialog(null, "All fields must not be blank.");
+				}
+				else {
+					TDatabase.UpdateValue("Host", "firstName", "userID", fn);
+					TDatabase.UpdateValue("Host", "lastName", "userID", ln);
+					TDatabase.UpdateValue("Host", "Phone", "userID", pn);
+				}
+			}
+		});
+		ci.add(confirm, gbc);
+		
+		hp.add(ci, g);
+		
+		return hp;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -809,30 +890,39 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public JPanel myAccount() {
 		JPanel ma = new JPanel();
+		ma.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 				
 		JButton editInfo, logOut, changePassword, myRating; //TODO to be added
-		JPanel buttons = new JPanel();
-		BoxLayout b = new BoxLayout(buttons, BoxLayout.Y_AXIS);
-		buttons.setLayout(b);
 		
 		editInfo = new JButton("Account Info");
 		editInfo.setFont(plain);
+		editInfo.setPreferredSize(new Dimension(400, 50));
+		editInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				myAccountCards.show(myAccount, "Edit Info");
+			}
+		});
+		ma.add(editInfo, g);
 		
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
 		myRating = new JButton("My Ratings");
 		myRating.setFont(plain);
+		myRating.setPreferredSize(new Dimension(400, 50));
+		ma.add(myRating, g);
 		
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
 		changePassword = new JButton("Change Password");
 		changePassword.setFont(plain);
+		changePassword.setPreferredSize(new Dimension(400, 50));
+		ma.add(changePassword, g);
 		
+		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
 		logOut = new JButton("Log Out");
 		logOut.setFont(plain);
-		
-		buttons.add(editInfo, BorderLayout.NORTH);
-		buttons.add(myRating, BorderLayout.WEST);
-		buttons.add(changePassword, BorderLayout.EAST);
-		buttons.add(logOut, BorderLayout.SOUTH);
-		
-		ma.add(buttons);
+		logOut.setPreferredSize(new Dimension(400, 50));
+		ma.add(logOut, g);
 		
 		return ma;
 	}
