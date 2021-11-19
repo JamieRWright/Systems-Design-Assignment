@@ -2,12 +2,9 @@
 /**
  * Class designed to create Host objects when a user signs up as host
  * 
- * @version 1.0 2/11/2021
- * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
- * 
  */
 
-package main;
+ppackage main;
 public class Host extends User {
 	private final Rating rating;
 	
@@ -23,9 +20,15 @@ public class Host extends User {
      * @param boolean whether they are a superhost or not; if new then defaults as false
      *
      */
+	
 	public Host(String surname, String forename, Address address, String phone, String userID, String password, Rating rating) {
 		super(surname, forename, address, phone, userID, password);
 		this.rating = rating;
+	}
+	
+	public String getID()
+	{
+		return TDatabase.SearchUserID("Host", forename);
 	}
 
 	
@@ -33,9 +36,11 @@ public class Host extends User {
 		return this.rating;
 	}
 
-	// check if a host achieved the superhost title
+	// check if a host achieved the superhost title, if so, update in DB aswell
 	public boolean isSuperhost() {
-		if (getRating().getHostOverall() >= 4.7) {return true;}
+		if (getRating().getHostOverall() >= 4.7) {
+			TDatabase.UpdateValue("Host", "isSuperHost", this.getID(), 1);
+			return true;}
 		else {return false;}
 	}
 	
