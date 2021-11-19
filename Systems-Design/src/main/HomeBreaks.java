@@ -10,6 +10,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +29,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -71,26 +75,32 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Inquiry", inquiry());
 		c.add("Host Home", hostHome());
 		
+		pack();
 		setVisible(true);
 	}
 	
 	public JPanel home() {
 		JPanel home = new JPanel();
-		current = "Home";
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
-        JPanel buttons, labels, hp;
+		home.setBorder(createTitledBorder("Welcome to HomeBreaks Plc"));
+		home.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+        JPanel buttons, labels;
 		
 		JLabel welc, opt;
 
-		welc = new JLabel("Welcome");
+		setConstraints(gbc, 0, 0, GridBagConstraints.CENTER);
 		opt = new JLabel("To start, choose a role");
-		welc.setFont(bold);
 		opt.setFont(plain);
-		EmptyBorder border = new EmptyBorder(30, 0, 0, 0);
-		opt.setBorder(border);
-		EmptyBorder border2 = new EmptyBorder(20, 40, 0, 0);
-		welc.setBorder(border2);
-
+		home.add(opt, gbc);
+		
+		buttons = new JPanel();
+		
 		host = new JButton("Host");
 		guest = new JButton("Guest");
 		enquirer = new JButton("Enquirer");
@@ -123,98 +133,147 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			}
 		});
 		
-		labels = new JPanel();
-		buttons = new JPanel();
-		hp = new JPanel();
-		
-		
-		BoxLayout b2 = new BoxLayout(labels, BoxLayout.Y_AXIS);
-		labels.setLayout(b2);
 		
 		host.setPreferredSize(new Dimension(400, 500));
 		guest.setPreferredSize(new Dimension(400, 500));
 		enquirer.setPreferredSize(new Dimension(400, 500));
 		
-		labels.add(welc);
-		labels.add(opt);
 		buttons.add(host);
 		buttons.add(guest);
 		buttons.add(enquirer);
-		hp.add(labels);
-		home.add(hp);
-		home.add(buttons);
+		buttons.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
-		return home;
+		setConstraints(gbc, 0, 1, GridBagConstraints.CENTER);
+		home.add(buttons, gbc);
+		
+		hp.add(home);
+		return hp;
 	}
 	
 	public JPanel guestSU() {
 		JPanel gsu = new JPanel();
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
-		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
-		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
+		gsu.setBorder(createTitledBorder("Sign Up as Guest"));
+		gsu.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 		
-		signUp = new JLabel("Sign up as Guest");
-		signUp.setFont(bold);
+		JLabel fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		
 		// Input for user's name
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
 		fName = new JLabel("First Name: ");
 		fName.setFont(plain);
+		gsu.add(fName, gbc);
 		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		fName_input_gsu = new JTextField(20);
 		fName_input_gsu.setFont(plain);
+		gsu.add(fName_input_gsu, gbc);
 		
+		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
 		lName = new JLabel("Last Name: ");
 		lName.setFont(plain);
+		gsu.add(lName, gbc);
 		
+		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
 		lName_input_gsu = new JTextField(20);
 		lName_input_gsu.setFont(plain);
+		gsu.add(lName_input_gsu, gbc);
 		
 		// Input for user's address
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
 		addA = new JLabel("House No.: ");
 		addA.setFont(plain);
+		gsu.add(addA, gbc);
+		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		add1_gsu = new JTextField(20);
 		add1_gsu.setFont(plain);
+		gsu.add(add1_gsu, gbc);
+		
+		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);
 		addB = new JLabel("Street Name: ");
 		addB.setFont(plain);
+		gsu.add(addB, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
 		add2_gsu = new JTextField(20);
 		add2_gsu.setFont(plain);
+		gsu.add(add2_gsu, gbc);
+		
+		setConstraints(gbc, 0, 4, GridBagConstraints.EAST);
 		addC = new JLabel("Postcode: ");
 		addC.setFont(plain);
+		gsu.add(addC, gbc);
+		
+		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
 		add3_gsu = new JTextField(20);
 		add3_gsu.setFont(plain);
+		gsu.add(add3_gsu, gbc);
+		
+		setConstraints(gbc, 0, 5, GridBagConstraints.EAST);
 		addD = new JLabel("Place Name: ");
 		addD.setFont(plain);
+		gsu.add(addD, gbc);
+		
+		setConstraints(gbc, 1, 5, GridBagConstraints.WEST);
 		add4_gsu = new JTextField(20);
 		add4_gsu.setFont(plain);
+		gsu.add(add4_gsu, gbc);
 		
 		// Input for phone number
+		setConstraints(gbc, 0, 6, GridBagConstraints.EAST);
 		phone = new JLabel("Phone No.: ");
 		phone.setFont(plain);
+		gsu.add(phone, gbc);
+		
+		setConstraints(gbc, 1, 6, GridBagConstraints.WEST);
 		phone_input_gsu = new JTextField(20);
 		phone_input_gsu.setFont(plain);
+		gsu.add(phone_input_gsu, gbc);
 		
 		// Input for email
+		setConstraints(gbc, 0, 7, GridBagConstraints.EAST);
 		id = new JLabel("Email: ");
 		id.setFont(plain);
+		gsu.add(id, gbc);
+		
+		setConstraints(gbc, 1, 7, GridBagConstraints.WEST);
 		id_input_gsu = new JTextField(20);
 		id_input_gsu.setFont(plain);
+		gsu.add(id_input_gsu, gbc);
 		
 		// Input for password
+		setConstraints(gbc, 0, 8, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
+		gsu.add(pw, gbc);
+		
+		setConstraints(gbc, 1, 8, GridBagConstraints.WEST);
 		pw_input_gsu = new JPasswordField(20);
 		pw_input_gsu.setFont(plain);
 		pw_input_gsu.setEchoChar('*');
 		pw_input_gsu.getDocument().addDocumentListener(this);
+		gsu.add(pw_input_gsu, gbc);
 		
 		// Input for confirm password
+		setConstraints(gbc, 0, 9, GridBagConstraints.EAST);
 		confirm_pw = new JLabel("Confirm Password: ");
 		confirm_pw.setFont(plain);
+		gsu.add(confirm_pw, gbc);
+		
+		setConstraints(gbc, 1, 9, GridBagConstraints.WEST);
 		confirm_input_gsu = new JPasswordField(20);
 		confirm_input_gsu.setFont(plain);
 		confirm_input_gsu.setEchoChar('*');
 		confirm_input_gsu.getDocument().addDocumentListener(this);
+		gsu.add(confirm_input_gsu, gbc);
 		
+		setConstraints(gbc, 1, 10, GridBagConstraints.WEST);
 		gsuBtn = new JButton("Sign up");
 		gsuBtn.setFont(plain);
 		gsuBtn.addActionListener(new ActionListener() {
@@ -244,137 +303,139 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				}
 			}
 		});
-			
-			
-		hp1 = new JPanel();
-		hp2 = new JPanel();
-		hp3 = new JPanel();
-		hp4 = new JPanel();
-		hp5 = new JPanel();
-		hp6 = new JPanel();
-		hp7 = new JPanel();
-		hp8 = new JPanel();
-		hp9 = new JPanel();
-		hp10 = new JPanel();
-		hp11 = new JPanel();
-		hp12 = new JPanel();
-		hp13 = new JPanel();
-		buttons = new JPanel();
+		gsu.add(gsuBtn, gbc);
 		
-		BoxLayout b = new BoxLayout(gsu, BoxLayout.Y_AXIS);
-		gsu.setLayout(b);
+		hp.add(gsu, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		hp.add(createHomeBtnPanel(), g);
 		
-		hp1.add(signUp);
-		hp2.add(fName);
-		hp2.add(fName_input_gsu);
-		hp3.add(lName);
-		hp3.add(lName_input_gsu);
-		hp5.add(addA);
-		hp5.add(add1_gsu);
-		hp6.add(addB);
-		hp6.add(add2_gsu);
-		hp7.add(addC);
-		hp7.add(add3_gsu);
-		hp8.add(addD);
-		hp8.add(add4_gsu);
-		hp9.add(phone);
-		hp9.add(phone_input_gsu);
-		hp10.add(id);
-		hp10.add(id_input_gsu);
-		hp11.add(pw);
-		hp11.add(pw_input_gsu);
-		hp12.add(confirm_pw);
-		hp12.add(confirm_input_gsu);
-		hp13.add(warning_gsu);
-		buttons.add(gsuBtn);
-		
-		gsu.add(hp1);
-		gsu.add(hp2);
-		gsu.add(hp3);
-		gsu.add(hp5);
-		gsu.add(hp6);
-		gsu.add(hp7);
-		gsu.add(hp8);
-		gsu.add(hp9);
-		gsu.add(hp10);
-		gsu.add(hp11);
-		gsu.add(hp12);
-		gsu.add(hp13);
-		gsu.add(buttons);
-		gsu.add(hp4);
-		gsu.add(createHomeBtnPanel());
-		
-		return gsu;
+		return hp;
 	}
 	
 	public JPanel hostSU() {
 		JPanel hsu = new JPanel();
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
-		JLabel signUp, fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
-		JPanel buttons, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9, hp10, hp11, hp12, hp13;
+		hsu.setBorder(createTitledBorder("Sign Up as Host"));
+		hsu.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 		
-		signUp = new JLabel("Sign up as Host");
-		signUp.setFont(bold);
+		JLabel fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		
 		// Input for user's name
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
 		fName = new JLabel("First Name: ");
 		fName.setFont(plain);
+		hsu.add(fName, gbc);
 		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		fName_input_hsu = new JTextField(20);
 		fName_input_hsu.setFont(plain);
-			
+		hsu.add(fName_input_hsu);
+		
+		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
 		lName = new JLabel("Last Name: ");
 		lName.setFont(plain);
-				
+		hsu.add(lName, gbc);
+		
+		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
 		lName_input_hsu = new JTextField(20);
 		lName_input_hsu.setFont(plain);
+		hsu.add(lName_input_hsu, gbc);
 				
-				// Input for user's address
+		// Input for user's address
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
 		addA = new JLabel("House No.: ");
 		addA.setFont(plain);
+		hsu.add(addA, gbc);
+		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		add1_hsu = new JTextField(20);
 		add1_hsu.setFont(plain);
+		hsu.add(add1_hsu, gbc);
+		
+		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);
 		addB = new JLabel("Street Name: ");
 		addB.setFont(plain);
+		hsu.add(addB, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
 		add2_hsu = new JTextField(20);
 		add2_hsu.setFont(plain);
+		hsu.add(add2_hsu, gbc);
+		
+		setConstraints(gbc, 0, 4, GridBagConstraints.EAST);
 		addC = new JLabel("Postcode: ");
 		addC.setFont(plain);
+		hsu.add(addC, gbc);
+		
+		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
 		add3_hsu = new JTextField(20);
 		add3_hsu.setFont(plain);
+		hsu.add(add3_hsu, gbc);
+		
+		setConstraints(gbc, 0, 5, GridBagConstraints.EAST);
 		addD = new JLabel("Place Name: ");
 		addD.setFont(plain);
+		hsu.add(addD, gbc);
+		
+		setConstraints(gbc, 1, 5, GridBagConstraints.WEST);
 		add4_hsu = new JTextField(20);
 		add4_hsu.setFont(plain);
+		hsu.add(add4_hsu, gbc);
 		
 		// Input for phone number
+		setConstraints(gbc, 0, 6, GridBagConstraints.EAST);
 		phone = new JLabel("Phone No.: ");
 		phone.setFont(plain);
+		hsu.add(phone, gbc);
+		
+		setConstraints(gbc, 1, 6, GridBagConstraints.WEST);
 		phone_input_hsu = new JTextField(20);
 		phone_input_hsu.setFont(plain);
+		hsu.add(phone_input_hsu, gbc);
 		
 		// Input for email
+		setConstraints(gbc, 0, 7, GridBagConstraints.EAST);
 		id = new JLabel("Email: ");
 		id.setFont(plain);
+		hsu.add(id, gbc);
+		
+		setConstraints(gbc, 1, 7, GridBagConstraints.WEST);
 		id_input_hsu = new JTextField(20);
 		id_input_hsu.setFont(plain);
+		hsu.add(id_input_hsu, gbc);
 			
 		// Input for password
+		setConstraints(gbc, 0, 8, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
+		hsu.add(pw, gbc);
+		
+		setConstraints(gbc, 1, 8, GridBagConstraints.WEST);
 		pw_input_hsu = new JPasswordField(20);
 		pw_input_hsu.setFont(plain);
 		pw_input_hsu.setEchoChar('*');
 		pw_input_hsu.getDocument().addDocumentListener(this);
+		hsu.add(pw_input_hsu, gbc);
 			
 		// Input for confirm password
+		setConstraints(gbc, 0, 9, GridBagConstraints.EAST);
 		confirm_pw = new JLabel("Confirm Password: ");
 		confirm_pw.setFont(plain);
+		hsu.add(confirm_pw, gbc);
+		
+		setConstraints(gbc, 1, 9, GridBagConstraints.WEST);
 		confirm_input_hsu = new JPasswordField(20);
 		confirm_input_hsu.setFont(plain);
 		confirm_input_hsu.setEchoChar('*');
 		confirm_input_hsu.getDocument().addDocumentListener(this);
+		hsu.add(confirm_input_hsu, gbc);
 		
+		setConstraints(gbc, 1, 10, GridBagConstraints.WEST);
 		hsuBtn = new JButton("Sign up");
 		hsuBtn.setFont(plain);
 		hsuBtn.addActionListener(new ActionListener() {
@@ -394,7 +455,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				}
 				else {
 					Address add = new Address(houseName, streetName, placeName, postcode);
-					Host host = new Host(fName, lName, add, phone, userID, password, new Rating());
+					Host host = new Host(fName, lName, add, phone, userID, password); // TODO change when authentication is available
 					
 					System.out.println(host);
 					
@@ -404,92 +465,59 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				}
 			}
 		});
-				
-		hp1 = new JPanel();
-		hp2 = new JPanel();
-		hp3 = new JPanel();
-		hp4 = new JPanel();
-		hp5 = new JPanel();
-		hp6 = new JPanel();
-		hp7 = new JPanel();
-		hp8 = new JPanel();
-		hp9 = new JPanel();
-		hp10 = new JPanel();
-		hp11 = new JPanel();
-		hp12 = new JPanel();
-		hp13 = new JPanel();
-		buttons = new JPanel();
-			
-		BoxLayout b = new BoxLayout(hsu, BoxLayout.Y_AXIS);
-		hsu.setLayout(b);
-			
-		hp1.add(signUp);
-		hp2.add(fName);
-		hp2.add(fName_input_hsu);
-		hp3.add(lName);
-		hp3.add(lName_input_hsu);
-		hp5.add(addA);
-		hp5.add(add1_hsu);
-		hp6.add(addB);
-		hp6.add(add2_hsu);
-		hp7.add(addC);
-		hp7.add(add3_hsu);
-		hp8.add(addD);
-		hp8.add(add4_hsu);
-		hp9.add(phone);
-		hp9.add(phone_input_hsu);
-		hp10.add(id);
-		hp10.add(id_input_hsu);
-		hp11.add(pw);
-		hp11.add(pw_input_hsu);
-		hp12.add(confirm_pw);
-		hp12.add(confirm_input_hsu);
-		hp13.add(warning_hsu);
-		buttons.add(hsuBtn);
-			
+		hsu.add(hsuBtn, gbc);
 		
-		hsu.add(hp1);
-		hsu.add(hp2);
-		hsu.add(hp3);
-		hsu.add(hp5);
-		hsu.add(hp6);
-		hsu.add(hp7);
-		hsu.add(hp8);
-		hsu.add(hp9);
-		hsu.add(hp10);
-		hsu.add(hp11);
-		hsu.add(hp12);
-		hsu.add(hp13);
-		hsu.add(buttons);
-		hsu.add(hp4);
-		hsu.add(createHomeBtnPanel());
 		
-		return hsu;
+		hp.add(hsu, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		hp.add(createHomeBtnPanel(), g);
+		
+		return hp;
 	}
 	
 	public JPanel guestLogin() {
 		JPanel gl = new JPanel();
-	
-		JLabel login, id, pw;
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		gl.setBorder(createTitledBorder("Login as Guest"));
+		gl.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JLabel id, pw;
 		JPanel buttons, hp1, hp2, hp3, hp4;
 		
-		login = new JLabel("Login as Guest");
-		login.setFont(bold);
-		
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
 		id = new JLabel("User ID: ");
 		id.setFont(plain);
+		gl.add(id, gbc);
 		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		id_input_gl = new JTextField(20);
 		id_input_gl.setFont(plain);
 		id_input_gl.getDocument().addDocumentListener(this);
+		gl.add(id_input_gl);
 		
+		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
+		gl.add(pw, gbc);
 		
+		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
 		pw_input_gl = new JPasswordField(20);
 		pw_input_gl.setFont(plain);
 		pw_input_gl.setEchoChar('*');
+		gl.add(pw_input_gl, gbc);
 		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
+		glBtn = new JButton("Log in");
+		glBtn.setFont(plain);
+		glBtn.addActionListener(this); 	
+		gl.add(glBtn, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
 		toGSU = new JButton("Don't have an account? Sign up!");
 		toGSU.setContentAreaFilled(false);
 		toGSU.setBorderPainted(false);
@@ -501,61 +529,63 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Guest Sign Up");
 			}
 		});
+		gl.add(toGSU, gbc);
 		
-		glBtn = new JButton("Log in");
-		glBtn.setFont(plain);
-		glBtn.addActionListener(this); 
+		hp.add(gl, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		hp.add(createHomeBtnPanel(), g);
 		
-		hp1 = new JPanel();
-		hp2 = new JPanel();
-		hp3 = new JPanel();
-		hp4 = new JPanel();
-		buttons = new JPanel();
-		
-		BoxLayout b = new BoxLayout(gl, BoxLayout.Y_AXIS);
-		gl.setLayout(b);
-		
-		hp1.add(login);
-		hp2.add(id);
-		hp2.add(id_input_gl);
-		hp3.add(pw);
-		hp3.add(pw_input_gl);
-		hp4.add(toGSU);
-		buttons.add(glBtn);
-		
-		gl.add(hp1);
-		gl.add(hp2);
-		gl.add(hp3);
-		gl.add(buttons);
-		gl.add(hp4);
-		gl.add(createHomeBtnPanel());
-		
-		return gl;
+		return hp;
 	}
 	
 	public JPanel hostLogin() {
 		JPanel hl = new JPanel();
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		hl.setBorder(createTitledBorder("Login as Host"));
+		hl.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
 		
 		JLabel login, id, pw;
 		JPanel buttons, hp1, hp2, hp3, hp4;
 		
-		login = new JLabel("Login as Host");
-		login.setFont(bold);
-		
+		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
 		id = new JLabel("User ID: ");
 		id.setFont(plain);
+		hl.add(id, gbc);
 		
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		id_input_hl = new JTextField(20);
 		id_input_hl.setFont(plain);
 		id_input_hl.getDocument().addDocumentListener(this);
+		hl.add(id_input_hl, gbc);
 		
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
 		pw.setFont(plain);
+		hl.add(pw, gbc);
 		
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		pw_input_hl = new JPasswordField(20);
 		pw_input_hl.setFont(plain);
 		pw_input_hl.setEchoChar('*');
+		hl.add(pw_input_hl, gbc);
 		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
+		hlBtn = new JButton("Log in");
+		hlBtn.setFont(plain);
+		hlBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Host Home");
+			}
+		}); // TODO change
+		hl.add(hlBtn, gbc);
+		
+		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
 		toHSU = new JButton("Don't have an account? Sign up!");
 		toHSU.setContentAreaFilled(false);
 		toHSU.setBorderPainted(false);
@@ -567,40 +597,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Host Sign Up");
 			}
 		});
+		hl.add(toHSU, gbc);
 		
-		hlBtn = new JButton("Log in");
-		hlBtn.setFont(plain);
-		hlBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Host Home");
-			}
-		}); // TODO change
-		
-		hp1 = new JPanel();
-		hp2 = new JPanel();
-		hp3 = new JPanel();
-		hp4 = new JPanel();
-		buttons = new JPanel();
-		
-		BoxLayout b = new BoxLayout(hl, BoxLayout.Y_AXIS);
-		hl.setLayout(b);
-		
-		hp1.add(login);
-		hp2.add(id);
-		hp2.add(id_input_hl);
-		hp3.add(pw);
-		hp3.add(pw_input_hl);
-		hp4.add(toHSU);
-		buttons.add(hlBtn);
-		
-		hl.add(hp1);
-		hl.add(hp2);
-		hl.add(hp3);
-		hl.add(buttons);
-		hl.add(hp4);
-		hl.add(createHomeBtnPanel());
-		
-		return hl;
+		hp.add(hl, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		hp.add(createHomeBtnPanel(), g);
+
+		return hp;
 	}
 	
 	public JPanel inquiry() {
@@ -634,6 +637,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JButton newProperty;
 		
 		JTabbedPane hostTabs = new JTabbedPane();
+		hostTabs.setFont(plain);
 		
 		JPanel myProperties = new JPanel();
 		CardLayout c = new CardLayout();
@@ -641,10 +645,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		p1 = new JPanel();
 		newProperty = new JButton("Create New Property");
+		newProperty.setFont(plain);
 		p1.add(newProperty);
 		
 		JPanel pBookings = new JPanel();
-		JPanel myAccount = new JPanel();
+		JPanel myAccount = myAccount();
 		JPanel propertiesList = new JPanel();
 		//propertiesList.setBorder(BorderFactory.createLineBorder(Color.black));
 		
@@ -755,8 +760,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String street = add2.getText();
 				String postcode = add3.getText();
 				String place = add4.getText();
-				boolean breakfast;
-				String isSelected = "";
+				boolean breakfast = false;
 				
 				if (grp.getSelection().getActionCommand() == "Yes") {
 					breakfast = true;
@@ -764,18 +768,17 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else if (grp.getSelection().getActionCommand() == "No") {
 					breakfast = false;
 				}
-				else {
-					isSelected = "No";
-				}
 				
 				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || place.isEmpty();
-				boolean notSelected = isSelected == "No";
 				
-				if (notAllFilled && notSelected) {
+				if (notAllFilled) {
 					showMessageDialog(null, "All fields are mandatory.");
 				}
 				else {
-					//create property
+					Address propAddress = new Address(houseNo, street, postcode, place);
+					Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
+					Property property = new Property(sName, descr, testHost, place, propAddress, breakfast);
+					System.out.println(property);
 				}
 			}
 		});
@@ -802,6 +805,36 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public JPanel myAccount() {
+		JPanel ma = new JPanel();
+				
+		JButton editInfo, logOut, changePassword, myRating; //TODO to be added
+		JPanel buttons = new JPanel();
+		BoxLayout b = new BoxLayout(buttons, BoxLayout.Y_AXIS);
+		buttons.setLayout(b);
+		
+		editInfo = new JButton("Account Info");
+		editInfo.setFont(plain);
+		
+		myRating = new JButton("My Ratings");
+		myRating.setFont(plain);
+		
+		changePassword = new JButton("Change Password");
+		changePassword.setFont(plain);
+		
+		logOut = new JButton("Log Out");
+		logOut.setFont(plain);
+		
+		buttons.add(editInfo, BorderLayout.NORTH);
+		buttons.add(myRating, BorderLayout.WEST);
+		buttons.add(changePassword, BorderLayout.EAST);
+		buttons.add(logOut, BorderLayout.SOUTH);
+		
+		ma.add(buttons);
+		
+		return ma;
 	}
 	
 	public static void main (String [] args) {
@@ -882,5 +915,18 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		p.add(homeBtn);
 		return p;
+	}
+	
+	public static void setConstraints(GridBagConstraints gbc, int x, int y, int anchor) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.anchor = anchor;
+	}
+	
+	public static TitledBorder createTitledBorder(String title) {
+		TitledBorder tb = new TitledBorder(title);
+		tb.setTitleFont(new Font("Verdana", Font.BOLD, 50));
+		
+		return tb;
 	}
 }
