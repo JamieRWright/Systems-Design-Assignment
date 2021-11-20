@@ -301,5 +301,26 @@ public final class TDatabase {
 					//It'd be awesome to see some encryption working but don't worry if not possible :)
 					return false;
 				}
+	
+	// A method for adding a booking to the Bookings table
+	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
+		try {
+			getConnection();
+			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, startDate, endDate) VALUES (?,?,?,?,?)";
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1,propertyID);
+			pst.setInt(2,hostID);
+			pst.setInt(3,guestID);
+			pst.setString(4,startDate);
+			pst.setString(5,endDate);
+			pst.execute();
+			disconnect();
+			return true;
+
+			}
+		catch (Exception e) {
+			return false;
+		}
+	}
 }
 
