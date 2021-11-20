@@ -322,5 +322,21 @@ public final class TDatabase {
 			return false;
 		}
 	}
+	
+       public static void DeleteBooking(int p, int g){
+		Statement stmt = null;
+		int count=0;
+		String Command = "DELETE FROM Bookings WHERE PropertyID=" + p + " AND GuestID=" + g + ";";
+		try 
+		{
+			getConnection();
+			stmt = con.createStatement();
+			count = stmt.executeUpdate(Command);
+			disconnect();
+		}
+		catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
 }
 
