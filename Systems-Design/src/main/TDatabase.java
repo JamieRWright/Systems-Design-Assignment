@@ -265,28 +265,82 @@ public final class TDatabase {
 					}
 				}
 				
-				public static boolean addProperty(int HostID,String HouseNumber,String Street, String Postcode,String City, String Country, String ShortName, String Descriptions){
-					try {
-						getConnection();
-						String sql="INSERT INTO Property(HostID, HouseNumber, Street, Postcode, City, Country, ShortName, Descriptions) VALUES (?,?,?,?,?,?,?,?)";
-						PreparedStatement pst=con.prepareStatement(sql);
-						pst.setInt(1,HostID);
-						pst.setString(2,HouseNumber);
-						pst.setString(3,Street);
-						pst.setString(4,Postcode);
-						pst.setString(5,City);
-						pst.setString(6,Country);
-						pst.setString(7,ShortName);
-						pst.setString(8,Descriptions);
-						pst.execute();
-						disconnect();
-						return true;
-
-					}
-					catch (Exception e) {
-						return false;
-					}
-				}
+    public static boolean addProperty(int HostID,String HouseNumber,String Street, String Postcode,String City, String Country, String ShortName, String Descriptions){
+        try {
+            getConnection();
+	    String sql="INSERT INTO Property(HostID, HouseNumber, Street, Postcode, City, Country, ShortName, Descriptions) VALUES (?,?,?,?,?,?,?,?)";
+            String sql2 = "INSERT INTO Bathing_Facility(PropertyID, BathroomCount, HairDryer, Shampoo, ToiletPaper, Toilet, Bath, Shower, IsShared) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql3 = "INSERT INTO Sleeping_Facility(PropertyID, BedroomNumber, BedLinen, Towels, Bed1Type, PeopleInBed1, Bed2Type, PeopleInBed2) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+	    String sql4 = "INSERT INTO Kitchen_Facility(PropertyID, Refrigerator, Microwave, Oven, Stove, Dishwasher, Tableware, Cookware, basicProvision) VALUES (?, null, null, null, null, null, null, null, null);";
+	    String sql5 = "INSERT INTO Outdoor_Facility(PropertyID, Parking, Patio, Barbeque) VALUES (?, null, null, null);";
+	    String sql6 = "INSERT INTO Living_Facility(PropertyID, WIFI, Television, Satellite, Streaming, DVDPlayer, BoardGames) VALUES (?, null, null, null, null, null, null);";
+	    String sql7 = "INSERT INTO Utility_Facility(PropertyID, CentralHeating, WashingMachine, DryingMachine, FireExtinguisher, SmokeAlarm, FirstAid) VALUES(?, null, null, null, null, null, null);";
+						
+	    PreparedStatement pst=con.prepareStatement(sql);
+	    PreparedStatement pst2 = con.prepareStatement(sql2);
+	    PreparedStatement pst3 = con.prepareStatement(sql3);
+	    PreparedStatement pst4 = con.prepareStatement(sql4);
+	    PreparedStatement pst5 = con.prepareStatement(sql5);
+	    PreparedStatement pst6 = con.prepareStatement(sql6);
+	    PreparedStatement pst7 = con.prepareStatement(sql7);
+						
+	    pst.setInt(1,HostID);
+	    pst.setString(2,HouseNumber);
+	    pst.setString(3,Street);
+	    pst.setString(4,Postcode);
+	    pst.setString(5,City);
+	    pst.setString(6,Country);
+	    pst.setString(7,ShortName);
+	    pst.setString(8,Descriptions);
+	    pst.execute();
+						
+	    int propertyID = GetPropertyID(HostID, ShortName, Descriptions, HouseNumber);
+	    // Bathing Facility
+	    pst2.setInt(1, propertyID);
+	    pst2.setInt(2, 1);
+	    pst2.setString(3, null);
+	    pst2.setString(4, null);
+	    pst2.setString(5, null);
+	    pst2.setInt(6, 0);
+	    pst2.setInt(7, 0);
+	    pst2.setInt(8, 0);
+	    pst2.setInt(9, 0);
+	    pst2.execute();
+						
+	    // Sleeping Facility
+	    pst3.setInt(1, propertyID);
+	    pst3.setInt(2, 1);
+	    pst3.setInt(3, 0);
+	    pst3.setInt(4, 0);
+	    pst3.setString(5, "Single Bed");
+	    pst3.setInt(6, 1);
+	    pst3.setString(7, null);
+	    pst3.setString(8, null);
+	    pst3.execute();
+						
+	    // Kitchen Facility
+	    pst4.setInt(1, propertyID);
+	    pst4.execute();
+						
+	    // Outdoor Facility
+	    pst5.setInt(1, propertyID);
+	    pst5.execute();
+						
+	    // Living Facility
+	    pst6.setInt(1, propertyID);
+	    pst6.execute();
+						
+	    // Utility Facility
+	    pst7.setInt(1, propertyID);
+	    pst7.execute();
+						
+	    disconnect();
+	    return true;
+	}
+	catch (Exception e) {
+	    return false;
+	}
+}
 				
 				
 				public static boolean GuestLogin(String email, String Password)
@@ -338,5 +392,29 @@ public final class TDatabase {
 			ex.printStackTrace();
 		}
 	}
+	
+    public static int GetPropertyID(int hostID, String name, String desc, String houseNum) {
+	ResultSet table=null;
+	int propertyID = 0;
+	Statement stmt;
+	 String n = "'" + name + "'";
+	 String d = "'" + desc + "'";
+	 String h = "'" + houseNum + "'";
+	 String Command = "SELECT * FROM Property WHERE HostID = "+hostID+" AND ShortName = "+n+" AND Descriptions = "+d+" AND HouseNumber = "+h+";";
+			                 
+	 try {
+		getConnection();
+		stmt = con.createStatement();
+		table = stmt.executeQuery(Command);
+	while (table.next()) {
+		propertyID = table.getInt(1);
+	    }
+	       disconnect();
+	} 
+	catch (SQLException e) {
+	       e.printStackTrace();
+	}
+	return propertyID;
+    }
 }
 
