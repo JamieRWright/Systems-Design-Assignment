@@ -15,12 +15,107 @@ public final class TDatabase {
 	private static final String connectionString="jdbc:mysql://stusql.dcs.shef.ac.uk/team054";
 	private static final String username="team054";
 	private static final String password="c77880a3";
+	public static List<Property> Properties = null;
+	public static List<Property> Bookmarks = null;
+	public static List<Guest> Guests = null;
+	public static List<Host> Hosts = null;
 	private static Connection con;
 	private static String _SQLGuest = "SELECT * FROM Guest;";
 	private static String _SQLHost = "SELECT * FROM Host;";
 	private static String _SQLProperty = "SELECT * FROM Property;";
 	private static String _SQLBeds = "SELECT * FROM Beds";
 
+	public static boolean Initialise()
+	{
+		boolean isSuccess = true;
+		isSuccess=getConnection();
+		Properties = TDatabase.LoadProperties();
+		Guests = TDatabase.LoadGuests();
+		Hosts = TDatabase.LoadHosts();
+		Bookmarks = new ArrayList<>();
+		disconnect();
+		
+		return isSuccess;
+	}
+	
+		private static List<Host> LoadHosts() {
+		 List<Host> output = new ArrayList<>();
+		 ResultSet table = null;
+		 boolean isSuperHost;
+		 table = SearchFullTable("Host", true);
+		 try {
+			while (table.next()) {
+				  String HostID = table.getString(1);
+			      String forename = table.getString(2);
+			      String surname = table.getString(3);
+			      String getSuperHost = table.getString(4);
+			      isSuperHost = false;
+			      if (getSuperHost=="1")
+			    	  isSuperHost=true;
+			      
+			      String email = table.getString(5);
+			      
+			      output.add(new Host(surname, forename, null, null, HostID));
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
+		 return output;
+	}
+	
+	 private static List<Property> LoadProperties()
+	 {
+		 List<Property> output = new ArrayList<>();
+		 ResultSet table = null;
+		 table = SearchFullTable("Property", true);
+		 try {
+			while (table.next()) {
+			      int HostID = table.getInt(2);
+			      String HouseNo = table.getString(4);
+			      String Street = table.getString(5);
+			      String Postcode = table.getString(6);
+			      String City = table.getString(7);
+			      String Country = table.getString(8);
+			      String ShortName = table.getString(9);
+			      String Description = table.getString(10);
+			      output.add(new Property(HostID, HouseNo, Street, Postcode, City, Country, ShortName, Description, false));
+			 }
+			disconnect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
+		 return output;
+	 }
+	 
+	 private static List<Guest> LoadGuests()
+	 {
+		 List<Guest> output = new ArrayList<>();
+		 ResultSet table = null;
+		 table = SearchFullTable("Guest", true);
+		 try {
+			while (table.next()) {
+			      String forename = table.getString(1);
+			      String surname = table.getString(2);
+			      String phoneNum = table.getString(3);
+			      String email = table.getString(4);
+			      String GuestID = table.getString(5);
+			      output.add(new Guest(surname, forename, null, phoneNum, GuestID));
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 
+		 return output;
+	 }
+	
 	//connections and disconnections should only be made within static class methods
 	private static boolean getConnection()
 	{
@@ -53,16 +148,22 @@ public final class TDatabase {
 	}
 
 	//Returns a full table, this may return Array in future
-	 public static ResultSet SearchFullTable(String TableName)
+	 public static ResultSet SearchFullTable(String TableName, boolean keepConnectionOpen)
      {
+		 
 		 ResultSet table=null;
 		 Statement stmt;
          String Command = "SELECT * FROM "+TableName+";";
-
+                 
          try {
+        	 getConnection();
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
-		}
+			if (!keepConnectionOpen)
+			{
+				disconnect();
+			}
+		} 
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,9 +177,11 @@ public final class TDatabase {
         	 String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
 
          try {
+        	 getConnection();
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
-		}
+			disconnect();
+		} 
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,26 +196,11 @@ public final class TDatabase {
         	 String Command = "SELECT * FROM Property WHERE HostID = " +UserID+";";
 
          try {
+        	 getConnection();
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
-		}
-        catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         return table;
-     }
-
-	 //Returns all properties
-	 public static ResultSet SearchProperty(String TableName) {
-		 ResultSet table=null;
-		 Statement stmt;
-        	 String Command = "SELECT * FROM Property;";
-
-         try {
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-		}
+			disconnect();
+		} 
         catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,12 +215,14 @@ public final class TDatabase {
         	 String Command = "SELECT "+ TableName+"ID FROM "+TableName+" WHERE Email = '" +email+"';";
 
          try {
+		 getConnection();
         	stmt = con.createStatement();
 			table = stmt.executeQuery(Command);
 		    while (table.next()) {
 		        GuestID = table.getString(1);
-		        System.out.println(GuestID);
+		        
 		    }
+		 disconnect();
 		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -150,8 +240,10 @@ public final class TDatabase {
         String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
 
          try {
-        	stmt = con.createStatement();
-			rows = stmt.executeUpdate(Command);
+		 getConnection();
+        	 stmt = con.createStatement();
+		 rows = stmt.executeUpdate(Command);
+		 disconnect();
 		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -169,9 +261,11 @@ public final class TDatabase {
 	        String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
 
 	         try {
+			 getConnection();
 	        	stmt = con.createStatement();
 				table = stmt.executeQuery(Command);
 				output=table.getArray(Column);
+			 disconnect();
 			}
 	        catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -188,8 +282,10 @@ public final class TDatabase {
 			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE "+TableName+"ID = " +UserID+";";
 			try
 			{
+				getConnection();
 				stmt = con.createStatement();
 				count = stmt.executeUpdate(Command);
+				disconnect();
 			}
 			catch (SQLException ex) {
 				ex.printStackTrace();
@@ -203,8 +299,10 @@ public final class TDatabase {
 			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE "+TableName+"ID = " +UserID+";";
 			try
 			{
+				getConnection();
 				stmt = con.createStatement();
 				count = stmt.executeUpdate(Command);
+				disconnect();
 			}
 			catch (SQLException ex) {
 				ex.printStackTrace();
@@ -372,12 +470,14 @@ public final class TDatabase {
 					String password=null;
 					String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +USERID+";";
 					try {
+						getConnection();
 						stmt = con.createStatement();
 						table = stmt.executeQuery(Command);
 						while (table.next()) {
 							password = table.getString(1);
 							System.out.println(password);
 						}
+						disconnect();
 					}
 					catch (SQLException e) {
 						// TODO Auto-generated catch block
