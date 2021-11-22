@@ -35,10 +35,10 @@ public class StartProgramme implements ActionListener {
 
 		contentPane.setLayout(new CardLayout());
 
-		//GuestLogin g = new GuestLogin(f);
+		GuestLogin g = new GuestLogin(f);
 
 		contentPane.add("Home", createHomePanel(contentPane));
-		//contentPane.add("Guest Login", g.createGuestLoginPanel());
+		contentPane.add("Guest Login", g.createGuestLoginPanel());
 
 		frame.setVisible(true);
 	}
