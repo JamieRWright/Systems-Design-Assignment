@@ -33,6 +33,13 @@ public class User {
 		this.password = password;
 		this.address = address;
 	}
+	public User(String forename, String surname, Address address, String phone, String userID) {
+		this.surname = surname;
+		this.forename = forename;
+		this.phone = phone;
+		this.userID = userID;
+		this.address = address;
+	}
 	
 	// Accessor methods
 	public String getName() {
