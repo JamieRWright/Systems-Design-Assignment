@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -657,7 +658,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		d2.setFont(plain);
 		startDate.add(d2, g2);
 		setConstraints(g2, 4, 0, GridBagConstraints.WEST);
-		startYY = new JTextField("YY", 2);
+		startYY = new JTextField("YYYY", 4);
 		startYY.setFont(plain);
 		startDate.add(startYY, g2);
 		
@@ -690,7 +691,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		d4.setFont(plain);
 		endDate.add(d4, g3);
 		setConstraints(g3, 4, 0, GridBagConstraints.WEST);
-		endYY = new JTextField("YY", 2);
+		endYY = new JTextField("YYYY", 4);
 		endYY.setFont(plain);
 		endDate.add(endYY, g3);
 		
@@ -814,8 +815,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		desc = new JTextArea(5, 20);
+		JScrollPane scrollPane = new JScrollPane(desc);
 		desc.setFont(plain);
-		np.add(desc, gbc);
+		desc.setLineWrap(true);
+		desc.setWrapStyleWord(true);
+		np.add(scrollPane, gbc);
 		
 		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);	
 		houseNo = new JLabel("House Number: ");
@@ -1107,6 +1111,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	public JPanel reviewPanel() {
 		JPanel rp = new JPanel();
 		JPanel hp = new JPanel();
+		JPanel r = new JPanel();
 		
 		hp.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
@@ -1115,6 +1120,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		rp.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		setConstraints(gbc, 0, 0, GridBagConstraints.EAST);
+		
+		r.setLayout(new GridBagLayout());
+		GridBagConstraints gb = new GridBagConstraints();
+		setConstraints(gb, 0, 0, GridBagConstraints.CENTER);
 		
 		JLabel c, c1, c2, c3, c4, c5, c6, desc;
 		ButtonGroup overall, cleanliness, communication, checkin, accuracy, location, value;
@@ -1127,8 +1136,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JRadioButton c6_1, c6_2, c6_3, c6_4, c6_5;
 		JPanel g1, g2, g3, g4, g5, g6, g7;
 		JTextArea description;
+		JButton submit;
 		
-		rp.setBorder(createTitledBorder("Leave a review"));
+		r.setBorder(createTitledBorder("Leave a review"));
 		
 		c = new JLabel("Overall: ");
 		c.setFont(plain);
@@ -1257,18 +1267,36 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		createRatingButtons(c6_1, c6_2, c6_3, c6_4, c6_5, g7, value);
 		rp.add(g7, gbc);
+		rp.setBorder(new EmptyBorder(0, 100, 0, 100));
+		r.add(rp, gb);
 		
-		setConstraints(gbc, 0, 7, GridBagConstraints.EAST);
+		setConstraints(gb, 0, 1, GridBagConstraints.CENTER);
 		desc = new JLabel("Describe your experience (optional): ");
 		desc.setFont(plain);
-		rp.add(desc, gbc);
+		r.add(desc, gb);
 		
-		setConstraints(gbc, 1, 7, GridBagConstraints.EAST);
+		setConstraints(gb, 0, 2, GridBagConstraints.CENTER);
 		description = new JTextArea(5, 20);
+		JScrollPane scrollPane = new JScrollPane(description);
 		description.setFont(plain);
-		rp.add(description, gbc);
+		description.setLineWrap(true);
+		description.setWrapStyleWord(true);
+		JPanel space = new JPanel();
+		space.setBorder(new EmptyBorder(10, 0, 0, 0));
+		r.add(space, gb);
+		setConstraints(gb, 0, 3, GridBagConstraints.CENTER);
+		r.add(scrollPane, gb);
 		
-		hp.add(rp, g);
+		setConstraints(gb, 0, 4, GridBagConstraints.CENTER);
+		submit = new JButton("Submit Review");
+		submit.setFont(plain);
+		JPanel space2 = new JPanel();
+		space2.setBorder(new EmptyBorder(10, 0, 0, 0));
+		r.add(space2, gb);
+		setConstraints(gb, 0, 5, GridBagConstraints.CENTER);
+		r.add(submit, gb);
+		
+		hp.add(r, g);
 		return hp;
 	}
 	
