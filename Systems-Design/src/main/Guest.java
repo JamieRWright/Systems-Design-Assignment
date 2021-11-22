@@ -26,6 +26,15 @@ public class Guest extends User {
 		TDatabase.signUpGuest(surname, forename, phone, userID, password);
 	
 	}
+	
+		
+	public Guest(String surname, String forename, Address address, String phone, String userID) {
+		super(surname, forename, address, phone, userID);
+		
+		
+		
+	
+	}
 
 	
 	public String toString() {
@@ -34,5 +43,10 @@ public class Guest extends User {
 		sb.append(getName());
 		
 		return sb.toString();
+	}
+	
+		public boolean getSuccess() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
