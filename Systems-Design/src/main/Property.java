@@ -48,8 +48,16 @@ public class Property {
 	}
 	
 	public Property(int i, String houseNo, String street, String postcode, String city, String country, String s_name,
-			String description) {
-		TDatabase.addProperty(i, houseNo, street, postcode, city, country, s_name, description);
+			String description, boolean updateBackend) {
+		if (updateBackend)
+		{
+			TDatabase.addProperty(i, houseNo, street, postcode, city, country, s_name, description);
+		}
+		this.shortName=s_name;
+		this.address = new Address(houseNo, street, s_name, postcode);
+		this.description = description;
+		this.hostID = String.valueOf(i);
+		
 	}
 
 	public String getShortName() {
