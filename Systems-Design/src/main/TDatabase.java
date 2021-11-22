@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 
 //Static class created to be used throughout the project
 //Methods are called like this: TDatabase.SearchFullTable("Guest")
