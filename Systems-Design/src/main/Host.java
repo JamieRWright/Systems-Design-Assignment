@@ -26,6 +26,12 @@ public class Host extends User {
 		this.rating = null;
 		this.signupSuccess = TDatabase.signUpHost(forename, surname, userID, password);
 	}
+	public Host(String surname, String forename, Address address, String phone, String userID) {
+		super(surname, forename, address, phone, userID);
+		this.rating = null;
+		this.signupSuccess = true;
+		
+	}
 
 	
 	public Rating getRating() {
