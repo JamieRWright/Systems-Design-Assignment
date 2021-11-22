@@ -56,6 +56,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
 	
 	public HomeBreaks() {
+		TDatabase.Initialise();
 		startGUI();
 	}
 	
@@ -297,8 +298,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					Address add = new Address(houseName, streetName, placeName, postcode);
 					Guest guest = new Guest(fName, lName, add, phone, userID, password);
-					
-					System.out.println(guest);
+					TDatabase.Guests.add(guest);
 					
 					if (!(guest.getSuccess())) {
 						showMessageDialog(null, "Sign up failed.");
@@ -459,8 +459,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					Address add = new Address(houseName, streetName, placeName, postcode);
 					Host host = new Host(fName, lName, add, phone, userID, password); // TODO change when authentication is available
-					
-					System.out.println(host);
+					TDatabase.Hosts.add(host);
 					
 					if (!(host.getSuccess())) {
 						showMessageDialog(null, "Sign up failed.");
@@ -904,7 +903,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					//Address propAddress = new Address(houseNo, street, postcode, place);
 					//Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
-					Property property = new Property(1, houseNo, street, postcode, place, "England", sName, descr);
+					TDatabase.Properties.add(new Property(1, houseNo, street, postcode, place, "England", sName, descr, true));
 				}
 			}
 		});
