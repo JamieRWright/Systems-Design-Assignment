@@ -1,47 +1,55 @@
 package main;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class StartProgramme implements ActionListener {
 	JFrame frame = new JFrame();
 	JButton host, guest, enquirer;
-	
-	
+
+
 	public StartProgramme(JFrame frame) {
 		this.frame = frame;
 		startGUI(frame);
 	}
-	
+
 	public void startGUI(JFrame f) {
 		Container contentPane = f.getContentPane();
-		
+
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension screen = tk.getScreenSize();
-				
+
 		f.setSize(screen.width, screen.height);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		contentPane.setLayout(new CardLayout());
-		
-		GuestLogin g = new GuestLogin(f);
-		
+
+		//GuestLogin g = new GuestLogin(f);
+
 		contentPane.add("Home", createHomePanel(contentPane));
-		contentPane.add("Guest Login", g.createGuestLoginPanel());
-		
+		//contentPane.add("Guest Login", g.createGuestLoginPanel());
+
 		frame.setVisible(true);
 	}
-	
+
 	public JPanel createHomePanel(Container c) {
 		JPanel home = new JPanel();
 		JPanel buttons, labels, hp;
-		
+
 		Font plain = new Font("Verdana", Font.PLAIN, 30);
 		Font bold = new Font("Verdana", Font.BOLD, 50);
-		
+
 		JLabel welc, opt;
 
 		welc = new JLabel("Welcome");
@@ -56,25 +64,25 @@ public class StartProgramme implements ActionListener {
 		host = new JButton("Host");
 		guest = new JButton("Guest");
 		enquirer = new JButton("Enquirer");
-		
+
 		host.setFont(plain);
 		guest.setFont(plain);
 		enquirer.setFont(plain);
-		
+
 		guest.addActionListener(this);
-		
+
 		labels = new JPanel();
 		buttons = new JPanel();
 		hp = new JPanel();
-		
-		
+
+
 		BoxLayout b2 = new BoxLayout(labels, BoxLayout.Y_AXIS);
 		labels.setLayout(b2);
-		
+
 		host.setPreferredSize(new Dimension(400, 500));
 		guest.setPreferredSize(new Dimension(400, 500));
 		enquirer.setPreferredSize(new Dimension(400, 500));
-		
+
 		labels.add(welc);
 		labels.add(opt);
 		buttons.add(host);
@@ -83,14 +91,14 @@ public class StartProgramme implements ActionListener {
 		hp.add(labels);
 		home.add(hp);
 		home.add(buttons);
-		
+
 		return home;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		((CardLayout) frame.getContentPane().getLayout()).show(frame.getContentPane(), "Guest Login");
 	}
-	
+
 	public static void main (String [] args) {
 		new StartProgramme(new JFrame());
 	}
