@@ -68,6 +68,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setTitle("HomeBreaks Plc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		
 		cards = new CardLayout();
 		c.setLayout(cards);
 		c.add("Home", home());
@@ -614,15 +615,19 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public JPanel inquiry() {
+		// This panel is 
 		JPanel i = new JPanel();
 		JPanel hp = new JPanel();
 		JPanel x = new JPanel();
 		
+		// Use GridBagLayout on hp to create a two-grid container (i and x panels will be on grid (0,0) and (0,1) respectively)
 		hp.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
+		// x will be the panel which shows the input panel i
 		x.setBorder(createTitledBorder("Find properties"));
+		// Use GBL on i (input for inquiry) to create a container with 5 grids (just one column)
 		i.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -632,15 +637,19 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		searchProperty.setFont(plain);
 		i.add(searchProperty, gbc);
 		
+		// Start adding components to the i panel grids
 		setConstraints(gbc, 0, 1, GridBagConstraints.CENTER);
 		JLabel start = new JLabel("Start date: ");
 		start.setFont(plain);
 		i.add(start, gbc);
 		
+		// A new panel to arrange the date inputs in
+		// Use GBL as well to create just one row with five columns
 		JPanel startDate = new JPanel();
 		startDate.setLayout(new GridBagLayout());
 		GridBagConstraints g2 = new GridBagConstraints();
 		
+		// Start adding components to startDate panel grids
 		setConstraints(g2, 0, 0, GridBagConstraints.WEST);
 		startDD = new JTextField("DD", 2);
 		startDD.setFont(plain);
@@ -661,19 +670,21 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		startYY = new JTextField("YYYY", 4);
 		startYY.setFont(plain);
 		startDate.add(startYY, g2);
-		
+		// Add the startDate panel to the first row, column 2 of i
 		setConstraints(gbc, 0, 2, GridBagConstraints.CENTER);
 		i.add(startDate, gbc);
-		
+		// Add a label for the end date, same as for the start date
 		setConstraints(gbc, 0, 3, GridBagConstraints.CENTER);
 		JLabel end = new JLabel("End date: ");
 		end.setFont(plain);
 		i.add(end, gbc);
 		
+		// New panel for end date inputs (same as before with start date)
 		JPanel endDate = new JPanel();
 		endDate.setLayout(new GridBagLayout());
 		GridBagConstraints g3 = new GridBagConstraints();
 		
+		// Add input for end date to panel startDate
 		setConstraints(g3, 0, 0, GridBagConstraints.WEST);
 		endDD = new JTextField("DD", 2);
 		endDD.setFont(plain);
@@ -695,9 +706,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		endYY.setFont(plain);
 		endDate.add(endYY, g3);
 		
+		// add endDate to the fourth row of i
 		setConstraints(gbc, 0, 4, GridBagConstraints.CENTER);
 		i.add(endDate, gbc);
 		
+		// add the search button to the fifth row of i
 		JPanel btn = new JPanel();
 		setConstraints(gbc, 0, 5, GridBagConstraints.CENTER);
 		btn.setBorder(new EmptyBorder(50, 0, 0, 0));
@@ -711,11 +724,24 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		i.add(btn, gbc);
 		
 		// TODO add search results into the searchResult panel
+		// this is just to set some space to make sure both panels are about the same width
 		i.setBorder(new EmptyBorder(0, 100, 0, 100));
+		// add i to x
 		x.add(i);
 		hp.add(x, g);
 		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
-		hp.add(searchResultPanel(), g);
+		// this is where viewProperty should go, the panel under the input panel
+		// I will turn it into a cardlayout so it can be switched with viewProperty() when search is clicked
+		JPanel result = new JPanel();
+		CardLayout resultCard = new CardLayout();
+		result.setLayout(resultCard);
+		
+		result.add("Default", searchResultPanel());
+		// should probably be something like "result.add("Property view, viewProperty()")"
+		
+		// add the panel with card layout to the return panel hp 
+		//(g is already set to point to the third column of the first row)
+		hp.add(result, g);
 		
 		return hp;
 	}
