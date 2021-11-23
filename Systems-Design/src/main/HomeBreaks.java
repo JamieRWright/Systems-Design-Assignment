@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -56,8 +57,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
 	
 	public HomeBreaks() {
+		System.out.println("Loading...");
 		TDatabase.Initialise();
 		startGUI();
+		System.out.println("Successfully loaded.");
 	}
 	
 	public void startGUI() {
@@ -71,7 +74,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", home());
+		c.add("Home", viewProperties());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -532,9 +535,19 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		toGSU.setFont(plain);
 		toGSU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Guest Sign Up");
-				current = "GSU";
-				setTitle("Guest Sign Up");
+				/*
+				String userID = id_input_gl.getText();
+				String pw = String.valueOf(pw_input_gl.getPassword());
+				System.out.println(pw);
+				
+				if (TDatabase.GuestLogin("'" + userID + "'", pw)) {
+					setTitle("Guest Home");
+					cards.show(c, "Guest Home");
+				}
+				else {
+					showMessageDialog(null, "Wrong credentials!");
+				}
+				*/
 			}
 		});
 		gl.add(toGSU, gbc);
@@ -1330,6 +1343,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel vp = new JPanel();
 		current = "viewProperties";
 		
+		JPanel home = new JPanel();
 		vp.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
@@ -1355,7 +1369,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			shortName.setFont(bold);
 			location = new JLabel("Location: "+ house.getPublicLocation());
 			location.setFont(plain);
-			description = new JLabel("Description: ");
+			description = new JLabel("Description: " + house.getDescription());
 			description.setFont(plain);
 			
 			viewMoreBtn = new JButton("View More");
@@ -1405,6 +1419,116 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public static void main (String [] args) {
 		new HomeBreaks();
+	}
+	
+	public JPanel addChargeBand() {
+		JPanel acb = new JPanel();
+		JPanel hp = new JPanel();
+		
+		acb.setLayout(new GridBagLayout());
+		acb.setBorder(createTitledBorder("Add Charge Band"));
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JLabel s, e, ppn, sc, cc;
+		JTextField startDD, endDD, startMM, endMM, startYY, endYY, pricePerNight, serviceCharge, cleaningCharge;
+		
+		setConstraints(g, 0, 0, GridBagConstraints.EAST);
+		s = new JLabel("Start Date: ");
+		s.setFont(plain);
+		acb.add(s, g);
+		
+		JPanel startDate = new JPanel();
+		startDate.setLayout(new GridBagLayout());
+		setConstraints(g, 0, 0, GridBagConstraints.WEST);
+		startDD = new JTextField("DD", 2);
+		startDD.setFont(plain);
+		startDate.add(startDD, g);
+		setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		JLabel d1 = new JLabel("-");
+		d1.setFont(plain);
+		startDate.add(d1, g);
+		setConstraints(g, 2, 0, GridBagConstraints.WEST);
+		startMM = new JTextField("MM", 2);
+		startMM.setFont(plain);
+		startDate.add(startMM, g);
+		setConstraints(g, 3, 0, GridBagConstraints.WEST);
+		JLabel d2 = new JLabel("-");
+		d2.setFont(plain);
+		startDate.add(d2, g);
+		setConstraints(g, 4, 0, GridBagConstraints.WEST);
+		startYY = new JTextField("YYYY", 4);
+		startYY.setFont(plain);
+		startDate.add(startYY, g);
+		
+		setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		acb.add(startDate, g);
+		
+		setConstraints(g, 0, 1, GridBagConstraints.EAST);
+		e = new JLabel("End Date: ");
+		e.setFont(plain);
+		acb.add(e, g);
+		
+		JPanel endDate = new JPanel();
+		endDate.setLayout(new GridBagLayout());
+		
+		setConstraints(g, 0, 0, GridBagConstraints.WEST);
+		endDD = new JTextField("DD", 2);
+		endDD.setFont(plain);
+		endDate.add(endDD, g);
+		setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		JLabel d3 = new JLabel("-");
+		d3.setFont(plain);
+		endDate.add(d3, g);
+		setConstraints(g, 2, 0, GridBagConstraints.WEST);
+		endMM = new JTextField("MM", 2);
+		endMM.setFont(plain);
+		endDate.add(endMM, g);
+		setConstraints(g, 3, 0, GridBagConstraints.WEST);
+		JLabel d4 = new JLabel("-");
+		d4.setFont(plain);
+		endDate.add(d4, g);
+		setConstraints(g, 4, 0, GridBagConstraints.WEST);
+		endYY = new JTextField("YYYY", 4);
+		endYY.setFont(plain);
+		endDate.add(endYY, g);
+		
+		setConstraints(g, 1, 1, GridBagConstraints.CENTER);
+		acb.add(endDate, g);
+		
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		ppn = new JLabel("Price per night (£): ");
+		ppn.setFont(plain);
+		acb.add(ppn, g);
+		
+		setConstraints(g, 1, 2, GridBagConstraints.CENTER);
+		pricePerNight = new JTextField(5);
+		pricePerNight.setFont(plain);
+		acb.add(pricePerNight, g);
+		
+		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
+		sc = new JLabel("Service charge (£): ");
+		sc.setFont(plain);
+		acb.add(sc, g);
+		
+		setConstraints(g, 1, 3, GridBagConstraints.CENTER);
+		serviceCharge = new JTextField(5);
+		serviceCharge.setFont(plain);
+		acb.add(serviceCharge, g);
+		
+		setConstraints(g, 0, 4, GridBagConstraints.CENTER);
+		cc = new JLabel("Cleaning charge (£): ");
+		cc.setFont(plain);
+		acb.add(cc, g);
+		
+		setConstraints(g, 1, 4, GridBagConstraints.CENTER);
+		cleaningCharge = new JTextField(5);
+		cleaningCharge.setFont(plain);
+		acb.add(cleaningCharge, g);
+		
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		hp.add(acb);
+		return hp;
 	}
 
 	@Override
