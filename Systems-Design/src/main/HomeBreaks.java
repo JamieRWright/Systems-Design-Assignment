@@ -39,8 +39,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	CardLayout cards, myAccountCards;
 	Container c = getContentPane();
 	String current = "";
-	JPanel home, guestLogin, hostLogin, myAccount, searchResult;
-	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn;
+	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties;
+	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
 	JTextField searchProperty;
@@ -78,6 +78,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Inquiry", enquirer());
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
+		c.add("House View", houseView());
 		
 		pack();
 		setVisible(true);
@@ -1297,6 +1298,83 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		hp.add(r, g);
 		return hp;
+	}
+	
+		public JPanel viewProperties() {
+		JPanel vp = new JPanel();
+		current = "viewProperties";
+		
+		vp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		home.setBorder(createTitledBorder("View All Properties"));
+		home.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JLabel shortName, location, description;
+		JPanel sn, l, d, buttons;
+
+		setConstraints(gbc, 0, 0, GridBagConstraints.CENTER);
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		List<Property> properties = TDatabase.LoadProperties();
+		
+		for (int i = 0; i < properties.size(); i++) {
+			Property house = properties.get(i);
+			//house information
+			shortName = new JLabel("Name: "+ house.getShortName());
+			shortName.setFont(bold);
+			location = new JLabel("Location: "+ house.getPublicLocation());
+			location.setFont(plain);
+			description = new JLabel("Description: ");
+			description.setFont(plain);
+			
+			viewMoreBtn = new JButton("View More");
+			viewMoreBtn.setFont(plain);
+			viewMoreBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cards.show(c, "House View");
+					current = "HV";
+					setTitle("House View");
+				}
+			});
+			
+			sn = new JPanel();
+			l = new JPanel();
+			d = new JPanel();
+			buttons = new JPanel();
+
+			BoxLayout b = new BoxLayout(vp, BoxLayout.Y_AXIS);
+			vp.setLayout(b);
+			
+			sn.add(shortName);
+			l.add(location);
+			d.add(description);
+			buttons.add(viewMoreBtn);
+			
+			vp.add(shortName);
+			vp.add(location);
+			vp.add(description);
+			vp.add(buttons);
+		}
+		
+		return vp;
+	}
+	
+	public JPanel houseView() {
+		JPanel hv = new JPanel();
+		hv.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		hv.setBorder(createTitledBorder("what a lovely property"));
+		hv.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		return hv;
 	}
 	
 	public static void main (String [] args) {
