@@ -1300,7 +1300,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hp;
 	}
 	
-		public JPanel viewProperties() {
+	public JPanel viewProperties() {
 		JPanel vp = new JPanel();
 		current = "viewProperties";
 		
