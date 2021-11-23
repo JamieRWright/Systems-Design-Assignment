@@ -1,7 +1,7 @@
 /**
  * Enum with constants representing the different parking facilities
  * 
- * @version 1.0 
+ * @version 1.1
  *
  * @author Rachel Parker
  *
@@ -13,7 +13,11 @@ public enum ParkType {
 	onRoad("on road parking"),
 	paid("paid car-park");
 	
-	private final String ParkType;
+	private String ParkType;
 	
+	ParkType(String n) {
+		ParkType = n;
+	}
+
 	public String getString() {return ParkType;}
 }
