@@ -73,7 +73,7 @@ public class Property {
 	}
 	
 	public String getPublicLocation() {
-		return this.publicLocation;
+		return (this.address).getPlaceName();
 	}
 	
 	public Address getFullAddress() {
