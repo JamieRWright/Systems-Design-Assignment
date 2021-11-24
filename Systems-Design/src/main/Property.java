@@ -1,5 +1,4 @@
 package main;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,18 +19,27 @@ public class Property {
 	private boolean breakfast;
 	private int maxSleepers;
 	private Rating pRating;
+	private Bathroom bath;
+	private Bedroom bed;
+	private Kitchen kitchen;
+	private Living living;
+	private Utility utility;
+	private Outdoor outdoor;
 	private List<DatesAvailable> datesAvailable;
 	
 	/**
      * Constructor
-     * @param public loccation, the general location of property (i.e Sheffield)
+     * @param public location, the general location of property (i.e Sheffield)
      * @param address, complete address of property (confidential)
      * @param maxSleepers, the maximum number of people who can sleep at property simultaneously
      * @param rating, average ratings and individual ratings for the property
      * @param availableList, containing the DatesAvailable lists, for every date the property is available for
      *
      */
-	public Property(String shortName, String description, Host host, String publicLocation, Address address, boolean breakfast) {
+	public Property(String shortName, String description, Host host, 
+			String publicLocation, Address address, boolean breakfast,
+			Bathroom bath, Bedroom bed, Kitchen kitchen, Living living,
+			Utility utility, Outdoor outdoor) {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
@@ -41,6 +49,12 @@ public class Property {
 		this.maxSleepers = 0;
 		this.pRating = null;
 		this.datesAvailable = null;
+		this.bath = bath;
+		this.bed = bed;
+		this.kitchen = kitchen;
+		this.living = living;
+		this.utility = utility;
+		this.outdoor = outdoor;
 		hostID = host.getID();
 		
 		TDatabase.addProperty(maxSleepers, hostID, hostID, hostID, publicLocation, hostID, shortName, description);
@@ -73,7 +87,7 @@ public class Property {
 	}
 	
 	public String getPublicLocation() {
-		publicLocation = (this.address).getCity() + (this.address).getStreetName();
+		publicLocation = (this.address).getCityName() + (this.address).getStreetName();
 		return this.publicLocation;
 	}
 	
@@ -89,9 +103,33 @@ public class Property {
 		return this.pRating;
 	}
 	
+	public boolean getBreakfast() {
+		return this.breakfast;
+	}
+	
 	public List<DatesAvailable> getAvailableDates() {
 		return this.datesAvailable;
 	}
+	
+	public Bathroom getBathroom() {
+		return this.bath;
+	}	
+	public Bedroom getBedroom() {
+		return this.bed;
+	}
+	public Kitchen getKitchen() {
+		return this.kitchen;
+	}
+	public Living getLiving() {
+		return this.living;
+	}
+	public Utility getUtility() {
+		return this.utility;
+	}
+	public Outdoor getOutdoor() {
+		return this.outdoor;
+	}
+	
 	
 	public int getID() {
 		//t.getPropertyID((this.host).getID(), this.shortName);
@@ -121,7 +159,6 @@ public class Property {
 	}
 
 	public boolean breakfastServed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
