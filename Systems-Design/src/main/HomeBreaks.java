@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -51,6 +52,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
 	Host currentHost;
 	Guest currentGuest;
+	
+	List<Property> properties = TDatabase.Properties;
+	String cityFilter = "Sheffield";
+	Property chosenHouse = properties.get(0);
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
@@ -1348,7 +1353,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hp;
 	}
 	
-		public JScrollPane viewProperties() {
+	public JScrollPane viewProperties() {
 		JPanel vp = new JPanel();
 		current = "View Properties";
 		
@@ -1369,16 +1374,25 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
-		List<Property> properties = TDatabase.Properties;
+		List<Property> filterProperties = new ArrayList();
 		
 		for (int i = 0; i < properties.size(); i++) {
 			Property house = properties.get(i);
+			Address address = house.getFullAddress();
+			String city = address.getCityName();
+			if (city == cityFilter){
+				filterProperties.add(house);
+			}
+		}
+		
+		for (int i = 0; i < filterProperties.size(); i++) {
+			Property chosenHouse = filterProperties.get(i);
 			//house information
-			shortName = new JLabel("Name: "+ house.getShortName());
+			shortName = new JLabel("Name: "+ chosenHouse.getShortName());
 			shortName.setFont(bold);
-			location = new JLabel("Location: "+ house.getPublicLocation());
+			location = new JLabel("Location: "+ chosenHouse.getPublicLocation());
 			location.setFont(plain);
-			description = new JLabel("Description: " + house.getDescription());
+			description = new JLabel("Description: " + chosenHouse.getDescription());
 			description.setFont(plain);
 			
 			viewMoreBtn = new JButton("View More");
@@ -1424,6 +1438,43 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hv.setBorder(createTitledBorder("what a lovely property"));
 		hv.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JLabel shortName, description, host, location, address, breakfast,
+		maxSleepers, rating, bedrooms, beds;
+		JPanel sn, d, h, pl, a, bekfast, ms, r, rooms, b, buttons;
+		
+		//house information
+		shortName = new JLabel("Name: "+ chosenHouse.getShortName());
+		shortName.setFont(bold);
+		description = new JLabel("Description: " + chosenHouse.getDescription());
+		description.setFont(plain);
+		location = new JLabel("Location: "+ chosenHouse.getPublicLocation());
+		location.setFont(plain);
+		host = new JLabel("Host: " + chosenHouse.getHost());
+		host.setFont(plain);
+		
+		sn = new JPanel();
+		pl = new JPanel();
+		d = new JPanel();
+		h = new JPanel();
+		buttons = new JPanel();
+
+		BoxLayout bl = new BoxLayout(hv, BoxLayout.Y_AXIS);
+		hv.setLayout(bl);
+		
+		sn.add(shortName);
+		pl.add(location);
+		d.add(description);
+		h.add(host);
+		buttons.add(viewMoreBtn);
+		
+		hv.add(shortName);
+		hv.add(location);
+		hv.add(description);
+		hv.add(host);
+		hv.add(buttons);
 		
 		return hv;
 	}
@@ -1504,7 +1555,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		acb.add(endDate, g);
 		
 		setConstraints(g, 0, 2, GridBagConstraints.EAST);
-		ppn = new JLabel("Price per night (£): ");
+		ppn = new JLabel("Price per night (Â£): ");
 		ppn.setFont(plain);
 		acb.add(ppn, g);
 		
@@ -1514,7 +1565,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		acb.add(pricePerNight, g);
 		
 		setConstraints(g, 0, 3, GridBagConstraints.EAST);
-		sc = new JLabel("Service charge (£): ");
+		sc = new JLabel("Service charge (Â£): ");
 		sc.setFont(plain);
 		acb.add(sc, g);
 		
@@ -1524,7 +1575,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		acb.add(serviceCharge, g);
 		
 		setConstraints(g, 0, 4, GridBagConstraints.EAST);
-		cc = new JLabel("Cleaning charge (£): ");
+		cc = new JLabel("Cleaning charge (Â£): ");
 		cc.setFont(plain);
 		acb.add(cc, g);
 		
