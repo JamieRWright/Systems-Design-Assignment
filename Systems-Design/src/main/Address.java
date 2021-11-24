@@ -10,7 +10,7 @@ package main;
 public class Address {
 	private final String houseName;
 	private final String streetName;
-	private final String placeName;
+	private final String city;
 	private final String postcode;
 	
 	/**
@@ -21,10 +21,10 @@ public class Address {
      * @param postcode, i.e SO31 4NG
      *
      */
-	public Address(String houseName, String streetName, String placeName, String postcode) {
+	public Address(String houseName, String streetName, String cityName, String postcode) {
 		this.houseName = houseName;
 		this.streetName = streetName;
-		this.placeName = placeName;
+		this.city = cityName;
 		this.postcode = postcode;
 	}
 	
@@ -36,8 +36,8 @@ public class Address {
 		return this.streetName;
 	}
 	
-	public String getPlaceName() {
-		return this.placeName;
+	public String getCityName() {
+		return this.city;
 	}
 	
 	public String getPostcode() {
@@ -51,7 +51,7 @@ public class Address {
 		sb.append(getStreetName());
 		sb.append(", ");
 		sb.append("\n");
-		sb.append(getPlaceName());
+		sb.append(getCityName());
 		sb.append(", ");
 		sb.append("\n");
 		sb.append(getPostcode());
