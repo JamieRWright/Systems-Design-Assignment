@@ -82,6 +82,7 @@ public final class TDatabase {
 			      String Country = table.getString(8);
 			      String ShortName = table.getString(9);
 			      String Description = table.getString(10);
+			      //System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 			      output.add(new Property(HostID, HouseNo, Street, Postcode, City, Country, ShortName, Description, false));
 			 }
 			disconnect();
@@ -469,7 +470,7 @@ public final class TDatabase {
 					ResultSet table=null;
 					Statement stmt;
 					String password=null;
-					String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +USERID+";";
+					String Command = "SELECT * FROM "+TableName+"_Passwords WHERE " +TableName+"ID = " +USERID+";";
 					try {
 						getConnection();
 						stmt = con.createStatement();
@@ -550,5 +551,54 @@ public final class TDatabase {
 	}
 	return propertyID;
     }
-}
+    
+  /*  
+    public static String getStartDate(int p, int g) {
+    	ResultSet table=null;
+    	String date = "";
+    	Statement stmt;
+    	String Command = "SELECT * FROM Bookings WHERE PropertyID = "+p+" AND GuestID = "+g+";";
 
+    	 try {
+    		getConnection();
+    		stmt = con.createStatement();
+    		table = stmt.executeQuery(Command);
+    	while (table.next()) {
+    		date = table.getString(4);
+    	    }
+    	       disconnect();
+    	}
+    	catch (SQLException e) {
+    	       e.printStackTrace();
+    	}
+    	return date;
+        }
+        */
+    
+    public static boolean AddReview(int propertyID, int guestID, int hostID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
+ 		try {
+ 			getConnection();
+ 			System.out.println("Connection established");
+ 			String sql="INSERT INTO Reviews(PropertyID, GuestID, HostID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+ 			PreparedStatement pst=con.prepareStatement(sql);
+ 			pst.setInt(1, propertyID);
+ 			pst.setInt(2, guestID);
+ 			pst.setInt(3, hostID);
+ 			pst.setInt(4, cl);
+ 			pst.setInt(5, com);
+ 			pst.setInt(6, chk);
+ 			pst.setInt(7, ac);
+ 			pst.setInt(8, loc);
+ 			pst.setInt(9, val);
+ 			if (desc == "") {pst.setString(10, null);}
+ 			else {pst.setString(10, desc);}
+ 			pst.execute();
+ 			disconnect();
+ 			return true;
+
+ 			}
+ 		catch (Exception e) {
+ 			return false;
+ 		}
+ 	}
+}
