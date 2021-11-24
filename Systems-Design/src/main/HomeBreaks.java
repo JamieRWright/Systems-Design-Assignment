@@ -83,6 +83,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
 		c.add("House View", houseView());
+		c.add("View Properties", viewProperties());
 		
 		pack();
 		setVisible(true);
@@ -730,6 +731,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		search.setFont(plain);
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "View Properties");
+				current = "VP";
+				setTitle("View Properties");
 			}
 		});
 		btn.add(search);
@@ -1344,9 +1348,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hp;
 	}
 	
-	public JPanel viewProperties() {
+		public JScrollPane viewProperties() {
 		JPanel vp = new JPanel();
-		current = "viewProperties";
+		current = "View Properties";
 		
 		JPanel home = new JPanel();
 		vp.setLayout(new GridBagLayout());
@@ -1365,7 +1369,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
-		List<Property> properties = TDatabase.LoadProperties();
+		List<Property> properties = TDatabase.Properties;
 		
 		for (int i = 0; i < properties.size(); i++) {
 			Property house = properties.get(i);
@@ -1406,7 +1410,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vp.add(buttons);
 		}
 		
-		return vp;
+		JScrollPane scroll = new JScrollPane(vp);
+		
+		return scroll;
 	}
 	
 	public JPanel houseView() {
