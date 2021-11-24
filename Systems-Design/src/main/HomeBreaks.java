@@ -535,7 +535,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		toGSU.setFont(plain);
 		toGSU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
 				String userID = id_input_gl.getText();
 				String pw = String.valueOf(pw_input_gl.getPassword());
 				System.out.println(pw);
@@ -547,7 +546,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					showMessageDialog(null, "Wrong credentials!");
 				}
-				*/
+				
 			}
 		});
 		gl.add(toGSU, gbc);
@@ -1164,8 +1163,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		GridBagConstraints gb = new GridBagConstraints();
 		setConstraints(gb, 0, 0, GridBagConstraints.CENTER);
 		
-		JLabel c, c1, c2, c3, c4, c5, c6, desc;
-		ButtonGroup overall, cleanliness, communication, checkin, accuracy, location, value;
+		JLabel c1, c2, c3, c4, c5, c6, desc;
+		ButtonGroup cleanliness, communication, checkin, accuracy, location, value;
 		JRadioButton c_1, c_2, c_3, c_4, c_5;
 		JRadioButton c1_1, c1_2, c1_3, c1_4, c1_5;
 		JRadioButton c2_1, c2_2, c2_3, c2_4, c2_5;
@@ -1179,30 +1178,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		r.setBorder(createTitledBorder("Leave a review"));
 		
-		c = new JLabel("Overall: ");
-		c.setFont(plain);
-		rp.add(c, gbc);
-		
-		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
-		overall = new ButtonGroup();
-		c_1 = new JRadioButton("1");
-		c_2 = new JRadioButton("2");
-		c_3 = new JRadioButton("3");
-		c_4 = new JRadioButton("4");
-		c_5 = new JRadioButton("5");
-
-		g1 = new JPanel();
-		
-		createRatingButtons(c_1, c_2, c_3, c_4, c_5, g1, overall);
-		
-		rp.add(g1, gbc);
-		
-		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
 		c1 = new JLabel("Cleanliness: ");
 		c1.setFont(plain);
 		rp.add(c1, gbc);
 		
-		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 0, GridBagConstraints.WEST);
 		cleanliness = new ButtonGroup();
 		c1_1 = new JRadioButton("1");
 		c1_2 = new JRadioButton("2");
@@ -1215,12 +1195,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		createRatingButtons(c1_1, c1_2, c1_3, c1_4, c1_5, g2, cleanliness);
 		rp.add(g2, gbc);
 		
-		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
+		setConstraints(gbc, 0, 1, GridBagConstraints.EAST);
 		c2 = new JLabel("Communication: ");
 		c2.setFont(plain);
 		rp.add(c2, gbc);
 		
-		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 1, GridBagConstraints.WEST);
 		communication = new ButtonGroup();
 		c2_1 = new JRadioButton("1");
 		c2_2 = new JRadioButton("2");
@@ -1233,12 +1213,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		createRatingButtons(c2_1, c2_2, c2_3, c2_4, c2_5, g3, communication);
 		rp.add(g3, gbc);
 		
-		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);
+		setConstraints(gbc, 0, 2, GridBagConstraints.EAST);
 		c3 = new JLabel("Check-in: ");
 		c3.setFont(plain);
 		rp.add(c3, gbc);
 		
-		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 2, GridBagConstraints.WEST);
 		checkin = new ButtonGroup();
 		c3_1 = new JRadioButton("1");
 		c3_2 = new JRadioButton("2");
@@ -1251,12 +1231,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		createRatingButtons(c3_1, c3_2, c3_3, c3_4, c3_5, g4, checkin);
 		rp.add(g4, gbc);
 		
-		setConstraints(gbc, 0, 4, GridBagConstraints.EAST);
+		setConstraints(gbc, 0, 3, GridBagConstraints.EAST);
 		c4 = new JLabel("Accuracy: ");
 		c4.setFont(plain);
 		rp.add(c4, gbc);
 		
-		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
 		accuracy = new ButtonGroup();
 		c4_1 = new JRadioButton("1");
 		c4_2 = new JRadioButton("2");
@@ -1270,12 +1250,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		rp.add(g5, gbc);
 		
 		//
-		setConstraints(gbc, 0, 5, GridBagConstraints.EAST);
+		setConstraints(gbc, 0, 4, GridBagConstraints.EAST);
 		c5 = new JLabel("Location: ");
 		c5.setFont(plain);
 		rp.add(c5, gbc);
 		
-		setConstraints(gbc, 1, 5, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
 		location = new ButtonGroup();
 		c5_1 = new JRadioButton("1");
 		c5_2 = new JRadioButton("2");
@@ -1288,13 +1268,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		createRatingButtons(c5_1, c5_2, c5_3, c5_4, c5_5, g6, location);
 		rp.add(g6, gbc);
 		
-		//
-		setConstraints(gbc, 0, 6, GridBagConstraints.EAST);
+		setConstraints(gbc, 0, 5, GridBagConstraints.EAST);
 		c6 = new JLabel("Value: ");
 		c6.setFont(plain);
 		rp.add(c6, gbc);
 		
-		setConstraints(gbc, 1, 6, GridBagConstraints.WEST);
+		setConstraints(gbc, 1, 5, GridBagConstraints.WEST);
 		value = new ButtonGroup();
 		c6_1 = new JRadioButton("1");
 		c6_2 = new JRadioButton("2");
@@ -1329,6 +1308,32 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setConstraints(gb, 0, 4, GridBagConstraints.CENTER);
 		submit = new JButton("Submit Review");
 		submit.setFont(plain);
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean a = cleanliness.getSelection() == null || communication.getSelection() == null || checkin.getSelection() == null;
+				boolean b = accuracy.getSelection() == null || location.getSelection() == null || value.getSelection() == null;
+				if (a || b) {
+					showMessageDialog(null, "Please rate all categories.");
+				}
+				else {
+					int cl = 0;
+					int com = 0;
+					int chk = 0;
+					int ac = 0;
+					int loc = 0;
+					int val = 0;
+					
+					cl = findSelectedValue(c1_1, c1_2, c1_3, c1_4, c1_5);
+					com = findSelectedValue(c2_1, c2_2, c2_3, c2_4, c2_5);
+					chk = findSelectedValue(c3_1, c3_2, c3_3, c3_4, c3_5);
+					ac = findSelectedValue(c4_1, c4_2, c4_3, c4_4, c4_5);
+					loc = findSelectedValue(c5_1, c5_2, c5_3, c5_4,c5_5);
+					val = findSelectedValue(c6_1, c6_2, c6_3, c6_4, c6_5);
+					TDatabase.AddReview(1, 1, 1, cl, com, chk, ac, loc, val, description.getText());
+					//TODO add the propertyID, guestID, and hostID
+				}
+			}
+		});
 		JPanel space2 = new JPanel();
 		space2.setBorder(new EmptyBorder(10, 0, 0, 0));
 		r.add(space2, gb);
@@ -1618,6 +1623,16 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		tb.setTitleFont(new Font("Verdana", Font.BOLD, 50));
 		
 		return tb;
+	}
+	
+	public int findSelectedValue(JRadioButton a, JRadioButton b, JRadioButton c, JRadioButton d, JRadioButton e) {
+		int value = 0;
+		if (a.isSelected()) {value = 1;}
+		else if (b.isSelected()) {value = 2;}
+		else if (c.isSelected()) {value = 3;}
+		else if (d.isSelected()) {value = 4;}
+		else if (e.isSelected()) {value = 5;}
+		return value;
 	}
 	
 	public void createRatingButtons(JRadioButton a, JRadioButton b, JRadioButton c, JRadioButton d, JRadioButton e, JPanel p, ButtonGroup g) {
