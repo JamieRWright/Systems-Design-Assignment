@@ -942,8 +942,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		home.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
-		JLabel shortName, location, description;
-		JPanel sn, l, d, buttons;
+		JLabel shortName, location, description, breakfast, maxsleep, rating,
+		numbaths, numbeds;
+		JPanel sn, l, d, b, ms, r, nbaths, nbeds, buttons;
 
 		setConstraints(gbc, 0, 0, GridBagConstraints.CENTER);
 		
@@ -970,6 +971,17 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			location.setFont(plain);
 			description = new JLabel("Description: " + chosenHouse.getDescription());
 			description.setFont(plain);
+			breakfast = new JLabel("Breakfast: " + chosenHouse.getBreakfast());
+			breakfast.setFont(plain);
+			maxsleep = new JLabel("Maximum Sleep: " + chosenHouse.getMaxSleepers());
+			maxsleep.setFont(plain);
+			rating = new JLabel("Rating: " + chosenHouse.getPropertyRating());
+			rating.setFont(plain);
+			numbaths = new JLabel("Number of Bathrooms: " + chosenHouse.getBathroom());
+			numbaths.setFont(plain);
+			numbeds = new JLabel("Number of Bedrooms: " + chosenHouse.getBedroom());
+			numbeds.setFont(plain);
+			
 			
 			viewMoreBtn = new JButton("View More");
 			viewMoreBtn.setFont(plain);
@@ -984,19 +996,34 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			sn = new JPanel();
 			l = new JPanel();
 			d = new JPanel();
+			b = new JPanel();
+			ms = new JPanel();
+			r = new JPanel();
+			nbaths = new JPanel();
+			nbeds = new JPanel();
 			buttons = new JPanel();
 
-			BoxLayout b = new BoxLayout(vp, BoxLayout.Y_AXIS);
-			vp.setLayout(b);
+			BoxLayout bl = new BoxLayout(vp, BoxLayout.Y_AXIS);
+			vp.setLayout(bl);
 			
 			sn.add(shortName);
 			l.add(location);
 			d.add(description);
+			b.add(breakfast);
+			ms.add(maxsleep);
+			r.add(rating);
+			nbaths.add(numbaths);
+			nbeds.add(numbeds);	
 			buttons.add(viewMoreBtn);
 			
 			vp.add(shortName);
 			vp.add(location);
 			vp.add(description);
+			vp.add(breakfast);
+			vp.add(maxsleep);
+			vp.add(rating);
+			vp.add(numbaths);
+			vp.add(numbeds);
 			vp.add(buttons);
 		}
 		
