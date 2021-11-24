@@ -236,10 +236,10 @@ public final class TDatabase {
 
 
 	 //Returns true if user exists
-	 public static Boolean IsUser(String TableName, String UserID) {
+	 public static Boolean IsUser(String TableName, String Email) {
 		 int rows=0;
 		 Statement stmt;
-        String Command = "SELECT * FROM "+TableName+" WHERE " +TableName+"ID = " +UserID+";";
+        String Command = "SELECT UserID FROM "+TableName+" WHERE Email = " +Email+";";
 
          try {
 		 getConnection();
@@ -249,7 +249,7 @@ public final class TDatabase {
 		}
         catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
         if (rows==0) return false;
         else return true;
