@@ -74,7 +74,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", addChargeBand());
+		c.add("Home", home());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -523,18 +523,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		glBtn.setFont(plain);
 		glBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Guest Home");
-			}
-		}); 	
-		gl.add(glBtn, gbc);
-		
-		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
-		toGSU = new JButton("Don't have an account? Sign up!");
-		toGSU.setContentAreaFilled(false);
-		toGSU.setBorderPainted(false);
-		toGSU.setFont(plain);
-		toGSU.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 				String userID = id_input_gl.getText();
 				String pw = String.valueOf(pw_input_gl.getPassword());
 				System.out.println(pw);
@@ -546,6 +534,18 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					showMessageDialog(null, "Wrong credentials!");
 				}
+			}
+		}); 	
+		gl.add(glBtn, gbc);
+		
+		setConstraints(gbc, 1, 3, GridBagConstraints.WEST);
+		toGSU = new JButton("Don't have an account? Sign up!");
+		toGSU.setContentAreaFilled(false);
+		toGSU.setBorderPainted(false);
+		toGSU.setFont(plain);
+		toGSU.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Guest Sign Up");
 				
 			}
 		});
