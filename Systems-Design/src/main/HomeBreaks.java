@@ -74,7 +74,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", home());
+		c.add("Home", addChargeBand());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -1422,10 +1422,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hv;
 	}
 	
-	public static void main (String [] args) {
-		new HomeBreaks();
-	}
-	
 	public JPanel addChargeBand() {
 		JPanel acb = new JPanel();
 		JPanel hp = new JPanel();
@@ -1501,35 +1497,76 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setConstraints(g, 1, 1, GridBagConstraints.CENTER);
 		acb.add(endDate, g);
 		
-		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		setConstraints(g, 0, 2, GridBagConstraints.EAST);
 		ppn = new JLabel("Price per night (£): ");
 		ppn.setFont(plain);
 		acb.add(ppn, g);
 		
-		setConstraints(g, 1, 2, GridBagConstraints.CENTER);
+		setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		pricePerNight = new JTextField(5);
 		pricePerNight.setFont(plain);
 		acb.add(pricePerNight, g);
 		
-		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
+		setConstraints(g, 0, 3, GridBagConstraints.EAST);
 		sc = new JLabel("Service charge (£): ");
 		sc.setFont(plain);
 		acb.add(sc, g);
 		
-		setConstraints(g, 1, 3, GridBagConstraints.CENTER);
+		setConstraints(g, 1, 3, GridBagConstraints.WEST);
 		serviceCharge = new JTextField(5);
 		serviceCharge.setFont(plain);
 		acb.add(serviceCharge, g);
 		
-		setConstraints(g, 0, 4, GridBagConstraints.CENTER);
+		setConstraints(g, 0, 4, GridBagConstraints.EAST);
 		cc = new JLabel("Cleaning charge (£): ");
 		cc.setFont(plain);
 		acb.add(cc, g);
 		
-		setConstraints(g, 1, 4, GridBagConstraints.CENTER);
+		setConstraints(g, 1, 4, GridBagConstraints.WEST);
 		cleaningCharge = new JTextField(5);
 		cleaningCharge.setFont(plain);
 		acb.add(cleaningCharge, g);
+		
+		setConstraints(g, 1, 5, GridBagConstraints.WEST);
+		JButton add = new JButton("Add");
+		add.setFont(plain);
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String sY = startYY.getText();
+				String sM = startMM.getText();
+				String sD = startDD.getText();
+				boolean rightStart = isNumericDate(sY) || isNumericDate(sM) || isNumericDate(sD);
+				boolean unfilledStart = sY.isEmpty() || sM.isEmpty() || sD.isEmpty();
+				
+				String eY = endYY.getText();
+				String eM = endMM.getText();
+				String eD = endDD.getText();
+				boolean rightEnd = isNumericDate(eY) || isNumericDate(eM) || isNumericDate(eD);
+				boolean unfilledEnd = eY.isEmpty() || eM.isEmpty() || eD.isEmpty();
+				
+				String price = pricePerNight.getText();
+				String cleaning = cleaningCharge.getText();
+				String service = serviceCharge.getText();
+				boolean rightPrices = isNumericPrice(price) || isNumericPrice(cleaning) || isNumericPrice(service);
+				boolean unfilledPrices = price.isEmpty() || cleaning.isEmpty() || service.isEmpty();
+				
+				if (unfilledStart || unfilledEnd || unfilledPrices) {
+					showMessageDialog(null, "All fields must be filled.");
+				}
+				else if (rightStart && rightEnd && rightPrices) {
+					String start = sY + "-" + sM + "-" + sD;
+					String end = eY + "-" + eM + "-" + eD;
+					
+					//TODO Add to db
+				}
+				else {
+					showMessageDialog(null, "Incorrect input");
+				}
+				
+			}
+		});
+		acb.add(add, g);
+		
 		
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		hp.add(acb);
@@ -1655,4 +1692,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		p.add(e);
 	}
 	
+	public static boolean isNumericPrice(String str) {
+		  return str.matches("\\d+(\\.\\d+)?");
+	}
+	
+	public static boolean isNumericDate(String str) {
+		  return str.matches("\\d?");
+	}
+	
+	public static void main (String [] args) {
+		new HomeBreaks();
+	}
 }
