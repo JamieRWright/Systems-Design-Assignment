@@ -1,3 +1,4 @@
+package main;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 import java.awt.Font;
@@ -141,7 +142,7 @@ public class HBPanels {
 					//Address propAddress = new Address(houseNo, street, postcode, place);
 					//Homebreaks = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
 					Address address_temp = new Address(houseNo, street, postcode, city, true);
-					Property temp_prop = new Property(sName, descr, currentHost, address_temp, bfast, true);
+					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, null, null, null, null, null, null, true);
 					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
 				}
 			}
@@ -212,9 +213,9 @@ public class HBPanels {
 					showMessageDialog(null, "All fields must not be blank.");
 				}
 				else {
-					TDatabase.UpdateValue("Host", "firstName", currentHost.getID(), fn);
-					TDatabase.UpdateValue("Host", "lastName", currentHost.getID(), ln);
-					TDatabase.UpdateValue("Host", "Phone", currentHost.getID(), pn);
+					TDatabase.UpdateValue("Host", "firstName", "", fn);
+					TDatabase.UpdateValue("Host", "lastName", "", ln);
+					TDatabase.UpdateValue("Host", "Phone", "", pn);
 				}
 			}
 		});
