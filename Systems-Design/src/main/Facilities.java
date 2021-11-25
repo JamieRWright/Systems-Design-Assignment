@@ -8,7 +8,7 @@ package main;
  *
  */
 
-public class Facilities extends Property {
+public class Facilities {
 	private Property property;
 	private Bedroom[] sleeping;
 	private Bathroom[] bathing;
@@ -29,7 +29,6 @@ public class Facilities extends Property {
      *
      */
 	public Facilities (Property p, Bedroom[] sleeping, Bathroom[] bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
-		super(p.getShortName(), p.getDescription(), p.getHost(), p.getPublicLocation(), p.getFullAddress(), p.breakfastServed(), p.getMaxSleepers(), p.getPropertyRating(), p.getAvailableDates());
 		this.sleeping = sleeping;
 		this.bathing = bathing;
 		this.kitchen = kitchen;
