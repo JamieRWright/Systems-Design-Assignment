@@ -42,14 +42,18 @@ public class Address {
 		return this.streetName;
 	}
 	
-	public String getCityName() {
-		return this.city;
-	}
 	
 	public String getPostcode() {
 		return this.postcode;
 	}
 	
+	public String getCountry() {
+		return this.country;
+	}
+
+	public String getPublicLocation() {
+		return getCity() + ", "+ getStreetName();
+	}
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getHouseName());
@@ -57,11 +61,19 @@ public class Address {
 		sb.append(getStreetName());
 		sb.append(", ");
 		sb.append("\n");
-		sb.append(getCityName());
+		sb.append(getCity());
 		sb.append(", ");
 		sb.append("\n");
 		sb.append(getPostcode());
 		
 		return sb.toString();
+	}
+
+	public String getCity() {
+		return this.city;
+	}
+
+	public String getID() {
+		return TDatabase.SearchAddressID(getHouseName(), getPostcode());
 	}
 }
