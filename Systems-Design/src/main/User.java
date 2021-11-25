@@ -13,6 +13,7 @@ public class User {
 	protected String userID;
 	protected String password;
 	protected String phone;
+	protected String email;
 	protected Address address;
 	
 	/**
@@ -25,21 +26,32 @@ public class User {
      * @param address User's confidential address
      *
      */
-	public User(String forename, String surname, Address address, String phone, String userID, String password) {
+	public User(String forename, String surname, Address address, String phone, String userID, String email, String password) {
 		this.surname = surname;
 		this.forename = forename;
 		this.phone = phone;
 		this.userID = userID;
+		this.email=email;
 		this.password = password;
 		this.address = address;
 	}
-	public User(String forename, String surname, Address address, String phone, String userID) {
+	
+	public User(String forename, String surname, Address address, String phone, String email, String password) {
 		this.surname = surname;
 		this.forename = forename;
 		this.phone = phone;
-		this.userID = userID;
+		this.email=email;
+		this.password = password;
 		this.address = address;
 	}
+	public User(String forename, String surname, Address address, String phone, String email) {
+		this.surname = surname;
+		this.forename = forename;
+		this.phone = phone;
+		this.email=email;
+		this.address = address;
+	}
+	
 	
 	// Accessor methods
 	public String getName() {
