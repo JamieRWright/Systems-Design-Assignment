@@ -15,7 +15,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -30,6 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -51,13 +55,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	JLabel warning_hsu = new JLabel("");
 	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
-	Host currentHost;
-	Guest currentGuest;
+	public static Host currentHost;
+	public static Guest currentGuest;
 	
-	Map<Integer, Property> properties = TDatabase.Properties;
+	Map<Integer, Property> properties;
 	String cityFilter = "Sheffield";
-	Property chosenHouse = properties.get(0);
-	Kitchen kitchen = chosenHouse.getKitchen();
+	Property chosenHouse;
+	Kitchen kitchen;
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
@@ -66,6 +70,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	public HomeBreaks() {
 		System.out.println("Loading...");
 		TDatabase.Initialise();
+		properties = TDatabase.Properties;
+		chosenHouse = properties.get(25);
+		kitchen = chosenHouse.getKitchen();
 		startGUI();
 		System.out.println("Successfully loaded.");
 	}
@@ -621,7 +628,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				
 				if (TDatabase.HostLogin(email, pw)) {
 					hostID=TDatabase.SearchUserID("Host", email);
-					currentHost = TDatabase.Hosts.get(Integer.parseInt(hostID));
+					HomeBreaks.currentHost = TDatabase.Hosts.get(Integer.parseInt(hostID));
 					setTitle("Host Home");
 					cards.show(c, "Host Home");
 				}
@@ -972,19 +979,17 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
-		List<Property> filterProperties = new ArrayList();
+		Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
 		
-		for (int i = 0; i < properties.size(); i++) {
-			Property house = properties.get(i);
+		for (Property house : properties.values())  {
 			Address address = house.getFullAddress();
 			String city = address.getCity();
 			if (city == cityFilter){
-				filterProperties.add(house);
+				filterProperties.put(house.getID(), house);
 			}
 		}
 		
-		for (int i = 0; i < filterProperties.size(); i++) {
-			Property chosenHouse = filterProperties.get(i);
+		for (Property chosenHouse : properties.values()) {
 			//house information
 			shortName = new JLabel("Name: "+ chosenHouse.getShortName());
 			shortName.setFont(bold);
@@ -1081,7 +1086,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		breakfast = new JLabel("breakfast: " + chosenHouse.getBreakfast());
 		breakfast.setFont(plain);
 		
-		bedsBtn = new JButton("View Bedrooms");
+		JButton bedsBtn = new JButton("View Bedrooms");
 		bedsBtn.setFont(plain);
 		bedsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1090,7 +1095,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Bedrooms");
 			}
 		});
-		bathBtn = new JButton("View Bathrooms");
+		JButton bathBtn = new JButton("View Bathrooms");
 		bathBtn.setFont(plain);
 		bathBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1099,7 +1104,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Bathrooms");
 			}
 		});
-		ktchnBtn = new JButton("View Kitchen");
+		JButton ktchnBtn = new JButton("View Kitchen");
 		ktchnBtn.setFont(plain);
 		ktchnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1108,7 +1113,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Kitchen");
 			}
 		});
-		livBtn = new JButton("View Living Space");
+		JButton livBtn = new JButton("View Living Space");
 		livBtn.setFont(plain);
 		livBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1117,7 +1122,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Living Space");
 			}
 		});
-		utilBtn = new JButton("View Utilities");
+		JButton utilBtn = new JButton("View Utilities");
 		utilBtn.setFont(plain);
 		utilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1126,7 +1131,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				setTitle("Utility");
 			}
 		});
-		outBtn = new JButton("View Outdoor Facility");
+		JButton outBtn = new JButton("View Outdoor Facility");
 		outBtn.setFont(plain);
 		outBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
