@@ -54,7 +54,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	Host currentHost;
 	Guest currentGuest;
 	
-	List<Property> properties = TDatabase.Properties;
+	Map<Integer, Property> properties = TDatabase.Properties;
 	String cityFilter = "Sheffield";
 	Property chosenHouse = properties.get(0);
 	Kitchen kitchen = chosenHouse.getKitchen();
@@ -299,22 +299,26 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String lName = lName_input_gsu.getText();
 				String houseName = add1_gsu.getText();
 				String streetName = add2_gsu.getText();
-				String placeName = add3_gsu.getText();
+				String city = add3_gsu.getText();
 				String postcode = add4_gsu.getText();
 				String phone = phone_input_gsu.getText();
-				String userID = id_input_gsu.getText();
+				String email = id_input_gsu.getText();
 				String password = pw_input_gsu.getText();
 				
-				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
+				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
 				else {
-					Address add = new Address(houseName, streetName, placeName, postcode);
-					Guest guest = new Guest(fName, lName, add, phone, userID, password);
-					TDatabase.Guests.add(guest);
+					Address add = new Address(houseName, streetName, postcode, city, true);
+					Guest guest = new Guest(fName, lName, add, phone, email, password);
+					TDatabase.Guests.put(Integer.parseInt(guest.userID), guest);
 					
 					if (!(guest.getSuccess())) {
 						showMessageDialog(null, "Sign up failed.");
+					}
+					else
+					{
+						TDatabase.Guests.put(Integer.parseInt(guest.getID()), guest);
 					}
 				}
 			}
@@ -460,22 +464,26 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String lName = lName_input_hsu.getText();
 				String houseName = add1_hsu.getText();
 				String streetName = add2_hsu.getText();
-				String placeName = add3_hsu.getText();
+				String city = add3_hsu.getText();
 				String postcode = add4_hsu.getText();
 				String phone = phone_input_hsu.getText();
-				String userID = id_input_hsu.getText();
+				String email = id_input_hsu.getText();
 				String password = pw_input_hsu.getText();
 				
-				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || placeName.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || userID.isEmpty() || password.isEmpty()) {
+				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
 				else {
-					Address add = new Address(houseName, streetName, placeName, postcode);
-					Host host = new Host(fName, lName, add, phone, userID, password); // TODO change when authentication is available
-					TDatabase.Hosts.add(host);
+					Address add = new Address(houseName, streetName, postcode, city, true);
+					Host host = new Host(fName, lName, add, phone, email, password); // TODO change when authentication is available
+
 					
 					if (!(host.getSuccess())) {
 						showMessageDialog(null, "Sign up failed.");
+					}
+					else
+					{
+						TDatabase.Hosts.put(Integer.parseInt(host.getID()), host);
 					}
 				}
 			}
@@ -531,11 +539,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		glBtn.setFont(plain);
 		glBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String userID = id_input_gl.getText();
+				String email = id_input_gl.getText();
 				String pw = String.valueOf(pw_input_gl.getPassword());
-				System.out.println(pw);
 				
-				if (TDatabase.GuestLogin("'" + userID + "'", pw)) {
+				if (TDatabase.GuestLogin(email, pw)) {
 					setTitle("Guest Home");
 					cards.show(c, "Guest Home");
 				}
@@ -608,9 +615,21 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hlBtn.setFont(plain);
 		hlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Host Home");
+				String email = id_input_hl.getText();
+				String pw = String.valueOf(pw_input_hl.getPassword());
+				String hostID;
+				
+				if (TDatabase.HostLogin(email, pw)) {
+					hostID=TDatabase.SearchUserID("Host", email);
+					currentHost = TDatabase.Hosts.get(Integer.parseInt(hostID));
+					setTitle("Host Home");
+					cards.show(c, "Host Home");
+				}
+				else {
+					showMessageDialog(null, "Wrong credentials!");
+				}
 			}
-		}); // TODO change
+		});
 		hl.add(hlBtn, gbc);
 		
 		setConstraints(gbc, 1, 4, GridBagConstraints.WEST);
