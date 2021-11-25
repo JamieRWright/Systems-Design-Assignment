@@ -10,8 +10,9 @@ package main;
 public class Address {
 	private final String houseName;
 	private final String streetName;
-	private final String city;
 	private final String postcode;
+	private final String city;
+	private final String country;
 	
 	/**
      * Constructor
@@ -21,11 +22,16 @@ public class Address {
      * @param postcode, i.e SO31 4NG
      *
      */
-	public Address(String houseName, String streetName, String cityName, String postcode) {
+	public Address(String houseName, String streetName, String postcode, String city, boolean UpdateBackend) {
 		this.houseName = houseName;
 		this.streetName = streetName;
-		this.city = cityName;
 		this.postcode = postcode;
+		this.city=city;
+		//If initialising global lists don't add to back end
+		if (UpdateBackend)
+		{
+			TDatabase.addAddress(houseName, streetName, postcode, city);
+		}
 	}
 	
 	public String getHouseName() {
