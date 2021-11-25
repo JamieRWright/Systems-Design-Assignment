@@ -20,16 +20,17 @@ public class Guest extends User {
      * @param password, as provided by the user when they sign up
      *
      */
-	public Guest(String surname, String forename, Address address, String phone, String userID, String password) {
-		super(surname, forename, address, phone, userID, password);
+	public Guest(String surname, String forename, Address address, String phone, String email, String password) {
+		super(surname, forename, address, phone, email);
 		
-		TDatabase.signUpGuest(surname, forename, phone, userID, password);
+		TDatabase.signUpGuest(surname, forename, phone, email, address.getID(), password);
+		this.userID=TDatabase.SearchUserID("Guest", email);
 	
 	}
 	
 		
-	public Guest(String surname, String forename, Address address, String phone, String userID) {
-		super(surname, forename, address, phone, userID);
+	public Guest(String surname, String forename, Address address, String phone, String email) {
+		super(surname, forename, address, phone, email);
 		
 		
 		
@@ -44,6 +45,12 @@ public class Guest extends User {
 		
 		return sb.toString();
 	}
+	public String getID()
+	{
+		
+		return TDatabase.SearchUserID("Guest", email);
+	}
+	
 	
 		public boolean getSuccess() {
 		// TODO Auto-generated method stub
