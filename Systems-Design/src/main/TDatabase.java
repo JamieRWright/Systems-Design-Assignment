@@ -30,9 +30,9 @@ public final class TDatabase {
 	{
 		boolean isSuccess = true;
 		isSuccess=getConnection();
+		Hosts = TDatabase.LoadHosts();
 		Properties = TDatabase.LoadProperties();
 		Guests = TDatabase.LoadGuests();
-		Hosts = TDatabase.LoadHosts();
 		Bookmarks = new HashMap<Integer, Property>();
 		disconnect();
 		
@@ -72,20 +72,19 @@ public final class TDatabase {
 	private static Map<Integer, Property> LoadProperties(){
 		Map<Integer, Property> output = new HashMap<Integer, Property>();
 		ResultSet table = null;
-		boolean breakfast_bool = false;
 		table = SearchFullTable("Property", true);
 			try {
 				while (table.next()) {
 					Integer PropertyID = table.getInt(1);
 					Integer HostID = table.getInt(2);
-					String AddressID = table.getString(3);
 					String ShortName = table.getString(4);
 					String Description = table.getString(5);
-					int Breakfast = table.getInt(6);
+					String AddressID = table.getString(6);
+					int Breakfast = table.getInt(7);
 					// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 					Address address_temp = getAddress(AddressID);
 					Host current_host = Hosts.get(HostID);	
-					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, false));
+					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, null, null, null, null, null, null, null, false));
 					}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -437,7 +436,6 @@ public final class TDatabase {
 			return false;
 		}
 	}
-				}
 
    public static boolean addProperty(int HostID, String AddressID, String ShortName, String Descriptions, int Breakfast,
 			String HouseNumber) {
