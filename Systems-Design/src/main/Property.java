@@ -25,6 +25,7 @@ public class Property {
 	private Living living;
 	private Utility utility;
 	private Outdoor outdoor;
+	private Facilities facility;
 	private List<DatesAvailable> datesAvailable;
 	
 	/**
@@ -39,7 +40,7 @@ public class Property {
 	public Property(String shortName, String description, Host host, 
 			String publicLocation, Address address, boolean breakfast,
 			Bathroom bath, Bedroom bed, Kitchen kitchen, Living living,
-			Utility utility, Outdoor outdoor) {
+			Utility utility, Outdoor outdoor, Facilities facility) {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
@@ -55,6 +56,7 @@ public class Property {
 		this.living = living;
 		this.utility = utility;
 		this.outdoor = outdoor;
+		this.facility = facility;
 		hostID = host.getID();
 		
 		TDatabase.addProperty(maxSleepers, hostID, hostID, hostID, publicLocation, hostID, shortName, description);
@@ -87,7 +89,7 @@ public class Property {
 	}
 	
 	public String getPublicLocation() {
-		publicLocation = (this.address).getCityName() + (this.address).getStreetName();
+		publicLocation = (this.address).getCity() + (this.address).getStreetName();
 		return this.publicLocation;
 	}
 	
