@@ -21,15 +21,18 @@ public class Host extends User {
      * @param boolean whether they are a superhost or not; if new then defaults as false
      *
      */
-	public Host(String surname, String forename, Address address, String phone, String userID, String password) {
-		super(surname, forename, address, phone, userID, password);
+	public Host(String surname, String forename, Address address, String phone, String email, String password) {
+		super(surname, forename, address, phone, email, password);
 		this.rating = null;
-		this.signupSuccess = TDatabase.signUpHost(forename, surname, userID, password);
+		this.signupSuccess = TDatabase.signUpHost(forename, surname, email, address.getID(), password);
+		this.userID=TDatabase.SearchUserID("Host", email);
+		this.email=email;
 	}
-	public Host(String surname, String forename, Address address, String phone, String userID) {
-		super(surname, forename, address, phone, userID);
+	public Host(String surname, String forename, Address address, String phone, String email) {
+		super(surname, forename, address, phone, email);
 		this.rating = null;
 		this.signupSuccess = true;
+		
 		
 	}
 
@@ -48,6 +51,12 @@ public class Host extends User {
 		else {return false;}
 	}
 	
+		
+	public String getID()
+	{
+		
+		return TDatabase.SearchUserID("Host", email);
+	}
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Host Name: ");
