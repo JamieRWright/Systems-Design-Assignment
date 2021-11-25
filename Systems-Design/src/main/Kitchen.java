@@ -51,4 +51,56 @@ public class Kitchen {
 		
 		return str;
 	}
+		public String popUpText() {
+		String text ="";
+		if (getFridge()) {
+			text = text + "Fridge u\2713 \n";
+		}
+		else if (!getFridge()){
+			text = text + "Fridge u\02DF \n";
+		}
+		if (getMicrowave()) {
+			text = text + "Microwave u\2713 \n";
+		}
+		else if (!getMicrowave()){
+			text = text + "Microwave u\02DF \n";
+		}
+		if (getOven()) {
+			text = text + "Oven u\2713 \n";
+		}
+		else if (!getOven()){
+			text = text + "Oven u\02DF \n";
+		}
+		if (getStove()) {
+			text = text + "Stove u\2713 \n";
+		}
+		else if (!getStove()){
+			text = text + "Stove u\02DF \n";
+		}
+		if (getDishwasher()) {
+			text = text + "Dishwasher u\2713 \n";
+		}
+		else if (!getDishwasher()){
+			text = text + "Dishwasher u\02DF \n";
+		}
+		if (getTableware()) {
+			text = text + "Tableware u\2713 \n";
+		}
+		else if (!getTableware()){
+			text = text + "Tableware u\02DF \n";
+		}
+		if (getCookware()) {
+			text = text + "Cookware u\2713 \n";
+		}
+		else if (!getCookware()){
+			text = text + "Cookware u\02DF \n";
+		}
+		if (getBasicProvisions()) {
+			text = text + "Basic Provisions u\2713 \n";
+		}
+		else if (!getBasicProvisions()){
+			text = text + "Basic Provisions u\02DF \n";
+		}
+		return text;
+	}
 }
