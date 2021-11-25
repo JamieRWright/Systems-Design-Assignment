@@ -958,7 +958,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		for (int i = 0; i < properties.size(); i++) {
 			Property house = properties.get(i);
 			Address address = house.getFullAddress();
-			String city = address.getCityName();
+			String city = address.getCity();
 			if (city == cityFilter){
 				filterProperties.add(house);
 			}
