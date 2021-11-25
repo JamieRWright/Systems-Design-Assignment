@@ -126,12 +126,12 @@ public class HBPanels {
 				String houseNo = add1.getText();
 				String street = add2.getText();
 				String postcode = add3.getText();
-				String place = add4.getText();
-				boolean bfast = false;
-				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || place.isEmpty();
+				String city = add4.getText();
+				int bfast = 0;
+				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || city.isEmpty();
 				
 				if (yes_bfast.isSelected()) {
-					bfast = true;
+					bfast = 1;
 				}
 				
 				if (notAllFilled) {
@@ -139,8 +139,10 @@ public class HBPanels {
 				}
 				else {
 					//Address propAddress = new Address(houseNo, street, postcode, place);
-					//Host testHost = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
-					TDatabase.Properties.add(new Property(1, houseNo, street, postcode, place, "England", sName, descr, true));
+					//Homebreaks = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
+					Address address_temp = new Address(houseNo, street, postcode, city, true);
+					Property temp_prop = new Property(sName, descr, currentHost, address_temp, bfast, true);
+					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
 				}
 			}
 		});
@@ -210,9 +212,9 @@ public class HBPanels {
 					showMessageDialog(null, "All fields must not be blank.");
 				}
 				else {
-					TDatabase.UpdateValue("Host", "firstName", "userID", fn);
-					TDatabase.UpdateValue("Host", "lastName", "userID", ln);
-					TDatabase.UpdateValue("Host", "Phone", "userID", pn);
+					TDatabase.UpdateValue("Host", "firstName", currentHost.getID(), fn);
+					TDatabase.UpdateValue("Host", "lastName", currentHost.getID(), ln);
+					TDatabase.UpdateValue("Host", "Phone", currentHost.getID(), pn);
 				}
 			}
 		});
