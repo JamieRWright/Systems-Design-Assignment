@@ -37,16 +37,19 @@ public class Property {
      * @param availableList, containing the DatesAvailable lists, for every date the property is available for
      *
      */
-	public Property(String shortName, String description, Host host, 
-			String publicLocation, Address address, boolean breakfast,
+	public Property(String shortName, String description, Host host,
+			Address address, int breakfast,
 			Bathroom bath, Bedroom bed, Kitchen kitchen, Living living,
-			Utility utility, Outdoor outdoor, Facilities facility) {
+			Utility utility, Outdoor outdoor, Facilities facility, boolean updateBackend) {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
-		this.publicLocation = publicLocation;
+		this.publicLocation = address.getPublicLocation();
 		this.address = address;
-		this.breakfast = breakfast;
+		if (breakfast==1)
+			this.breakfast=true;
+		else 
+			this.breakfast=false;
 		this.maxSleepers = 0;
 		this.pRating = null;
 		this.datesAvailable = null;
@@ -58,22 +61,10 @@ public class Property {
 		this.outdoor = outdoor;
 		this.facility = facility;
 		hostID = host.getID();
-		
-		TDatabase.addProperty(maxSleepers, hostID, hostID, hostID, publicLocation, hostID, shortName, description);
-		
-	}
-	
-	public Property(int i, String houseNo, String street, String postcode, String city, String country, String s_name,
-			String description, boolean updateBackend) {
 		if (updateBackend)
 		{
-			TDatabase.addProperty(i, houseNo, street, postcode, city, country, s_name, description);
+			TDatabase.addProperty(Integer.parseInt(hostID), address.getID(), shortName, description, breakfast, address.getHouseName());
 		}
-		this.shortName=s_name;
-		this.address = new Address(houseNo, street, s_name, postcode);
-		this.description = description;
-		this.hostID = String.valueOf(i);
-		
 	}
 
 	public String getShortName() {
@@ -89,8 +80,7 @@ public class Property {
 	}
 	
 	public String getPublicLocation() {
-		publicLocation = (this.address).getCity() + (this.address).getStreetName();
-		return this.publicLocation;
+		return address.getPublicLocation();
 	}
 	
 	public Address getFullAddress() {
@@ -133,9 +123,8 @@ public class Property {
 	}
 	
 	
-	public int getID() {
-		//t.getPropertyID((this.host).getID(), this.shortName);
-		return 0;
+	public Integer getID() {
+		return Integer.parseInt(TDatabase.GetPropertyID(address.getID()));
 	}
 	
 	
