@@ -47,8 +47,9 @@ public class Host extends User {
 
 	// check if a host achieved the superhost title
 	public boolean isSuperhost() {
-		if (getRating().getHostOverall() >= 4.7) {return true;}
-		else {return false;}
+		//if (getRating().getHostOverall() >= 4.7) {return true;}
+		//else {return false;}
+		return false;
 	}
 	
 		
