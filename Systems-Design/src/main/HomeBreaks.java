@@ -41,6 +41,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	CardLayout cards, myAccountCards;
 	Container c = getContentPane();
 	String current = "";
+	Popup k;
 	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties;
 	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
@@ -56,6 +57,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	List<Property> properties = TDatabase.Properties;
 	String cityFilter = "Sheffield";
 	Property chosenHouse = properties.get(0);
+	Kitchen kitchen = chosenHouse.getKitchen();
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
@@ -1057,11 +1059,69 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		location.setFont(plain);
 		host = new JLabel("Host: " + chosenHouse.getHost());
 		host.setFont(plain);
+		breakfast = new JLabel("breakfast: " + chosenHouse.getBreakfast());
+		breakfast.setFont(plain);
+		
+		bedsBtn = new JButton("View Bedrooms");
+		bedsBtn.setFont(plain);
+		bedsBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Beds");
+				current = "BE";
+				setTitle("Bedrooms");
+			}
+		});
+		bathBtn = new JButton("View Bathrooms");
+		bathBtn.setFont(plain);
+		bathBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Baths");
+				current = "BA";
+				setTitle("Bathrooms");
+			}
+		});
+		ktchnBtn = new JButton("View Kitchen");
+		ktchnBtn.setFont(plain);
+		ktchnBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Kitchen");
+				current = "KI";
+				setTitle("Kitchen");
+			}
+		});
+		livBtn = new JButton("View Living Space");
+		livBtn.setFont(plain);
+		livBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Living");
+				current = "LI";
+				setTitle("Living Space");
+			}
+		});
+		utilBtn = new JButton("View Utilities");
+		utilBtn.setFont(plain);
+		utilBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Utility");
+				current = "UT";
+				setTitle("Utility");
+			}
+		});
+		outBtn = new JButton("View Outdoor Facility");
+		outBtn.setFont(plain);
+		outBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Outdoor");
+				current = "OUT";
+				setTitle("Outdoor Facility");
+			}
+		});
 		
 		sn = new JPanel();
 		pl = new JPanel();
 		d = new JPanel();
 		h = new JPanel();
+		bekfast = new JPanel();
 		buttons = new JPanel();
 
 		BoxLayout bl = new BoxLayout(hv, BoxLayout.Y_AXIS);
@@ -1071,15 +1131,63 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		pl.add(location);
 		d.add(description);
 		h.add(host);
-		buttons.add(viewMoreBtn);
+		bekfast.add(breakfast);
+		buttons.add(bedsBtn);
+		buttons.add(bathBtn);
+		buttons.add(ktchnBtn);
+		buttons.add(livBtn);
+		buttons.add(utilBtn);
+		buttons.add(outBtn);
 		
 		hv.add(shortName);
 		hv.add(location);
 		hv.add(description);
 		hv.add(host);
+		hv.add(breakfast);
 		hv.add(buttons);
 		
 		return hv;
+	}
+	
+	public JFrame viewKitchen(){
+		String text = "";
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		
+		JFrame ki = new JFrame("pop");
+		 
+		// create a label
+		JLabel l = new JLabel(kitchen.popUpText());
+
+		ki.setSize(400, 400);
+
+		PopupFactory pf = new PopupFactory();
+
+		// create a panel
+		JPanel p2 = new JPanel();
+
+		p2.add(l);
+
+		// create a pop-up
+		k = pf.getPopup(ki, p2, 180, 100);
+
+		// create a button
+		JButton b = new JButton("close");
+
+		// add action listener
+		b.addActionListener(this);
+
+		// create a panel
+		JPanel p1 = new JPanel();
+
+		p1.add(b);
+		ki.add(p1);
+		
+		return ki;
 	}
 	
 
