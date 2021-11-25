@@ -12,7 +12,6 @@ public class Address {
 	private final String streetName;
 	private final String postcode;
 	private final String city;
-	private final String country;
 	
 	/**
      * Constructor
@@ -47,9 +46,6 @@ public class Address {
 		return this.postcode;
 	}
 	
-	public String getCountry() {
-		return this.country;
-	}
 
 	public String getPublicLocation() {
 		return getCity() + ", "+ getStreetName();
