@@ -1,5 +1,4 @@
 package main;
-
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -686,15 +685,18 @@ public static boolean addAddress(String houseNumber, String street, String postc
  		}
  	}
     
-    public static boolean AddChargeBand(String start, String end, int price, int propertyID) {
+    public static boolean AddChargeBand(String start, String end, int price, int propertyID, int ppn, int sc, int cc) {
  		try {
  			getConnection();
- 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, Price, PropertyID) VALUES (?, ?, ?, ?);";
+ 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, Price, PropertyID, PricePerNight, ServiceCharge, CleaningCharge) VALUES (?, ?, ?, ?, ?, ?, ?);";
  			PreparedStatement pst=con.prepareStatement(sql);
  			pst.setString(1, start);
  			pst.setString(2, end);
  			pst.setInt(3, price);
  			pst.setInt(4, propertyID);
+ 			pst.setInt(5, ppn);
+ 			pst.setInt(6, sc);
+ 			pst.setInt(7, cc);
  			pst.execute();
  			disconnect();
  			return true;
