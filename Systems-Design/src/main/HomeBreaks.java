@@ -58,7 +58,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	Map<Integer, Property> properties;
 	String cityFilter = "Sheffield";
 	Property chosenHouse;
-	Kitchen kitchen;
+	Facilities facility;
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
@@ -69,7 +69,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		TDatabase.Initialise();
 		properties = TDatabase.Properties;
 		chosenHouse = properties.get(25);
-		kitchen = chosenHouse.getKitchen();
 		startGUI();
 		System.out.println("Successfully loaded.");
 	}
@@ -1003,7 +1002,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			numbeds = new JLabel("Number of Bedrooms: " + chosenHouse.getBedroom());
 			numbeds.setFont(plain);
 			
-			
 			viewMoreBtn = new JButton("View More");
 			viewMoreBtn.setFont(plain);
 			viewMoreBtn.addActionListener(new ActionListener() {
@@ -1054,6 +1052,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public JPanel houseView() {
+		facilities = chosenHouse.getFacilities();
 		JPanel hv = new JPanel();
 		hv.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
@@ -1169,6 +1168,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public JFrame viewKitchen(){
+		Kitchen kitchen = facilites.getKitchen();
 		String text = "";
 		GridBagConstraints g = new GridBagConstraints();
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
