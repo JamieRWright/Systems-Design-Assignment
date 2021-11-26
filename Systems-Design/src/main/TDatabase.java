@@ -565,7 +565,6 @@ public static boolean addAddress(String houseNumber, String street, String postc
 			table = stmt.executeQuery(Command);
 			while (table.next()) {
 				password = table.getString(2);
-				System.out.println(password);
 			}
 			disconnect();
 		} catch (SQLException e) {
@@ -664,7 +663,6 @@ public static boolean addAddress(String houseNumber, String street, String postc
     public static boolean AddReview(int propertyID, int guestID, int hostID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
  		try {
  			getConnection();
- 			System.out.println("Connection established");
  			String sql="INSERT INTO Reviews(PropertyID, GuestID, HostID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
  			PreparedStatement pst=con.prepareStatement(sql);
  			pst.setInt(1, propertyID);
@@ -678,6 +676,25 @@ public static boolean addAddress(String houseNumber, String street, String postc
  			pst.setInt(9, val);
  			if (desc == "") {pst.setString(10, null);}
  			else {pst.setString(10, desc);}
+ 			pst.execute();
+ 			disconnect();
+ 			return true;
+
+ 			}
+ 		catch (Exception e) {
+ 			return false;
+ 		}
+ 	}
+    
+    public static boolean AddChargeBand(String start, String end, int price, int propertyID) {
+ 		try {
+ 			getConnection();
+ 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, Price, PropertyID) VALUES (?, ?, ?, ?);";
+ 			PreparedStatement pst=con.prepareStatement(sql);
+ 			pst.setString(1, start);
+ 			pst.setString(2, end);
+ 			pst.setInt(3, price);
+ 			pst.setInt(4, propertyID);
  			pst.execute();
  			disconnect();
  			return true;
