@@ -567,9 +567,6 @@ public class HBPanels {
 				boolean rightStart = HomeBreaks.isNumericDate(sY) || HomeBreaks.isNumericDate(sM) || HomeBreaks.isNumericDate(sD);
 				boolean unfilledStart = sY.isEmpty() || sM.isEmpty() || sD.isEmpty();
 				
-				System.out.println("Right start: " + rightStart);
-				System.out.println("y " + HomeBreaks.isNumericDate(sY) + HomeBreaks.isNumericDate(sM) + HomeBreaks.isNumericDate(sD));
-				System.out.println("z" + HomeBreaks.isNumericDate("21"));
 				String eY = endYY.getText();
 				String eM = endMM.getText();
 				String eD = endDD.getText();
@@ -589,7 +586,7 @@ public class HBPanels {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
 					
-					TDatabase.AddChargeBand(start, end, Integer.parseInt(price), 25); // TODO get propertyID from current property
+					TDatabase.AddChargeBand(start, end, Integer.parseInt(price), 25, Integer.parseInt(price), Integer.parseInt(service), Integer.parseInt(cleaning)); // TODO get propertyID from current property
 				}
 				else {
 					showMessageDialog(null, "Incorrect input");
