@@ -471,14 +471,14 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String postcode = add4_hsu.getText();
 				String phone = phone_input_hsu.getText();
 				String email = id_input_hsu.getText();
-				String password = pw_input_hsu.getText();
+				String password = String.valueOf(pw_input_hsu.getPassword());
 				
 				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
 				else {
 					Address add = new Address(houseName, streetName, postcode, city, true);
-					Host host = new Host(fName, lName, add, phone, email, password); // TODO change when authentication is available
+					Host host = new Host(lName, fName, add, phone, email, password); // TODO change when authentication is available
 
 					
 					if (!(host.getSuccess())) {
@@ -1335,7 +1335,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public static boolean isNumericDate(String str) {
-		  return str.matches("\\d?");
+		  return str.matches("\\d+\\d");
 	}
 	
 	public static void main (String [] args) {
