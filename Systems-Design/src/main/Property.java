@@ -19,12 +19,6 @@ public class Property {
 	private boolean breakfast;
 	private int maxSleepers;
 	private Rating pRating;
-	private Bathroom bath;
-	private Bedroom bed;
-	private Kitchen kitchen;
-	private Living living;
-	private Utility utility;
-	private Outdoor outdoor;
 	private Facilities facility;
 	private List<DatesAvailable> datesAvailable;
 	
@@ -103,25 +97,9 @@ public class Property {
 		return this.datesAvailable;
 	}
 	
-	public Bathroom getBathroom() {
-		return this.bath;
-	}	
-	public Bedroom getBedroom() {
-		return this.bed;
+	public Facilities getFacilities(){
+		returns this.facility;
 	}
-	public Kitchen getKitchen() {
-		return this.kitchen;
-	}
-	public Living getLiving() {
-		return this.living;
-	}
-	public Utility getUtility() {
-		return this.utility;
-	}
-	public Outdoor getOutdoor() {
-		return this.outdoor;
-	}
-	
 	
 	public Integer getID() {
 		return Integer.parseInt(TDatabase.GetPropertyID(address.getID()));
