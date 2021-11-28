@@ -17,6 +17,7 @@ public final class TDatabase {
 	private static final String password="c77880a3";
 	public static Map<Integer, Property> Properties = null;
 	public static Map<Integer, Property> Bookmarks = null;
+	public static Map<Integer, Booking> Bookings = null;
 	public static Map<Integer, Guest> Guests = null;
 	public static Map<Integer, Host> Hosts = null;
 	private static Connection con;
@@ -32,7 +33,7 @@ public final class TDatabase {
 		Hosts = TDatabase.LoadHosts();
 		Properties = TDatabase.LoadProperties();
 		Guests = TDatabase.LoadGuests();
-		Bookmarks = new HashMap<Integer, Property>();
+		Bookings = TDatabase.LoadBookings();
 		disconnect();
 		
 		return isSuccess;
@@ -67,6 +68,32 @@ public final class TDatabase {
 		 
 		 return output;
 	}
+	
+	private static Map<Integer, Booking> LoadBookings() {
+			Map<Integer, Booking> output = new HashMap<Integer, Booking>();
+			ResultSet table = null;
+			table = SearchFullTable("Bookings", true);
+				try {
+					while (table.next()) {
+						Integer BookingID = table.getInt(2);
+						Integer PropertyID = table.getInt(2);
+						Integer HostID = table.getInt(3);
+						Integer GuestID = table.getInt(4);
+						String StartDate = table.getString(5);
+						String EndDate = table.getString(6);
+						int Provisional = table.getInt(7);
+						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
+						Host current_host = Hosts.get(HostID);	
+						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, false));
+						}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
+
+			return output;
+		}
 	
 	private static Map<Integer, Property> LoadProperties(){
 		Map<Integer, Property> output = new HashMap<Integer, Property>();
