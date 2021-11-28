@@ -94,7 +94,7 @@ public class Property {
 	}
 	
 	public Facilities getFacilities(){
-		returns this.facility;
+		return this.facility;
 	}
 	
 	public Integer getID() {
