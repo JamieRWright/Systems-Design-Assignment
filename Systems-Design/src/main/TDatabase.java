@@ -45,9 +45,9 @@ public final class TDatabase {
 		return isSuccess;
 	}
 	
-	public static String encryptThisString(String input)
+	public static String encryptThisString(String input) throws NoSuchAlgorithmException
 	{
-		try {
+		
 			// getInstance() method is called with algorithm SHA-1
 			MessageDigest md = MessageDigest.getInstance("SHA-1");
 
@@ -69,7 +69,8 @@ public final class TDatabase {
 
 			// return the HashText
 			return hashtext;
-		}
+			
+	}
 	
 		private static Map<Integer, Host> LoadHosts() {
 		 Map<Integer, Host> output = new HashMap<Integer, Host>();
