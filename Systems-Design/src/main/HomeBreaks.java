@@ -26,6 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -64,7 +65,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	String hostFilter = "";
 	String propertyNameFilter = "";
 	Property chosenHouse;
-	Facilities facility;
+	static Facilities facility;
 	
 	// TODO if there's time: enhance the searching feature to search for matching results, not exact ones
 	
@@ -832,6 +833,64 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hp.add(np, g);
 		
 		return hp;
+	}
+	
+	public static JFrame addKitchen() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JFrame ak = new JFrame();
+		JPanel buttons;
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox checkFridge = new JCheckBox("Fridge", true);
+		checkFridge.setBounds(100,100, 50,50);
+		JCheckBox checkMicro = new JCheckBox("Microwave", true);
+		checkMicro.setBounds(100,100, 50,50);
+		JCheckBox checkOven = new JCheckBox("Oven", true);
+		checkOven.setBounds(100,100, 50,50);
+		JCheckBox checkStore = new JCheckBox("Storage", true);
+		checkStore.setBounds(100,100, 50,50);
+		JCheckBox checkDish = new JCheckBox("Dishwasher", true);
+		checkDish.setBounds(100,100, 50,50);
+		JCheckBox checkTable = new JCheckBox("Tableware", true);
+		checkTable.setBounds(100,100, 50,50);
+		JCheckBox checkCook = new JCheckBox("Cookware", true);
+		checkCook.setBounds(100,100, 50,50);
+		JCheckBox checkBasic = new JCheckBox("Basic Provisions", true);
+		checkBasic.setBounds(100,100, 50,50);
+		
+		JButton create = new JButton("Create Kitchen");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Kitchen kitchen = new Kitchen(checkFridge.isSelected(), checkMicro.isSelected(), checkOven.isSelected(),
+						checkStore.isSelected(), checkDish.isSelected(), checkTable.isSelected(), checkCook.isSelected(),
+						checkBasic.isSelected());
+				facility.setKitchen(kitchen);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		ak.add(checkFridge);
+		ak.add(checkMicro);
+		ak.add(checkOven);
+		ak.add(checkStore);
+		ak.add(checkDish);
+		ak.add(checkTable);
+		ak.add(checkCook);
+		ak.add(checkBasic);
+		ak.add(buttons);
+		
+		ak.setSize(400,400);  
+		ak.setLayout(null);  
+		ak.setVisible(true); 
+		ak.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		return ak;	        
 	}
 	
 	public JPanel inquiry() {
