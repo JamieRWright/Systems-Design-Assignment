@@ -1,14 +1,20 @@
 package main;
 import static javax.swing.JOptionPane.showMessageDialog;
 
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -17,143 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class HBPanels {
-	public static JPanel newPropertyPanel() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 25);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		
-		JPanel np = new JPanel();
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
-		
-		np.setBorder(HomeBreaks.createTitledBorder("New Property"));
-		np.setLayout(new GridBagLayout());
-		
-		JLabel name, description, houseNo, stNo, postcode, place, bfast;
-		JTextField shortName, add1, add2, add3, add4;
-		JTextArea desc;
-		JButton create;
-		
-		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.EAST);
-		name = new JLabel("Property name: ");
-		name.setFont(plain);
-		np.add(name, g);
-		
-		HomeBreaks.setConstraints(g, 1, 0, GridBagConstraints.WEST);
-		shortName = new JTextField(20);
-		shortName.setFont(plain);
-		np.add(shortName, g);
-		
-		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
-		description = new JLabel("Description: ");
-		description.setFont(plain);
-		np.add(description, g);
-		
-		HomeBreaks.setConstraints(g, 1, 2, GridBagConstraints.WEST);
-		desc = new JTextArea(5, 20);
-		JScrollPane scrollPane = new JScrollPane(desc);
-		desc.setFont(plain);
-		desc.setLineWrap(true);
-		desc.setWrapStyleWord(true);
-		np.add(scrollPane, g);
-		
-		HomeBreaks.setConstraints(g, 0, 3, GridBagConstraints.EAST);	
-		houseNo = new JLabel("House Number: ");
-		houseNo.setFont(plain);
-		np.add(houseNo, g);
-		
-		HomeBreaks.setConstraints(g, 1, 3, GridBagConstraints.WEST);
-		add1 = new JTextField(20);
-		add1.setFont(plain);
-		np.add(add1, g);
-		
-		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
-		stNo = new JLabel("Street Name: ");
-		stNo.setFont(plain);
-		np.add(stNo, g);
-		
-		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
-		add2 = new JTextField(20);
-		add2.setFont(plain);
-		np.add(add2, g);
-		
-		HomeBreaks.setConstraints(g, 0, 5, GridBagConstraints.EAST);
-		postcode = new JLabel("Postcode: ");
-		postcode.setFont(plain);
-		np.add(postcode, g);
-		
-		HomeBreaks.setConstraints(g, 1, 5, GridBagConstraints.WEST);
-		add3 = new JTextField(20);
-		add3.setFont(plain);
-		np.add(add3, g);
-		
-		HomeBreaks.setConstraints(g, 0, 6, GridBagConstraints.EAST);
-		place = new JLabel("Area: ");
-		place.setFont(plain);
-		np.add(place, g);
-		
-		HomeBreaks.setConstraints(g, 1, 6, GridBagConstraints.WEST);
-		add4 = new JTextField(20);
-		add4.setFont(plain);
-		np.add(add4, g);
-		
-		HomeBreaks.setConstraints(g, 0, 7, GridBagConstraints.EAST);
-		bfast = new JLabel("Is breakfast served?");	
-		bfast.setFont(plain);
-		np.add(bfast, g);
-		
-		HomeBreaks.setConstraints(g, 1, 7, GridBagConstraints.WEST);
-		ButtonGroup grp = new ButtonGroup();
-		JRadioButton yes_bfast = new JRadioButton("Yes");
-		yes_bfast.setFont(plain);
-		JRadioButton no_bfast = new JRadioButton("No");
-		no_bfast.setFont(plain);
-		grp.add(yes_bfast);
-		grp.add(no_bfast);
-		JPanel breakfast = new JPanel();
-		breakfast.add(yes_bfast);
-		breakfast.add(no_bfast);
-		np.add(breakfast, g);		
-		
-		HomeBreaks.setConstraints(g, 1, 8, GridBagConstraints.WEST);
-		create = new JButton("Create Property");
-		create.setFont(plain);
-		create.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// get inputs
-				String sName = shortName.getText();
-				String descr = desc.getText();
-				String houseNo = add1.getText();
-				String street = add2.getText();
-				String postcode = add3.getText();
-				String city = add4.getText();
-				int bfast = 0;
-				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || city.isEmpty();
-				
-				if (yes_bfast.isSelected()) {
-					bfast = 1;
-				}
-				
-				if (notAllFilled) {
-					showMessageDialog(null, "All fields are mandatory.");
-				}
-				else {
-					//Address propAddress = new Address(houseNo, street, postcode, place);
-					//Homebreaks = new Host("May", "Brian", propAddress, "000", "redspecial@gmail.com", "password123");
-					Address address_temp = new Address(houseNo, street, postcode, city, true);
-					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, null, null, null, null, null, null, true);
-					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
-				}
-			}
-		});
-		np.add(create, g);
-		
-		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		hp.add(np, g);
-		
-		return hp;
-	}
+public class HBPanels extends HomeBreaks {
 
 	public static JPanel changeInfoPanel() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
