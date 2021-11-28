@@ -110,7 +110,7 @@ public final class TDatabase {
 					// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 					Address address_temp = getAddress(AddressID);
 					Host current_host = Hosts.get(HostID);	
-					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, null, null, null, null, null, null, null, false));
+					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, null, false));
 					}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
