@@ -42,11 +42,11 @@ import javax.swing.event.DocumentListener;
 
 
 public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
-	CardLayout cards, myAccountCards, crd, myPropertiesCards;
+	CardLayout cards, myAccountCards, crd, myPropertiesCards, facilitiesCards;
 	Container c = getContentPane();
 	String current = "";
 	Popup k;
-	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties, myProperties;
+	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties, myProperties, myFacilities;
 	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn, newPropertyBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
@@ -66,6 +66,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	String propertyNameFilter = "";
 	Property chosenHouse;
 	static Facilities facility;
+	ParkType parking = null;
+	BedType bed1 = null;
+	BedType bed2 = null;
 	
 	// TODO if there's time: enhance the searching feature to search for matching results, not exact ones
 	
@@ -103,6 +106,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("House View", houseView());
 		c.add("View Properties", viewProperties(null, "City"));
 		c.add("Booking", bookingPage());
+		c.add("View Kitchen", viewKitchen());
+		c.add("Living", viewLiving());
 		
 		setVisible(true);
 	}
@@ -819,7 +824,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				}
 				else {
 					Address address_temp = new Address(houseNo, street, postcode, city, true);
-					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, null, null, null, null, null, null, true);
+					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, true);
+					myPropertiesCards.show(myProperties, "Add Kitchen");
 					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
 					showMessageDialog(null, "Property successfully added!");
 					addHostProperties();
@@ -835,10 +841,280 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hp;
 	}
 	
-	public static JFrame addKitchen() {
+	public JPanel addLiving() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
-		JFrame ak = new JFrame();
+		JPanel al = new JPanel();
 		JPanel buttons;
+		
+		al.setBorder(HomeBreaks.createTitledBorder("New Living Space"));
+		al.setLayout(new GridBagLayout());
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox checkWifi = new JCheckBox("Wifi", true);
+		checkWifi.setBounds(100,100, 50,50);
+		JCheckBox checkTV = new JCheckBox("TV", true);
+		checkTV.setBounds(100,150, 50,50);
+		JCheckBox checkSat = new JCheckBox("Satellite", true);
+		checkSat.setBounds(100,200, 50,50);
+		JCheckBox checkStream = new JCheckBox("Streaming", true);
+		checkStream.setBounds(100,250, 50,50);
+		JCheckBox checkDvd = new JCheckBox("DVD Player", true);
+		checkDvd.setBounds(100,300, 50,50);
+		JCheckBox checkBoard = new JCheckBox("Board Games", true);
+		checkBoard.setBounds(100,350, 50,50);
+		
+		JButton create = new JButton("Create Living Space");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Living living = new Living(checkWifi.isSelected(), checkTV.isSelected(), checkSat.isSelected(),
+						checkStream.isSelected(), checkDvd.isSelected(), checkBoard.isSelected());
+				facility.setLivingFacility(living);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		al.add(checkWifi);
+		al.add(checkTV);
+		al.add(checkSat);
+		al.add(checkStream);
+		al.add(checkDvd);
+		al.add(checkBoard);
+		al.add(buttons);
+		
+		return al;	        
+	}
+	
+	public JPanel addUtility() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JPanel au = new JPanel();
+		JPanel buttons;
+		
+		au.setBorder(HomeBreaks.createTitledBorder("New Utilities"));
+		au.setLayout(new GridBagLayout());
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox check1 = new JCheckBox("Heating", true);
+		check1.setBounds(100,100, 50,50);
+		JCheckBox check2 = new JCheckBox("Washing Machine", true);
+		check2.setBounds(100,150, 50,50);
+		JCheckBox check3 = new JCheckBox("Drying Machine", true);
+		check3.setBounds(100,200, 50,50);
+		JCheckBox check4 = new JCheckBox("Fire Extinguisher", true);
+		check4.setBounds(100,250, 50,50);
+		JCheckBox check5 = new JCheckBox("Smoke Alarm", true);
+		check5.setBounds(100,300, 50,50);
+		JCheckBox check6 = new JCheckBox("First Aid Kit", true);
+		check6.setBounds(100,350, 50,50);
+		
+		JButton create = new JButton("Create Utilities");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Utility utility = new Utility(check1.isSelected(), check2.isSelected(), check3.isSelected(),
+						check4.isSelected(), check5.isSelected(), check6.isSelected());
+				facility.setUtility(utility);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		au.add(check1);
+		au.add(check2);
+		au.add(check3);
+		au.add(check4);
+		au.add(check5);
+		au.add(check6);
+		au.add(buttons);
+		
+		return au;	        
+	}
+	
+	public JPanel addBath() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JPanel aba = new JPanel();
+		JPanel buttons;
+		
+		aba.setBorder(HomeBreaks.createTitledBorder("New Bathroom"));
+		aba.setLayout(new GridBagLayout());
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox check1 = new JCheckBox("Hair Drier", true);
+		check1.setBounds(100,100, 50,50);
+		JCheckBox check2 = new JCheckBox("Shampoo", true);
+		check2.setBounds(100,150, 50,50);
+		JCheckBox check3 = new JCheckBox("Toilet Paper", true);
+		check3.setBounds(100,150, 50,50);
+		JCheckBox check4 = new JCheckBox("Toilet", true);
+		check4.setBounds(100,200, 50,50);
+		JCheckBox check5 = new JCheckBox("Bath", true);
+		check5.setBounds(100,250, 50,50);
+		JCheckBox check6 = new JCheckBox("Shower", true);
+		check6.setBounds(100,300, 50,50);
+		JCheckBox check7 = new JCheckBox("Shared?", true);
+		check7.setBounds(100,350, 50,50);
+		
+		JButton create = new JButton("Create Bathroom");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
+						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
+				facility.addBathroom(bathroom);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		aba.add(check1);
+		aba.add(check2);
+		aba.add(check3);
+		aba.add(check4);
+		aba.add(check5);
+		aba.add(check6);
+		aba.add(check7);
+		aba.add(buttons);
+		
+		return aba;	        
+	}
+	
+	public JPanel addBedroom() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JPanel ab = new JPanel();
+		JPanel buttons;
+		
+		ab.setBorder(HomeBreaks.createTitledBorder("New Bedroom"));
+		ab.setLayout(new GridBagLayout());
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox check1 = new JCheckBox("Bed Linen", true);
+		check1.setBounds(100,100, 50,50);
+		JCheckBox check2 = new JCheckBox("Towels", true);
+		check2.setBounds(100,150, 50,50);
+		JCheckBox check3a = new JCheckBox("Bed 1 = Single", true);
+		check3a.setBounds(150,200, 50,50);
+		JCheckBox check3b = new JCheckBox("Bed 1 = Double", true);
+		check3b.setBounds(200,200, 50,50);
+		JCheckBox check3c = new JCheckBox("Bed 1 = King", true);
+		check3c.setBounds(150,200, 50,50);
+		JCheckBox check3d = new JCheckBox("Bed 1 = Bunk", true);
+		check3d.setBounds(300,200, 50,50);
+		JCheckBox check4a = new JCheckBox("Bed 2 = Single", true);
+		check4a.setBounds(150,200, 50,50);
+		JCheckBox check4b = new JCheckBox("Bed 2 = Double", true);
+		check4b.setBounds(200,200, 50,50);
+		JCheckBox check4c = new JCheckBox("Bed 2 = King", true);
+		check4c.setBounds(150,200, 50,50);
+		JCheckBox check4d = new JCheckBox("Bed 2 = Bunk", true);
+		check4d.setBounds(300,200, 50,50);
+		
+		if (check3a.isSelected()) {bed1 = BedType.Single;}
+		if (check3b.isSelected()) {bed1 = BedType.Double;}
+		if (check3c.isSelected()) {bed1 = BedType.King;}
+		if (check3d.isSelected()) {bed1 = BedType.Bunk;}
+		if (check4a.isSelected()) {bed2 = BedType.Single;}
+		if (check4b.isSelected()) {bed2 = BedType.Double;}
+		if (check4c.isSelected()) {bed2 = BedType.King;}
+		if (check4d.isSelected()) {bed2 = BedType.Bunk;}
+		
+		JButton create = new JButton("Create Bedroom");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
+				facility.addBedroom(bedroom);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		ab.add(check1);
+		ab.add(check2);
+		ab.add(check3a);
+		ab.add(check3b);
+		ab.add(check3c);
+		ab.add(check3d);
+		ab.add(check4a);
+		ab.add(check4b);
+		ab.add(check4c);
+		ab.add(check4d);
+		ab.add(buttons);
+		
+		return ab;	        
+	}
+	
+	public JPanel addOutdoor() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JPanel ao = new JPanel();
+		JPanel buttons;
+		
+		ao.setBorder(HomeBreaks.createTitledBorder("New Outdoor Facility"));
+		ao.setLayout(new GridBagLayout());
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JCheckBox check1 = new JCheckBox("Patio", true);
+		check1.setBounds(100,100, 50,50);
+		JCheckBox check2 = new JCheckBox("BBQ", true);
+		check2.setBounds(100,150, 50,50);
+		JCheckBox check3a = new JCheckBox("Parking = Free On-Site", true);
+		check3a.setBounds(150,200, 50,50);
+		JCheckBox check3b = new JCheckBox("Parking = On-Road", true);
+		check3b.setBounds(200,200, 50,50);
+		JCheckBox check3c = new JCheckBox("Parking = Paid", true);
+		
+		if (check3a.isSelected()) {parking = ParkType.free;}
+		if (check3b.isSelected()) {parking = ParkType.onRoad;}
+		if (check3c.isSelected()) {parking = ParkType.paid;}
+
+		
+		JButton create = new JButton("Create Outdoor Facilities");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Outdoor outdoor = new Outdoor(check1.isSelected(), check2.isSelected(), parking);
+				facility.setOutdoor(outdoor);
+			}
+		});
+		
+		buttons = new JPanel();
+		buttons.add(create);
+		
+		ao.add(check1);
+		ao.add(check2);
+		ao.add(check3a);
+		ao.add(check3b);
+		ao.add(check3c);
+		
+		return ao;	        
+	}
+	
+	public JPanel addKitchen() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		JPanel ak = new JPanel();
+		JPanel buttons;
+		
+		ak.setBorder(HomeBreaks.createTitledBorder("New Kitchen"));
+		ak.setLayout(new GridBagLayout());
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
@@ -847,19 +1123,19 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JCheckBox checkFridge = new JCheckBox("Fridge", true);
 		checkFridge.setBounds(100,100, 50,50);
 		JCheckBox checkMicro = new JCheckBox("Microwave", true);
-		checkMicro.setBounds(100,100, 50,50);
+		checkMicro.setBounds(100,150, 50,50);
 		JCheckBox checkOven = new JCheckBox("Oven", true);
-		checkOven.setBounds(100,100, 50,50);
+		checkOven.setBounds(100,200, 50,50);
 		JCheckBox checkStore = new JCheckBox("Storage", true);
-		checkStore.setBounds(100,100, 50,50);
+		checkStore.setBounds(100,250, 50,50);
 		JCheckBox checkDish = new JCheckBox("Dishwasher", true);
-		checkDish.setBounds(100,100, 50,50);
+		checkDish.setBounds(100,300, 50,50);
 		JCheckBox checkTable = new JCheckBox("Tableware", true);
-		checkTable.setBounds(100,100, 50,50);
+		checkTable.setBounds(100,350, 50,50);
 		JCheckBox checkCook = new JCheckBox("Cookware", true);
-		checkCook.setBounds(100,100, 50,50);
+		checkCook.setBounds(100,400, 50,50);
 		JCheckBox checkBasic = new JCheckBox("Basic Provisions", true);
-		checkBasic.setBounds(100,100, 50,50);
+		checkBasic.setBounds(100,450, 50,50);
 		
 		JButton create = new JButton("Create Kitchen");
 		create.setFont(plain);
@@ -884,11 +1160,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ak.add(checkCook);
 		ak.add(checkBasic);
 		ak.add(buttons);
-		
-		ak.setSize(400,400);  
-		ak.setLayout(null);  
-		ak.setVisible(true); 
-		ak.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		return ak;	        
 	}
@@ -1049,6 +1320,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myProperties = new JPanel();
 		myPropertiesCards = new CardLayout();
 		myProperties.setLayout(myPropertiesCards);
+		myProperties.add("Add Kitchen", addKitchen());
 		
 		
 		JPanel pBookings = new JPanel();
@@ -1480,6 +1752,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		else if (filter == "Name") {filterPName(filterProperties);}
 		
 		for (Property chosenHouse : filterProperties.values()) {
+			facility = chosenHouse.getFacilities();
 			//house information
 			shortName = new JLabel("Name: "+ chosenHouse.getShortName());
 			shortName.setFont(bold);
@@ -1493,10 +1766,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			maxsleep.setFont(plain);
 			rating = new JLabel("Rating: " + chosenHouse.getPropertyRating());
 			rating.setFont(plain);
-			numbaths = new JLabel("Number of Bathrooms: " + chosenHouse.getBathroom());
-			numbaths.setFont(plain);
-			numbeds = new JLabel("Number of Bedrooms: " + chosenHouse.getBedroom());
-			numbeds.setFont(plain);
+//			numbaths = new JLabel("Number of Bathrooms: " + facility.getBathroomNum());
+//			numbaths.setFont(plain);
+//			numbeds = new JLabel("Number of Bedrooms: " + facility.getBedroomNum());
+//			numbeds.setFont(plain);
 			
 			viewMoreBtn = new JButton("View More");
 			viewMoreBtn.setFont(plain);
@@ -1527,8 +1800,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			b.add(breakfast);
 			ms.add(maxsleep);
 			r.add(rating);
-			nbaths.add(numbaths);
-			nbeds.add(numbeds);	
+//			nbaths.add(numbaths);
+//			nbeds.add(numbeds);	
 			buttons.add(viewMoreBtn);
 			
 			vp.add(shortName);
@@ -1537,8 +1810,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vp.add(breakfast);
 			vp.add(maxsleep);
 			vp.add(rating);
-			vp.add(numbaths);
-			vp.add(numbeds);
+//			vp.add(numbaths);
+//			vp.add(numbeds);
 			vp.add(buttons);
 		}
 		
@@ -1549,7 +1822,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	
 	public JPanel houseView() {
-		facilities = chosenHouse.getFacilities();
+		facility = chosenHouse.getFacilities();
 		JPanel hv = new JPanel();
 		hv.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
@@ -1572,7 +1845,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		description.setFont(plain);
 		location = new JLabel("Location: "+ chosenHouse.getPublicLocation());
 		location.setFont(plain);
-		host = new JLabel("Host: " + chosenHouse.getHost());
+		host = new JLabel("" + chosenHouse.getHost());
 		host.setFont(plain);
 		breakfast = new JLabel("breakfast: " + chosenHouse.getBreakfast());
 		breakfast.setFont(plain);
@@ -1599,7 +1872,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ktchnBtn.setFont(plain);
 		ktchnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Kitchen");
+				cards.show(c, "View Kitchen");
 				current = "KI";
 				setTitle("Kitchen");
 			}
@@ -1674,46 +1947,133 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return hv;
 	}
 	
-	public JFrame viewKitchen(){
-		Kitchen kitchen = facilites.getKitchen();
-		String text = "";
+	public JPanel viewKitchen(){
+		Kitchen kitchen = new Kitchen(true, true, true, true, true, true, true, true);
+		JPanel ki = new JPanel();
 		GridBagConstraints g = new GridBagConstraints();
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
-		GridBagConstraints gbc = new GridBagConstraints();
+		ki.setBorder(createTitledBorder("View Kitchen"));
+		
+		JPanel t, buttons;
+		
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		
-		JFrame ki = new JFrame("pop");
 		 
 		// create a label
-		JLabel l = new JLabel(kitchen.popUpText());
-
-		ki.setSize(400, 400);
-
-		PopupFactory pf = new PopupFactory();
-
-		// create a panel
-		JPanel p2 = new JPanel();
-
-		p2.add(l);
-
-		// create a pop-up
-		k = pf.getPopup(ki, p2, 180, 100);
-
+		JLabel l = new JLabel(kitchen.toString());
 		// create a button
-		JButton b = new JButton("close");
-
+		JButton b = new JButton("back");
 		// add action listener
-		b.addActionListener(this);
-
-		// create a panel
-		JPanel p1 = new JPanel();
-
-		p1.add(b);
-		ki.add(p1);
+		b.setFont(plain);
+		b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "House View");
+				current = "HV";
+				setTitle("House View");
+			}
+		});
+		ki.add(l);
+		ki.add(b);
+		
+		t = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout bl = new BoxLayout(ki, BoxLayout.Y_AXIS);
+		ki.setLayout(bl);	
+		
+		t.add(l);
+		buttons.add(b);
+		ki.add(t);
+		ki.add(buttons);
 		
 		return ki;
+	}
+	
+	public JPanel viewLiving(){
+		Living living = new Living(true, true, true, true, true, true);
+		JPanel li = new JPanel();
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		li.setBorder(createTitledBorder("View Living Space"));
+		
+		JPanel t, buttons;
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		 
+		// create a label
+		JLabel l = new JLabel(living.toString());
+		// create a button
+		JButton b = new JButton("back");
+		// add action listener
+		b.setFont(plain);
+		b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "House View");
+				current = "HV";
+				setTitle("House View");
+			}
+		});
+		li.add(l);
+		li.add(b);
+		
+		t = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout bl = new BoxLayout(li, BoxLayout.Y_AXIS);
+		li.setLayout(bl);	
+		
+		t.add(l);
+		buttons.add(b);
+		li.add(t);
+		li.add(buttons);
+		
+		return li;
+	}
+	
+	public JPanel viewUtility(){
+		Utility utility = new Utility(true, true, true, true, true, true);
+		JPanel ut = new JPanel();
+		GridBagConstraints g = new GridBagConstraints();
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		
+		ut.setBorder(createTitledBorder("View Utility Space"));
+		
+		JPanel t, buttons;
+		
+		final Font plain = new Font("Verdana", Font.PLAIN, 20);
+		final Font bold = new Font("Verdana", Font.BOLD, 50);
+		 
+		// create a label
+		JLabel l = new JLabel(utility.toString());
+		// create a button
+		JButton b = new JButton("back");
+		// add action listener
+		b.setFont(plain);
+		b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "House View");
+				current = "HV";
+				setTitle("House View");
+			}
+		});
+		ut.add(l);
+		ut.add(b);
+		
+		t = new JPanel();
+		buttons = new JPanel();
+		
+		BoxLayout bl = new BoxLayout(ut, BoxLayout.Y_AXIS);
+		ut.setLayout(bl);	
+		
+		t.add(l);
+		buttons.add(b);
+		ut.add(t);
+		ut.add(buttons);
+		
+		return ut;
 	}
 	
 	public JPanel hostProfile(Host host) {
