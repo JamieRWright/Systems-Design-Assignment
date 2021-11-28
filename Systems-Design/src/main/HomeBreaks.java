@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +40,7 @@ import javax.swing.event.DocumentListener;
 
 
 public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
-	CardLayout cards, myAccountCards;
+	CardLayout cards, myAccountCards, crd;
 	Container c = getContentPane();
 	String current = "";
 	Popup k;
@@ -52,16 +53,21 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	JLabel warning_hsu = new JLabel("");
 	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
+	JPanel p = new JPanel();
+	public static Dimension screen;
 	public static Host currentHost;
 	public static Guest currentGuest;
 	
 	Map<Integer, Property> properties;
 	String cityFilter = "Sheffield";
+	String hostFilter = "";
+	String propertyNameFilter = "";
 	Property chosenHouse;
 	Facilities facility;
 	
+	// TODO if there's time: enhance the searching feature to search for matching results, not exact ones
+	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
-	//final Font smaller = new Font("Verdana", Font.PLAIN, 20);
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
 	
 	public HomeBreaks() {
@@ -75,7 +81,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public void startGUI() {
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Dimension screen = tk.getScreenSize();
+		screen = tk.getScreenSize();
 				
 		setSize(screen.width, screen.height);
 		setTitle("HomeBreaks Plc");
@@ -84,7 +90,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", home());
+		c.add("Home", guestHome());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -93,9 +99,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
 		c.add("House View", houseView());
-		c.add("View Properties", viewProperties());
+		c.add("View Properties", viewProperties(null, "City"));
+		c.add("Booking", bookingPage());
 		
-		pack();
 		setVisible(true);
 	}
 	
@@ -891,14 +897,144 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			}
 		});
 		
+		CardLayout card = new CardLayout();
+		JPanel booking = new JPanel();
+		booking.setLayout(card);
+		
 		guestTabs.add("Provisional Bookings", pBookings);
-		guestTabs.add("Book a property", inquiry());
+		guestTabs.add("Book a property", guestBookingPanel());
 		guestTabs.add("My Account", myAccount);
 		
 		gh.add(guestTabs, BorderLayout.CENTER);
 		
 		return gh;
 	}
+	
+	public JPanel guestBookingPanel() {
+		JPanel gb = new JPanel();
+		JPanel searchPanel = new JPanel();
+		JPanel resultPanel = new JPanel();
+		CardLayout c = new CardLayout();
+		resultPanel.setLayout(c);
+		
+		gb.setLayout(new GridBagLayout());
+		searchPanel.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		// Search bar
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		JTextField searchBar = new JTextField(20);
+		searchBar.setFont(plain);
+		searchBar.setMinimumSize(searchBar.getPreferredSize());
+		searchPanel.add(searchBar, g);
+		
+		setConstraints(g, 1, 0, GridBagConstraints.CENTER);
+		JComboBox searchSetting = new JComboBox();
+		searchSetting.setFont(plain);
+		searchSetting.addItem("Property name");
+		searchSetting.addItem("Host name");
+		searchSetting.addItem("Area");
+		searchPanel.add(searchSetting, g);
+		
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		JButton searchBtn = new JButton("Search");
+		searchBtn.setFont(plain);
+		searchBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String setting = searchSetting.getSelectedItem().toString();
+				String search = searchBar.getText();
+				
+				if (search.isEmpty()) {
+					showMessageDialog(null, "Type in the search bar to start searching!");
+				}
+				else if (setting == "Area") {
+					JScrollPane s = viewProperties(null, "City");
+					s.setPreferredSize(resultPanel.getPreferredSize());
+					cityFilter = search;
+					resultPanel.add("Properties in area", viewProperties(null, "City"));
+					c.show(resultPanel, "Properties in area");
+				}
+				else if (setting == "Host name") {
+					hostFilter = search;
+					resultPanel.add("Matching hosts", searchHost());
+					c.show(resultPanel, "Matching hosts");
+				}
+				else if (setting == "Property name") {
+					propertyNameFilter = search;
+					resultPanel.add("Matching properties", viewProperties(null, "Name"));
+					c.show(resultPanel, "Matching properties");
+				}
+			}
+		});
+		searchPanel.add(searchBtn, g);
+		
+		// add cards for resultPanel
+		resultPanel.add("Default", HBPanels.defaultSearchPanel());
+		
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		gb.add(searchPanel, g);
+		
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		g.weightx = 1;
+		g.weighty = 1;
+		gb.add(resultPanel, g);
+		
+		return gb;
+	}
+	
+	public JScrollPane searchHost() {		
+		JPanel sh = new JPanel();
+		CardLayout crd = new CardLayout();
+		JPanel hp = new JPanel();
+		hp.setLayout(crd);
+		sh.setBorder(HomeBreaks.createTitledBorder(""));
+		List<Host> searchResult = new ArrayList<Host>();
+		
+		Map<Integer, Host> hosts = TDatabase.Hosts;
+		
+		for (Host h : hosts.values()) {
+			if (h.getName().equals(hostFilter)) {
+				searchResult.add(h);
+			}
+		}
+		
+		JLabel hostName;
+		JButton viewProfile;
+		JPanel n, b, h;
+		
+		for (Host host : searchResult) {
+			hostName = new JLabel(host.getName());
+			hostName.setFont(plain);
+			viewProfile = new JButton("View Profile");
+			viewProfile.setFont(plain);
+			viewProfile.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					hp.add("Profile", hostProfile(host));
+					crd.show(hp, "Profile");
+				}
+			});
+			
+			n = new JPanel();
+			b = new JPanel();
+			n.add(hostName);
+			b.add(viewProfile);
+			
+			h = new JPanel();
+			h.add(n);
+			h.add(b);
+			
+			sh.add(h);
+		}
+		hp.add("Host result", sh);
+		
+
+		JScrollPane scrollPane = new JScrollPane(hp);
+		return scrollPane;
+		
+	}
+
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -951,7 +1087,154 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return ma;
 	}
 	
-	public JScrollPane viewProperties() {
+	public JPanel bookingPage() {
+		JPanel bp = new JPanel();
+		bp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		bp.setBorder(createTitledBorder("Book property"));
+		
+		JTextField startDD, startMM, startYY;
+		JTextField endDD, endMM, endYY;
+		
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		JLabel start = new JLabel("Start date: ");
+		start.setFont(plain);
+		bp.add(start, g);
+		
+		JPanel startDate = new JPanel();
+		startDate.setLayout(new GridBagLayout());
+		
+		setConstraints(g, 0, 0, GridBagConstraints.WEST);
+		startDD = new JTextField("DD", 2);
+		startDD.setFont(plain);
+		startDate.add(startDD, g);
+		setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		JLabel d1 = new JLabel("-");
+		d1.setFont(plain);
+		startDate.add(d1, g);
+		setConstraints(g, 2, 0, GridBagConstraints.WEST);
+		startMM = new JTextField("MM", 2);
+		startMM.setFont(plain);
+		startDate.add(startMM, g);
+		setConstraints(g, 3, 0, GridBagConstraints.WEST);
+		JLabel d2 = new JLabel("-");
+		d2.setFont(plain);
+		startDate.add(d2, g);
+		setConstraints(g, 4, 0, GridBagConstraints.WEST);
+		startYY = new JTextField("YYYY", 4);
+		startYY.setFont(plain);
+		startDate.add(startYY, g);
+		
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		bp.add(startDate, g);
+
+		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
+		JLabel end = new JLabel("End date: ");
+		end.setFont(plain);
+		bp.add(end, g);
+		
+		JPanel endDate = new JPanel();
+		endDate.setLayout(new GridBagLayout());
+		
+		setConstraints(g, 0, 0, GridBagConstraints.WEST);
+		endDD = new JTextField("DD", 2);
+		endDD.setFont(plain);
+		endDate.add(endDD, g);
+		setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		JLabel d3 = new JLabel("-");
+		d3.setFont(plain);
+		endDate.add(d3, g);
+		setConstraints(g, 2, 0, GridBagConstraints.WEST);
+		endMM = new JTextField("MM", 2);
+		endMM.setFont(plain);
+		endDate.add(endMM, g);
+		setConstraints(g, 3, 0, GridBagConstraints.WEST);
+		JLabel d4 = new JLabel("-");
+		d4.setFont(plain);
+		endDate.add(d4, g);
+		setConstraints(g, 4, 0, GridBagConstraints.WEST);
+		endYY = new JTextField("YYYY", 4);
+		endYY.setFont(plain);
+		endDate.add(endYY, g);
+		
+		setConstraints(g, 0, 4, GridBagConstraints.CENTER);
+		bp.add(endDate, g);
+		
+		setConstraints(g, 0, 5, GridBagConstraints.CENTER);
+		JPanel space = new JPanel();
+		space.setBorder(new EmptyBorder(10, 0, 0, 0));
+		bp.add(space, g);
+		
+		setConstraints(g, 0, 6, GridBagConstraints.CENTER);
+		JButton request = new JButton("Request booking");
+		request.setFont(plain);
+		request.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String sY = startYY.getText();
+				String sM = startMM.getText();
+				String sD = startDD.getText();
+				boolean rightStart = HomeBreaks.isNumericDate(sY) || HomeBreaks.isNumericDate(sM) || HomeBreaks.isNumericDate(sD);
+				boolean unfilledStart = sY.isEmpty() || sM.isEmpty() || sD.isEmpty();
+				
+				String eY = endYY.getText();
+				String eM = endMM.getText();
+				String eD = endDD.getText();
+				boolean rightEnd = HomeBreaks.isNumericDate(eY) || HomeBreaks.isNumericDate(eM) || HomeBreaks.isNumericDate(eD);
+				boolean unfilledEnd = eY.isEmpty() || eM.isEmpty() || eD.isEmpty();
+				
+				if (unfilledStart || unfilledEnd) {showMessageDialog(null, "Please fill in all blanks.");}
+				else if (rightStart && rightEnd) {
+					// TODO check if date is available
+					int guestID = Integer.parseInt(currentGuest.getID());
+					int propertyID = chosenHouse.getID();
+					int hostID = Integer.parseInt(chosenHouse.getHost().getID());
+					String start = sY + "-" + sM + "-" + sD;
+					String end = eY + "-" + eM + "-" + eD;
+					TDatabase.AddBooking(propertyID, hostID, guestID, start, end);
+					showMessageDialog(null, "Bookin successfull!");
+				}
+			}
+		});
+		bp.add(request, g);
+		
+		return bp;
+	}
+	
+	// Filter by city
+	public void filterCity(Map<Integer, Property> filteredList) {
+		for (Property house : properties.values())  {
+			Address address = house.getFullAddress();
+			String city = address.getCity();
+			
+			if (city.equals(cityFilter)){
+				filteredList.put(house.getID(), house);
+			}
+		}
+	}
+	
+	// Filter by host
+	public void filterHost(Host host, Map<Integer, Property> filteredList) {
+		for (Property house : TDatabase.Properties.values())  {
+			String hostID = host.getID();
+			if (hostID.equals(house.getHost().getID())){
+				filteredList.put(house.getID(), house);
+			}
+		}
+	}
+	
+	// Filter by property name
+	public void filterPName(Map<Integer, Property> filteredList) {
+		for (Property house : TDatabase.Properties.values()) {
+			String houseName = house.getShortName();
+			if (houseName.equals(propertyNameFilter)) {
+				filteredList.put(house.getID(), house);
+			}
+		}
+	}
+	
+	// Default host should be null
+	public JScrollPane viewProperties(Host host, String filter) {
 		JPanel vp = new JPanel();
 		current = "View Properties";
 		
@@ -975,15 +1258,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
 		
-		for (Property house : properties.values())  {
-			Address address = house.getFullAddress();
-			String city = address.getCity();
-			if (city == cityFilter){
-				filterProperties.put(house.getID(), house);
-			}
-		}
+		if (filter == "City") {filterCity(filterProperties);}
+		else if (filter == "Host") {filterHost(host, filterProperties);}
+		else if (filter == "Name") {filterPName(filterProperties);}
 		
-		for (Property chosenHouse : properties.values()) {
+		for (Property chosenHouse : filterProperties.values()) {
 			//house information
 			shortName = new JLabel("Name: "+ chosenHouse.getShortName());
 			shortName.setFont(bold);
@@ -1050,6 +1329,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return scroll;
 	}
+	
 	
 	public JPanel houseView() {
 		facilities = chosenHouse.getFacilities();
@@ -1135,6 +1415,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			}
 		});
 		
+		JButton bookBtn = new JButton("Book");
+		bookBtn.setFont(plain);
+		bookBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Booking");
+				setTitle("Book " + chosenHouse.getShortName());
+			}
+		});
+		
 		sn = new JPanel();
 		pl = new JPanel();
 		d = new JPanel();
@@ -1156,6 +1445,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		buttons.add(livBtn);
 		buttons.add(utilBtn);
 		buttons.add(outBtn);
+		buttons.add(bookBtn);
 		
 		hv.add(shortName);
 		hv.add(location);
@@ -1207,6 +1497,25 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ki.add(p1);
 		
 		return ki;
+	}
+	
+	public JPanel hostProfile(Host host) {
+		JPanel p = new JPanel();
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		JLabel n, sh, r; // TODO get rating and superhost status
+		JScrollPane hostProperties = viewProperties(host, "Host");
+		
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		n = new JLabel("Name: " + host.getName());
+		n.setFont(plain);
+		p.add(n, g);
+		
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		p.add(hostProperties, g);
+		
+		return p;
 	}
 	
 
@@ -1337,6 +1646,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	public static boolean isNumericDate(String str) {
 		  return str.matches("\\d+\\d");
 	}
+	
 	
 	public static void main (String [] args) {
 		new HomeBreaks();
