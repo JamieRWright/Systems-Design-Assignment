@@ -18,14 +18,14 @@ public class Booking {
 	private String startDate;
 	private String endDate;
 	
-	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate) {
+	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean updateBackend) {
 		this.propertyID = propertyID;
 		this.hostID = hostID;
 		this.guestID = guestID;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		
-		TDatabase.AddBooking(propertyID, hostID, guestID, startDate, endDate);
+		if (updateBackend)
+			TDatabase.AddBooking(propertyID, hostID, guestID, startDate, endDate);
 	}
 	
 	//public int getPropertyID() {return this.propertyID;}
