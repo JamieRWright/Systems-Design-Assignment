@@ -30,6 +30,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
@@ -40,12 +41,12 @@ import javax.swing.event.DocumentListener;
 
 
 public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
-	CardLayout cards, myAccountCards, crd;
+	CardLayout cards, myAccountCards, crd, myPropertiesCards;
 	Container c = getContentPane();
 	String current = "";
 	Popup k;
-	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties;
-	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn;
+	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties, myProperties;
+	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn, newPropertyBtn;
 	JTextField fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu, id_input_gl;
 	JTextField fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu, id_input_hl;
 	JTextField searchProperty;
@@ -90,7 +91,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", guestHome());
+		c.add("Home", home());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -326,6 +327,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					else
 					{
 						TDatabase.Guests.put(Integer.parseInt(guest.getID()), guest);
+						showMessageDialog(null, "Successfully signed up!");
+						cards.show(c, "Guest Login");
 					}
 				}
 			}
@@ -492,6 +495,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					else
 					{
 						TDatabase.Hosts.put(Integer.parseInt(host.getID()), host);
+						showMessageDialog(null, "Successfully signed up!");
+						cards.show(c, "Host Login");
 					}
 				}
 			}
@@ -632,6 +637,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					hostID=TDatabase.SearchUserID("Host", email);
 					HomeBreaks.currentHost = TDatabase.Hosts.get(Integer.parseInt(hostID));
 					setTitle("Host Home");
+					
+					// Create panel that shows current host's properties
+					addHostProperties();
+					
+					// TODO add page that shows provisional bookings
+					
 					cards.show(c, "Host Home");
 				}
 				else {
@@ -660,6 +671,166 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
 		hp.add(createHomeBtnPanel(), g);
 
+		return hp;
+	}
+	
+	public void addHostProperties() {
+		JPanel p1 = new JPanel();
+		p1.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		g.weightx = 2;
+		g.weighty = 2;
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		JScrollPane mp = viewProperties(currentHost, "Host");
+		p1.add(mp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		g.weightx = 1;
+		g.weighty = 1;
+		newPropertyBtn = new JButton("Create New Property");
+		newPropertyBtn.setFont(plain);
+		newPropertyBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				myPropertiesCards.show(myProperties, "New");
+			}
+		});
+		p1.add(newPropertyBtn, g);
+		
+		myProperties.add("All Properties", p1);
+		myPropertiesCards.show(myProperties, "All Properties");
+	}
+	
+	public JPanel newPropertyPanel() {		
+		JPanel np = new JPanel();
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		np.setBorder(HomeBreaks.createTitledBorder("New Property"));
+		np.setLayout(new GridBagLayout());
+		
+		JLabel name, description, houseNo, stNo, postcode, place, bfast;
+		JTextField shortName, add1, add2, add3, add4;
+		JTextArea desc;
+		JButton create;
+		
+		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.EAST);
+		name = new JLabel("Property name: ");
+		name.setFont(plain);
+		np.add(name, g);
+		
+		HomeBreaks.setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		shortName = new JTextField(20);
+		shortName.setFont(plain);
+		np.add(shortName, g);
+		
+		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
+		description = new JLabel("Description: ");
+		description.setFont(plain);
+		np.add(description, g);
+		
+		HomeBreaks.setConstraints(g, 1, 2, GridBagConstraints.WEST);
+		desc = new JTextArea(5, 20);
+		JScrollPane scrollPane = new JScrollPane(desc);
+		desc.setFont(plain);
+		desc.setLineWrap(true);
+		desc.setWrapStyleWord(true);
+		np.add(scrollPane, g);
+		
+		HomeBreaks.setConstraints(g, 0, 3, GridBagConstraints.EAST);	
+		houseNo = new JLabel("House Number: ");
+		houseNo.setFont(plain);
+		np.add(houseNo, g);
+		
+		HomeBreaks.setConstraints(g, 1, 3, GridBagConstraints.WEST);
+		add1 = new JTextField(20);
+		add1.setFont(plain);
+		np.add(add1, g);
+		
+		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
+		stNo = new JLabel("Street Name: ");
+		stNo.setFont(plain);
+		np.add(stNo, g);
+		
+		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
+		add2 = new JTextField(20);
+		add2.setFont(plain);
+		np.add(add2, g);
+		
+		HomeBreaks.setConstraints(g, 0, 5, GridBagConstraints.EAST);
+		postcode = new JLabel("Postcode: ");
+		postcode.setFont(plain);
+		np.add(postcode, g);
+		
+		HomeBreaks.setConstraints(g, 1, 5, GridBagConstraints.WEST);
+		add3 = new JTextField(20);
+		add3.setFont(plain);
+		np.add(add3, g);
+		
+		HomeBreaks.setConstraints(g, 0, 6, GridBagConstraints.EAST);
+		place = new JLabel("City: ");
+		place.setFont(plain);
+		np.add(place, g);
+		
+		HomeBreaks.setConstraints(g, 1, 6, GridBagConstraints.WEST);
+		add4 = new JTextField(20);
+		add4.setFont(plain);
+		np.add(add4, g);
+		
+		HomeBreaks.setConstraints(g, 0, 7, GridBagConstraints.EAST);
+		bfast = new JLabel("Is breakfast served?");	
+		bfast.setFont(plain);
+		np.add(bfast, g);
+		
+		HomeBreaks.setConstraints(g, 1, 7, GridBagConstraints.WEST);
+		ButtonGroup grp = new ButtonGroup();
+		JRadioButton yes_bfast = new JRadioButton("Yes");
+		yes_bfast.setFont(plain);
+		JRadioButton no_bfast = new JRadioButton("No");
+		no_bfast.setFont(plain);
+		grp.add(yes_bfast);
+		grp.add(no_bfast);
+		JPanel breakfast = new JPanel();
+		breakfast.add(yes_bfast);
+		breakfast.add(no_bfast);
+		np.add(breakfast, g);		
+		
+		HomeBreaks.setConstraints(g, 1, 8, GridBagConstraints.WEST);
+		create = new JButton("Create Property");
+		create.setFont(plain);
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// get inputs
+				String sName = shortName.getText();
+				String descr = desc.getText();
+				String houseNo = add1.getText();
+				String street = add2.getText();
+				String postcode = add3.getText();
+				String city = add4.getText();
+				int bfast = 0;
+				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || city.isEmpty();
+				
+				if (yes_bfast.isSelected()) {
+					bfast = 1;
+				}
+				
+				if (notAllFilled) {
+					showMessageDialog(null, "All fields are mandatory.");
+				}
+				else {
+					Address address_temp = new Address(houseNo, street, postcode, city, true);
+					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, null, null, null, null, null, null, true);
+					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
+					showMessageDialog(null, "Property successfully added!");
+					addHostProperties();
+					myPropertiesCards.show(myProperties, "All Properties");
+				}
+			}
+		});
+		np.add(create, g);
+		
+		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		hp.add(np, g);
+		
 		return hp;
 	}
 	
@@ -812,19 +983,14 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel hp1, hp2, properties, createProperty, p1;
 		JLabel title;
 		hh.setLayout(new BorderLayout());
-		JButton newProperty;
 		
 		JTabbedPane hostTabs = new JTabbedPane();
 		hostTabs.setFont(plain);
 		
-		JPanel myProperties = new JPanel();
-		CardLayout c = new CardLayout();
-		myProperties.setLayout(c);
+		myProperties = new JPanel();
+		myPropertiesCards = new CardLayout();
+		myProperties.setLayout(myPropertiesCards);
 		
-		p1 = new JPanel();
-		newProperty = new JButton("Create New Property");
-		newProperty.setFont(plain);
-		p1.add(newProperty);
 		
 		JPanel pBookings = new JPanel();
 		myAccount = new JPanel();
@@ -834,14 +1000,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
 		JPanel propertiesList = new JPanel();
 		
-		myProperties.add("All Properties", p1);
-		myProperties.add("New", HBPanels.newPropertyPanel());
-		
-		newProperty.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				c.show(myProperties, "New");
-			}
-		});
+		myProperties.add("New", newPropertyPanel());
 		
 		hp1 = new JPanel();
 		hp2 = new JPanel();
@@ -889,7 +1048,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel propertiesList = new JPanel();
 		
 		myProperties.add("All Properties", p1);
-		myProperties.add("New", HBPanels.newPropertyPanel());
 		
 		newProperty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1563,7 +1721,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			
 		}
 	    else {
-	    	warning_gsu.setText("");
+	    	warning_hsu.setText("");
 	    	hsuBtn.setEnabled(true);
 	    }
 	}
