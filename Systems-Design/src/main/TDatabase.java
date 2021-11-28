@@ -579,13 +579,14 @@ public static boolean addAddress(String houseNumber, String street, String postc
 	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
 		try {
 			getConnection();
-			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, startDate, endDate) VALUES (?,?,?,?,?)";
+			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional) VALUES (?,?,?,?,?,?);";
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,propertyID);
 			pst.setInt(2,hostID);
 			pst.setInt(3,guestID);
 			pst.setString(4,startDate);
 			pst.setString(5,endDate);
+			pst.setInt(6, 1);
 			pst.execute();
 			disconnect();
 			return true;
