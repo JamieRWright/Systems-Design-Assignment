@@ -31,10 +31,8 @@ public class Property {
      * @param availableList, containing the DatesAvailable lists, for every date the property is available for
      *
      */
-	public Property(String shortName, String description, Host host,
-			Address address, int breakfast,
-			Bathroom bath, Bedroom bed, Kitchen kitchen, Living living,
-			Utility utility, Outdoor outdoor, Facilities facility, boolean updateBackend) {
+	public Property(String shortName, String description, Host host,Address address, int breakfast, 
+			Facilities facility, boolean updateBackend) {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
@@ -47,12 +45,6 @@ public class Property {
 		this.maxSleepers = 0;
 		this.pRating = null;
 		this.datesAvailable = null;
-		this.bath = bath;
-		this.bed = bed;
-		this.kitchen = kitchen;
-		this.living = living;
-		this.utility = utility;
-		this.outdoor = outdoor;
 		this.facility = facility;
 		hostID = host.getID();
 		if (updateBackend)
@@ -95,6 +87,10 @@ public class Property {
 	
 	public List<DatesAvailable> getAvailableDates() {
 		return this.datesAvailable;
+	}
+	
+	public void setFacilities(Facilities facilities) {
+		this.facility = facilities; 
 	}
 	
 	public Facilities getFacilities(){
