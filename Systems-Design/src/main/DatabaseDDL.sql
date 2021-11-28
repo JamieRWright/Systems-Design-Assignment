@@ -1,190 +1,175 @@
-CREATE DATABASE SystemsDesign;
-Use SystemsDesign;
+CREATE TABLE  `Address` (
+      `AddressID` INT(11) NOT NULL AUTO_INCREMENT,
+      `HouseNumber` VARCHAR(50) NULL DEFAULT NULL,
+      `Street` VARCHAR(50) NULL DEFAULT NULL,
+      `Postcode` VARCHAR(50) NULL DEFAULT NULL,
+      `City` VARCHAR(50) NULL DEFAULT NULL,
+      PRIMARY KEY (`AddressID`))
+      
+      
+CREATE TABLE `Bathing_Facility` (
+      `PropertyID` INT(11) NOT NULL,
+      `BathroomCount` INT(11) NOT NULL,
+      `HairDryer` BIT(1) NULL DEFAULT NULL,
+      `Shampoo` BIT(1) NULL DEFAULT NULL,
+      `ToiletPaper` BIT(1) NULL DEFAULT NULL,
+      `Toilet` BIT(1) NOT NULL,
+      `Bath` BIT(1) NOT NULL,
+      `Shower` BIT(1) NOT NULL,
+      `IsShared` BIT(1) NOT NULL,
+      PRIMARY KEY (`PropertyID`, `BathroomCount`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
+CREATE TABLE `Beds` (
+	`BedType` VARCHAR(50) NOT NULL,
+    `PeopleInBed` INT(11) NOT NULL,
+    PRIMARY KEY (`BedType`, `PeopleInBed`))
 
-CREATE TABLE Host
-(
- HostID      int AUTO_INCREMENT NOT NULL ,
- FirstName  varchar(50) NOT NULL ,
- LastName   varchar(50) NOT NULL ,
- IsSuperHost bit NOT NULL ,
- Email       varchar(50) NOT NULL ,
+CREATE TABLE `Bookings` (
+      `BookingID` INT(11) NOT NULL AUTO_INCREMENT,
+      `PropertyID` INT(50) NULL DEFAULT NULL,
+      `HostID` INT(50) NULL DEFAULT NULL,
+      `GuestID` INT(50) NULL DEFAULT NULL,
+      `StartDate` VARCHAR(50) NULL DEFAULT NULL,
+      `EndDate` VARCHAR(50) NULL DEFAULT NULL,
+      `Provisional` VARCHAR(50) NULL DEFAULT NULL,
+      PRIMARY KEY (`BookingID`),
+      INDEX `GuestID` (`GuestID` ASC) VISIBLE,
+      INDEX `HostID` (`HostID` ASC) VISIBLE,
+      INDEX `PropertyID` (`PropertyID` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`GuestID`) REFERENCES `Guest` (`GuestID`),
+      CONSTRAINT  FOREIGN KEY (`HostID`) REFERENCES `Host` (`HostID`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
+CREATE TABLE `Charge_Band` (
+      `StartDate` DATE NOT NULL,
+      `EndDate` DATE NOT NULL,
+      `Price` VARCHAR(50) NOT NULL,
+      `PropertyID` INT(11) NOT NULL,
+      `PricePerNight` DECIMAL(9,2) NULL DEFAULT NULL,
+      `ServiceCharge` DECIMAL(9,2) NULL DEFAULT NULL,
+      `CleaningCharge` DECIMAL(9,2) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`, `StartDate`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`)  REFERENCES `Property` (`PropertyID`))
+CREATE TABLE `Guest` (
+      `FirstName` VARCHAR(50) NOT NULL,
+      `LastName` VARCHAR(50) NOT NULL,
+      `MobileNumber` VARCHAR(50) NOT NULL,
+      `Email` VARCHAR(50) NOT NULL,
+      `GuestID` INT(11) NOT NULL AUTO_INCREMENT,
+      `AddressID` INT(11) NOT NULL,
+      PRIMARY KEY (`GuestID`),
+      INDEX `FK_Guest` (`AddressID` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`AddressID`)  REFERENCES `Address` (`AddressID`))
+      
+    CREATE TABLE `Guest_Passwords` (
+      `GuestID` INT(11) NOT NULL,
+      `Passwords` VARCHAR(50) NOT NULL,
+      PRIMARY KEY (`GuestID`),
+      CONSTRAINT FOREIGN KEY (`GuestID`) REFERENCES `Guest` (`GuestID`))
+      
+    CREATE TABLE `Host` (
+      `HostID` INT(11) NOT NULL AUTO_INCREMENT,
+      `FirstName` VARCHAR(50) NOT NULL,
+      `LastName` VARCHAR(50) NOT NULL,
+      `IsSuperHost` BIT(1) NOT NULL,
+      `Email` VARCHAR(50) NOT NULL,
+      `AddressID` INT(11) NOT NULL,
+      PRIMARY KEY (`HostID`),
+      INDEX `AddressID` (`AddressID` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`AddressID`) REFERENCES `team054`.`Address` (`AddressID`))
+        
+CREATE TABLE `Host_Passwords` (
+      `HostID` INT(11) NOT NULL,
+      `Passwords` VARCHAR(50) NOT NULL,
+      PRIMARY KEY (`HostID`),
+      CONSTRAINT FOREIGN KEY (`HostID`) REFERENCES `Host` (`HostID`))
 
+CREATE TABLE `Kitchen_Facility` (
+      `PropertyID` INT(11) NOT NULL DEFAULT '0',
+      `Refrigerator` BIT(1) NULL DEFAULT NULL,
+      `Microwave` BIT(1) NULL DEFAULT NULL,
+      `Oven` BIT(1) NULL DEFAULT NULL,
+      `Stove` BIT(1) NULL DEFAULT NULL,
+      `Dishwasher` BIT(1) NULL DEFAULT NULL,
+      `Tableware` BIT(1) NULL DEFAULT NULL,
+      `Cookware` BIT(1) NULL DEFAULT NULL,
+      `basicProvision` BIT(1) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
 
- PRIMARY KEY CLUSTERED (HostID ASC)
-);
+    CREATE TABLE `Living_Facility` (
+      `PropertyID` INT(11) NOT NULL,
+      `WIFI` BIT(1) NULL DEFAULT NULL,
+      `Television` BIT(1) NULL DEFAULT NULL,
+      `Satellite` BIT(1) NULL DEFAULT NULL,
+      `Streaming` BIT(1) NULL DEFAULT NULL,
+      `DVDPlayer` BIT(1) NULL DEFAULT NULL,
+      `BoardGames` BIT(1) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`)  REFERENCES `Property` (`PropertyID`))
+      
+CREATE TABLE `Outdoor_Facility` (
+      `PropertyID` INT(11) NOT NULL DEFAULT '0',
+      `Parking` VARCHAR(50) NULL DEFAULT NULL,
+      `Patio` BIT(1) NULL DEFAULT NULL,
+      `Barbeque` BIT(1) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
+      
+CREATE TABLE `Property` (
+      `PropertyID` INT(11) NOT NULL AUTO_INCREMENT,
+      `HostID` INT(11) NOT NULL,
+      `CurrentTennant` INT(11) NULL DEFAULT NULL,
+      `ShortName` VARCHAR(50) NOT NULL,
+      `Descriptions` VARCHAR(50) NOT NULL,
+      `AddressID` INT(11) NOT NULL,
+      `Breakfast` BIT(1) NOT NULL,
+      PRIMARY KEY (`PropertyID`),
+      INDEX `CurrentTennant` (`CurrentTennant` ASC) VISIBLE,
+      INDEX `HostID` (`HostID` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`CurrentTennant`) REFERENCES `Guest` (`GuestID`),
+      CONSTRAINT FOREIGN KEY (`HostID`) REFERENCES `Host` (`HostID`))
 
-CREATE TABLE Host_Passwords
-(
- HostID  int NOT NULL ,
- Passwords varchar(50) NOT NULL ,
+CREATE TABLE `Reviews` (
+      `PropertyID` INT(11) NOT NULL DEFAULT '0',
+      `GuestID` INT(11) NOT NULL DEFAULT '0',
+      `HostID` INT(11) NULL DEFAULT NULL,
+      `Cleanliness` INT(1) NULL DEFAULT NULL,
+      `Communication` INT(1) NULL DEFAULT NULL,
+      `CheckIn` INT(1) NULL DEFAULT NULL,
+      `Accuracy` INT(1) NULL DEFAULT NULL,
+      `Location` INT(1) NULL DEFAULT NULL,
+      `Value_for_money` INT(1) NULL DEFAULT NULL,
+      `OptionalDescription` VARCHAR(50) NULL DEFAULT NULL,
+      PRIMARY KEY (`GuestID`, `PropertyID`),
+      INDEX `PropertyID` (`PropertyID` ASC) VISIBLE,
+      INDEX `HostID` (`HostID` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`),
+      CONSTRAINT FOREIGN KEY (`GuestID`) REFERENCES `Guest` (`GuestID`),
+      CONSTRAINT FOREIGN KEY (`HostID`) REFERENCES `Host` (`HostID`))
 
-
-PRIMARY KEY CLUSTERED (HostID ASC),
-FOREIGN KEY (HostID)  REFERENCES Host(HostID)
-);
-
-CREATE TABLE Guest
-(
- FirstName    varchar(50) NOT NULL ,
- LastName     varchar(50) NOT NULL ,
- MobileNumber varchar(50) NOT NULL ,
- Email         varchar(50) NOT NULL ,
- GuestID       int auto_increment NOT NULL ,
-
-
-PRIMARY KEY CLUSTERED (GuestID ASC)
-);
-
-
-CREATE TABLE Guest_Passwords
-(
- GuestID int NOT NULL ,
- Passwords  varchar(50)   NOT NULL ,
-PRIMARY KEY CLUSTERED (GuestID ASC),
-FOREIGN KEY (GuestID)  REFERENCES Guest(GuestID)
-);
-
-CREATE TABLE Property
-(
- PropertyID     int AUTO_INCREMENT NOT NULL ,
- HostID         int NOT NULL ,
- CurrentTennant int NULL ,
- HouseNumber    varchar(50) NOT NULL ,
- Street         varchar(50) NOT NULL ,
- Postcode       varchar(50) NOT NULL ,
- City           varchar(50) NOT NULL ,
- Country        varchar(50) NOT NULL ,
- ShortName      varchar(50) NOT NULL ,
- Descriptions    varchar(50) NOT NULL ,
-
-
-PRIMARY KEY CLUSTERED (PropertyID ASC),
-FOREIGN KEY (CurrentTennant)  REFERENCES Guest(GuestID),
-FOREIGN KEY (HostID)  REFERENCES Host(HostID)
-);
-
-
-
-
-
-
-CREATE TABLE Bathing_Facility
-(
- PropertyID    int NOT NULL ,
- BathroomCount int NOT NULL ,
- HairDryer    bit NULL ,
- Shampoo       bit NULL ,
- ToiletPaper  bit NULL ,
- Toilet        bit NOT NULL ,
- Bath         bit NOT NULL ,
- Shower        bit NOT NULL ,
- IsShared      bit NOT NULL ,
-
-
-PRIMARY KEY CLUSTERED (PropertyID ASC, BathroomCount ASC),
-FOREIGN KEY (PropertyID)  REFERENCES Property(PropertyID)
-);
-
-
-CREATE TABLE Beds
-(
- BedType    varchar(50) NOT NULL ,
- PeopleInBed int NOT NULL ,
-
-PRIMARY KEY CLUSTERED (BedType ASC, PeopleInBed ASC)
-);
-
-
-CREATE TABLE Charge_Band
-(
- StartDate  date NOT NULL ,
- EndDate    date NOT NULL ,
- ChargeBand varchar(50) NOT NULL ,
- Price      varchar(50) NOT NULL ,
- PropertyID int NOT NULL ,
- Period     int NOT NULL ,
-
-
-PRIMARY KEY CLUSTERED (PropertyID ASC, Period ASC),
-FOREIGN KEY (PropertyID)  REFERENCES Property(PropertyID)
-);
-
-
-CREATE TABLE Kitchen_Facility(
-PropertyID int,
-Refrigerator bit,
-Microwave bit,
-Oven bit,
-Stove bit,
-Dishwasher bit,
-Tableware bit,
-Cookware bit,
-basicProvision bit,
-PRIMARY KEY CLUSTERED (PropertyID ASC),
-FOREIGN KEY (PropertyID)  REFERENCES Property(PropertyID)
-);
-
-CREATE TABLE Outdoor_Facility(
-PropertyID int,
-Parking varchar(50),
-Patio bit null,
-Barbeque bit null,
-PRIMARY KEY CLUSTERED (PropertyID ASC),
-FOREIGN KEY (PropertyID)  REFERENCES Property(PropertyID)
-);
-
-
-
-CREATE TABLE Sleeping_Facility
-(
- PropertyID    int NOT NULL ,
- BedroomNumber int NOT NULL ,
- BedLinen     bit NULL ,
- Towels        bit NULL ,
- Bed1Type     varchar(50) NOT NULL ,
- PeopleInBed1  int NOT NULL ,
- Bed2Type     varchar(50) NULL ,
- PeopleInBed2  int NULL ,
-
-
-PRIMARY KEY CLUSTERED (PropertyID ASC, BedroomNumber ASC),
-FOREIGN KEY (Bed1Type, PeopleInBed1)  REFERENCES Beds(BedType, PeopleInBed),
-FOREIGN KEY (Bed2Type, PeopleInBed2)  REFERENCES Beds(BedType, PeopleInBed),
-FOREIGN KEY (PropertyID)  REFERENCES Property(PropertyID)
-);
-
-
-INSERT INTO Beds(BedType, PeopleInBed)
-VALUES ('Single Bed', 1);
-INSERT INTO Beds(BedType, PeopleInBed)
-VALUES ('Double Bed', 2);
-INSERT INTO Beds(BedType, PeopleInBed)
-VALUES ('Kingsize Bed', 2);
-INSERT INTO Beds(BedType, PeopleInBed)
-VALUES ('Bunk Bed', 2);
-
-
-INSERT INTO Guest(FirstName, LastName, MobileNumber, Email)
-VALUES ('John', 'Smith', '07123456789', 'john.smith@sheffield.ac.uk');
-INSERT INTO Host(FirstName, LastName, IsSuperHost,  Email)
-VALUES ('Land', 'Lord', 1, 'Land.Lord@sheffield.ac.uk');
-
-
-INSERT INTO Guest_Passwords(GuestID, Passwords)
-VALUES (1, 'Admin');
-
-INSERT INTO Host_Passwords(HostID, Passwords)
-VALUES (1, 'Admin');
-
-INSERT INTO Property(HostID, CurrentTennant,  HouseNumber, Street, Postcode, City, Country, ShortName, Descriptions)
-VALUES (1, 1, '123', 'MakeItUp Lane', 'S1 A23', 'Sheffield', 'England', 'Family Home', 'Quiet Residential 4 Bed Semi-Detached');
-
-
-INSERT INTO Kitchen_Facility(PropertyID,refrigerator,microwave,oven,stove,dishwasher,tableware,cookware, basicProvision)
-VALUES(1, 1, 1, 1, 1, 0, 0, 0, 0);
-INSERT INTO Outdoor_Facility(PropertyID,Parking,patio,barbeque)
-VALUES(1,'Free On-Site Parking', 0, 0);
-INSERT INTO Sleeping_Facility(PropertyID,BedroomNumber, BedLinen, Towels, Bed1Type, PeopleInBed1, Bed2Type, PeopleInBed2)
-VALUES(1,1, 0, 0, 'Single Bed', 1, NULL, NULL);
-INSERT INTO Sleeping_Facility(PropertyID,BedroomNumber, BedLinen, Towels, Bed1Type, PeopleInBed1, Bed2Type, PeopleInBed2)
-VALUES(1,2, 0, 0, 'Kingsize Bed', 2, NULL, NULL);
+CREATE TABLE `Sleeping_Facility` (
+      `PropertyID` INT(11) NOT NULL,
+      `BedroomNumber` INT(11) NOT NULL,
+      `BedLinen` BIT(1) NULL DEFAULT NULL,
+      `Towels` BIT(1) NULL DEFAULT NULL,
+      `Bed1Type` VARCHAR(50) NOT NULL,
+      `PeopleInBed1` INT(11) NOT NULL,
+      `Bed2Type` VARCHAR(50) NULL DEFAULT NULL,
+      `PeopleInBed2` INT(11) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`, `BedroomNumber`),
+      INDEX `Bed1Type` (`Bed1Type` ASC, `PeopleInBed1` ASC) VISIBLE,
+      INDEX `Bed2Type` (`Bed2Type` ASC, `PeopleInBed2` ASC) VISIBLE,
+      CONSTRAINT FOREIGN KEY (`Bed1Type` , `PeopleInBed1`) REFERENCES `Beds` (`BedType` , `PeopleInBed`),
+      CONSTRAINT FOREIGN KEY (`Bed2Type` , `PeopleInBed2`) REFERENCES `Beds` (`BedType` , `PeopleInBed`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
+      
+CREATE TABLE `Utility_Facility` (
+      `PropertyID` INT(11) NOT NULL,
+      `CentralHeating` BIT(1) NULL DEFAULT NULL,
+      `WashingMachine` BIT(1) NULL DEFAULT NULL,
+      `DryingMachine` BIT(1) NULL DEFAULT NULL,
+      `FireExtinguisher` BIT(1) NULL DEFAULT NULL,
+      `SmokeAlarm` BIT(1) NULL DEFAULT NULL,
+      `FirstAid` BIT(1) NULL DEFAULT NULL,
+      PRIMARY KEY (`PropertyID`),
+      CONSTRAINT FOREIGN KEY (`PropertyID`) REFERENCES `Property` (`PropertyID`))
