@@ -746,6 +746,47 @@ public final class TDatabase {
 			}
 		}
 
+			public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, int Value)
+		{
+			Statement stmt = null;
+			int count=0;
+			boolean output = false;
+			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE PropertyID = " +PropertyID+";";
+			try
+			{
+				getConnection();
+				stmt = con.createStatement();
+				count = stmt.executeUpdate(Command);
+				disconnect();
+				if (count>0) 
+					output=true;
+			}
+			catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return output;
+		}
+		
+		public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, String Value)
+		{
+			Statement stmt = null;
+			int count=0;
+			boolean output = false;
+			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE PropertyID = " +PropertyID+";";
+			try
+			{
+				getConnection();
+				stmt = con.createStatement();
+				count = stmt.executeUpdate(Command);
+				disconnect();
+				if (count>0) 
+					output=true;
+			}
+			catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return output;
+		}
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
 	public static boolean signUpHost(String fName, String lName, String email, String addressID, String hostPW) {
