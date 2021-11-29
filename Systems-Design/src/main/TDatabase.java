@@ -39,7 +39,6 @@ public final class TDatabase {
 		Properties = TDatabase.LoadProperties();
 		Guests = TDatabase.LoadGuests();
 		Bookings = TDatabase.LoadBookings();
-		disconnect();
 		
 		return isSuccess;
 	}
@@ -92,10 +91,12 @@ public final class TDatabase {
 
 				output.put(Integer.parseInt(HostID), new Host(surname, forename, host_add, "", email));
 			}
+			 disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		 
 		 
 		 return output;
@@ -127,6 +128,7 @@ public final class TDatabase {
 						Host current_host = Hosts.get(HostID);	
 						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
 						}
+					disconnect();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -151,8 +153,10 @@ public final class TDatabase {
 					// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 					Address address_temp = getAddress(AddressID);
 					Host current_host = Hosts.get(HostID);	
-					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, null, false));
+					Facilities facilities = loadFacilities(PropertyID);
+					output.put(PropertyID, new Property(ShortName, Description, current_host, address_temp, Breakfast, facilities, false));
 					}
+				disconnect();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -161,6 +165,281 @@ public final class TDatabase {
 
 		return output;
 	}
+		private static List<Bathroom> loadBathrooms(Integer PropertyID)
+	{
+		
+		List<Bathroom> output = new ArrayList<Bathroom>();
+		ResultSet table = null;
+		boolean HDBool = false, ShampBool=false, TPBool = false, TBool = false, BBool = false, SBool = false, SharedBool=false;
+		table = SearchFacility("Bathing_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String HairDryer = table.getString(3);
+					String Shampoo = table.getString(4);
+					String ToiletPaper = table.getString(5);
+					int Toilet = table.getInt(6);
+					int Bath = table.getInt(7);
+					int Shower = table.getInt(8);
+					int IsShared = table.getInt(9);
+					
+					if (HairDryer=="1")
+						HDBool = true;
+					if(Shampoo=="1")
+						ShampBool = true;
+					if (ToiletPaper=="1")
+						TPBool = true;
+					if(Toilet==1)
+						TBool = true;
+					if(Bath==1)
+						BBool = true;
+					if(Shower==1)
+						SBool = true;
+					if(IsShared==1)
+						SharedBool = true;
+					// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
+					output.add(new Bathroom(HDBool, ShampBool, TPBool, TBool, BBool, SBool, SharedBool));
+					}
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static List<Bedroom> loadBedrooms(Integer PropertyID)
+	{
+		
+		List<Bedroom> output = new ArrayList<Bedroom>();
+		ResultSet table = null;
+		boolean BLBool = false, TBool= false;
+		table = SearchFacility("Sleeping_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String BedLinen = table.getString(3);
+					String Towels = table.getString(4);
+					String Bed1Type = table.getString(5);
+					String Bed2Type = table.getString(7);
+					if(BedLinen=="1")
+						BLBool = true;
+					if(Towels=="1")
+						TBool = true;
+					
+					BedType Bed1;
+					switch(Bed1Type)
+					{
+						case "Single Bed": 
+							Bed1=BedType.Single;
+							break;
+						case "Double Bed":
+							Bed1=BedType.Double;
+						case "Bunk Bed":
+							Bed1=BedType.Bunk;
+						case "Kingsize Bed":
+							Bed1=BedType.King;
+						default:
+							Bed1=null;
+					}
+					
+					BedType Bed2=null;
+					if (Bed2Type != null)
+					{
+						switch(Bed2Type)
+						{
+							case "Single Bed": 
+								Bed2=BedType.Single;
+								break;
+							case "Double Bed":
+								Bed2=BedType.Double;
+							case "Bunk Bed":
+								Bed2=BedType.Bunk;
+							case "Kingsize Bed":
+								Bed2=BedType.King;
+							default:
+								Bed2=null;
+						}
+					}
+
+					
+					output.add(new Bedroom(BLBool, TBool, Bed1, Bed2));
+					}
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static Kitchen loadKitchen(Integer PropertyID)
+	{
+		
+		Kitchen output = null;
+		ResultSet table = null;
+		boolean FBool = false, MBool= false, OBool = false, SBool= false, DBool = false, TBool= false, CBool = false, PBool= false;
+		table = SearchFacility("Kitchen_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String fridge = table.getString(2);
+					String micro = table.getString(3);
+					String oven = table.getString(4);
+					String stove = table.getString(5);
+					String dishwasher = table.getString(6);
+					String tableware = table.getString(7);
+					String cookware = table.getString(8);
+					String provisions = table.getString(9);
+					
+					if(fridge=="1")
+						FBool = true;
+					if(micro=="1")
+						MBool = true;
+					if(oven=="1")
+						OBool = true;
+					if(stove=="1")
+						TBool = true;
+					if(dishwasher=="1")
+						DBool = true;
+					if(tableware=="1")
+						TBool = true;
+					if(cookware=="1")
+						CBool = true;
+					if(provisions=="1")
+						PBool = true;
+					output = new Kitchen(FBool, MBool, OBool, SBool, DBool, TBool, CBool, PBool);
+					}
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static Living loadLiving(Integer PropertyID)
+	{
+		
+		Living output = null;
+		ResultSet table = null;
+		boolean WBool = false, TVBool= false, SatBool = false, StreamBool= false, DVDBool = false, GBool= false;
+		table = SearchFacility("Living_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String wifi = table.getString(2);
+					String tv = table.getString(3);
+					String sat = table.getString(4);
+					String streaming = table.getString(5);
+					String dvd = table.getString(6);
+					String games = table.getString(7);
+					if(wifi=="1")
+						WBool = true;
+					if(tv=="1")
+						TVBool = true;
+					if(sat=="1")
+						SatBool = true;
+					if(streaming=="1")
+						StreamBool = true;
+					if(dvd=="1")
+						DVDBool = true;
+					if(games=="1")
+						GBool = true;
+					output = new Living(WBool, TVBool, SatBool, StreamBool, DVDBool, GBool);
+					}
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static Utility loadUtility(Integer PropertyID)
+	{
+		
+		Utility output = null;
+		ResultSet table = null;
+		boolean HeatBool = false, WBool= false, DBool = false, FEBool= false, ABool = false, FABool= false;
+		table = SearchFacility("Utility_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String CHeat = table.getString(2);
+					String Washing = table.getString(3);
+					String Drying = table.getString(4);
+					String fireExtinguish = table.getString(5);
+					String Alarm = table.getString(6);
+					String FirstAid = table.getString(7);
+					if(CHeat=="1")
+						HeatBool = true;
+					if(Washing=="1")
+						WBool = true;
+					if(Drying=="1")
+						DBool = true;
+					if(fireExtinguish=="1")
+						FEBool = true;
+					if(Alarm=="1")
+						ABool = true;
+					if(FirstAid=="1")
+						FABool = true;
+					//(boolean centralHeating, boolean washingMachine, boolean dryingMachine, boolean fireExtinguisher, boolean smokeAlarm, boolean firstAid)
+					output = new Utility(HeatBool, WBool, DBool, FEBool, ABool, FABool);
+					}
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static Outdoor loadOutdoor(Integer PropertyID)
+	{
+		
+		Outdoor output = null;
+		ResultSet table = null;
+		boolean PatioBool = false, BBQBool=false;
+		table = SearchFacility("Outdoor_Facility", PropertyID.toString(), true);
+			try {
+				while (table.next()) {
+					String Patio = table.getString(2);
+					String BBQ = table.getString(3);
+					String parking = table.getString(4);
+					if(Patio=="1")
+						PatioBool = true;
+					if(BBQ=="1")
+						BBQBool = true;
+					
+					
+					ParkType park=null;
+					if (parking != null)
+					{
+						switch(parking)
+						{
+							case "free on-site parking": 
+								park=ParkType.free;
+								break;
+							case "on road parking":
+								park=ParkType.onRoad;
+							case "paid car-park":
+								park=ParkType.paid;
+							default:
+								park=null;
+						}
+					}
+					output = new Outdoor(PatioBool, BBQBool, park);
+					
+					}
+				disconnect();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return output;
+	}
+	
+	private static Facilities loadFacilities(Integer PropertyID)
+	{
+		//(Property p, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor)
+		return new Facilities(null, loadBedrooms(PropertyID), loadBathrooms(PropertyID), loadKitchen(PropertyID), loadLiving(PropertyID), loadUtility(PropertyID), loadOutdoor(PropertyID));
+	}
+
 	private static Map<Integer, Guest> LoadGuests() {
 		Map<Integer, Guest> output = new HashMap<Integer, Guest>();
 		ResultSet table = null;
@@ -176,6 +455,7 @@ public final class TDatabase {
 				Address address_temp = getAddress(AddressID);
 				output.put(GuestID, new Guest(surname, forename, address_temp, phoneNum, email));
 			}
+			disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -242,6 +522,26 @@ public final class TDatabase {
 		ResultSet table = null;
 		Statement stmt;
 		String Command = "SELECT * FROM " + TableName + " WHERE " + TableName + "ID = '" + UserID + "';";
+
+		try {
+			getConnection();
+			stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+			if (!keepConnection) {
+				disconnect();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return table;
+	}
+	
+	//returns a given Facility
+	 public static ResultSet SearchFacility(String TableName, String PropertyID, boolean keepConnection) {
+		ResultSet table = null;
+		Statement stmt;
+		String Command = "SELECT * FROM " + TableName + " WHERE PropertyID = '" + PropertyID + "';";
 
 		try {
 			getConnection();
