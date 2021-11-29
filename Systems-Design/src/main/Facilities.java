@@ -29,13 +29,14 @@ public class Facilities {
      * @param outdoor, outdoor facility of property
      *
      */
-	public Facilities (Property p, List<Bedroom> sleeping, List<Bathroom> bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
+	public Facilities (Property property, List<Bedroom> sleeping, List<Bathroom> bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
 		this.sleeping = sleeping;
 		this.bathing = bathing;
 		this.kitchen = kitchen;
 		this.living = living;
 		this.utility = utility;
 		this.outdoor = outdoor;
+		this.property = property;
 		
 	}
 	// Methods to get bedroom and bathroom numbers
@@ -49,7 +50,7 @@ public class Facilities {
 	
 	// Accessor methods
 	public Integer getPropertyID() {
-		return this.propertyID;
+		return (this.property).getID();
 	}
 	
 	public Bedroom getBedroom(int bedroomNo) {
@@ -78,62 +79,6 @@ public class Facilities {
 	
 	// Set methods
 	
-	public void setKitchen(Kitchen k, Integer PropertyID) {
-		k.setStove(k.getStove(), PropertyID);
-		k.setDishwasher(k.getDishwasher(), PropertyID);
-		k.setTableware(k.getTableware(), PropertyID);
-		k.setCookware(k.getCookware(), PropertyID);
-		k.setBasicProvision(k.getBasicProvisions(), PropertyID);
-		this.kitchen = k;
+	public void setProperty(Property p) {
+		this.property = p;
 	}
-	
-	public void setLivingFacility(Living l, Integer PropertyID) {
-		l.setWifi(l.getWifi(), PropertyID);
-		l.setTV(l.getTelevision(), PropertyID);
-		l.setSat(l.getSatellite(), PropertyID);
-		l.setStream(l.getStreaming(), PropertyID);
-		l.setDvd(l.getDvdPlayer(), PropertyID);
-		l.setBoard(l.getBoardGames(), PropertyID);
-		this.living = l;
-	}
-	
-	public void setUtility(Utility u, Integer PropertyID) {
-		u.setCentral(u.getCentralHeating(), PropertyID);
-		u.setWashing(u.getWashingMachine(), PropertyID);
-		u.setDrying(u.getDryingMachine(), PropertyID);
-		u.setFire(u.getFireExtinguisher(), PropertyID);
-		u.setSmoke(u.getSmokeAlarm(), PropertyID);
-		u.setFirst(u.getFirstAid(), PropertyID);
-		this.utility = u;
-	}
-	
-	public void setOutdoor(Outdoor o, Integer PropertyID) {
-		o.setBBQ(o.getBbq(), PropertyID);
-		o.setPatio(o.getPatio(), PropertyID);
-		o.setParking(o.getParking(), PropertyID);
-		this.outdoor = o;
-	}
-	
-	// Add a bathroom or bedroom
-	
-	public void addBedroom(Bedroom br, Integer PropertyID) {
-		br.setLinen(br.getBedLinen(), PropertyID);
-		br.setTowels(br.getTowels(), PropertyID);
-		br.setBed1Num(br.getBedOne(), PropertyID);
-		br.setBed1Type(br.getBedOne(), PropertyID);
-		br.setBed2Num(br.getBedTwo(), PropertyID);
-		br.setBed2Type(br.getBedTwo(), PropertyID);
-		this.sleeping.add(br);
-	}
-	
-	public void addBathroom(Bathroom b, Integer PropertyID) {
-		b.setBath(b.getBath(), PropertyID);
-		b.setHair(b.getHairDrier(), PropertyID);
-		b.setShampoo(b.getShampoo(), PropertyID);
-		b.setShared(b.getShared(), PropertyID);
-		b.setShower(b.getShower(), PropertyID);
-		b.setToilet(b.getToilet(), PropertyID);
-		b.setToiletPaper(b.getToiletPaper(), PropertyID);
-		this.bathing.add(b);
-	}
-}
