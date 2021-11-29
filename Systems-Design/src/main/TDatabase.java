@@ -488,7 +488,7 @@ public final class TDatabase {
 			pst.setString(2, lName);
 			pst.setString(3, phone);
 			pst.setString(4, email);
-			pst.setString(4, addressID);
+			pst.setString(5, addressID);
 			pst.execute();
 
 			PreparedStatement pst2 = con.prepareStatement(sql2);
