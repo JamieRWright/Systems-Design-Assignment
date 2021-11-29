@@ -1,9 +1,17 @@
 package main;
 
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /*
 * Class designed to create booking objects
@@ -17,8 +25,9 @@ public class Booking {
 	private int guestID;
 	private String startDate;
 	private String endDate;
+	private boolean provisional;
 	
-	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean updateBackend) {
+	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean provisional, boolean updateBackend) {
 		this.propertyID = propertyID;
 		this.hostID = hostID;
 		this.guestID = guestID;
@@ -28,11 +37,12 @@ public class Booking {
 			TDatabase.AddBooking(propertyID, hostID, guestID, startDate, endDate);
 	}
 	
-	//public int getPropertyID() {return this.propertyID;}
-	//public int getHostID() {return this.HostID}
-	//public int getGuestID() {}
+	public int getPropertyID() {return this.propertyID;}
+	public int getHostID() {return this.hostID;}
+	public int getGuestID() {return this.guestID;}
 	public String getStartDate() {return this.startDate;}
 	public String getEndDate() {return this.endDate;}
+	public boolean getProvisional() {return this.provisional;}
 	
 	// Method to check if two bookings overlap
 	public static boolean overlap(String s1, String e1, String s2, String e2) throws ParseException {
@@ -60,21 +70,21 @@ public class Booking {
 		return (new SimpleDateFormat("yyyy-MM-dd").parse(d));
 	}
 	
-	public static void main(String[]args) throws ParseException {
-		boolean a = Booking.overlap("2021-11-20", "2021-11-27", "2021-11-23", "2022-12-1");
+	public static int getNightsNum(String sDate, String eDate) throws ParseException {
+		int nights = 0;
+		Date s = toDate(sDate);
+		Date e = toDate(eDate);
 		
+		Calendar c = Calendar.getInstance();
 		
-		Date d1 = toDate("2021-09-20");
-		Date d2 = toDate("2021-11-23");
+		while (s.before(e)) {
+			c.setTime(s);
+			c.add(Calendar.DATE, 1);
+			nights++;
+			s = c.getTime();
+		}
 		
-		//System.out.println(a);
-		
-		System.out.println(new Date());
-		
-		//TDatabase.DeleteBooking(1, 3);
-		//TDatabase.UpdateValue("Guest", "FirstName", "test_email@gmail.com", "Ash");
-		//TDatabase.addProperty(3, "44", "Hunt St.", "45654", "Warwick", "England", "Tiny House", "A very TINY house");
-		//System.out.println(TDatabase.GetPropertyID(1, "Family Home", "Quiet Residential 4 Bed Semi-Detached", "123"));
+		return nights;
 	}
 	
 }
