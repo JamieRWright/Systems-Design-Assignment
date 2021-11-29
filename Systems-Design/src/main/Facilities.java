@@ -1,4 +1,5 @@
 package main;
+import java.util.List;
 /**
  * Class designed to be used to connect a property to facilities
  * 
@@ -10,8 +11,8 @@ package main;
 
 public class Facilities {
 	private Property property;
-	private Bedroom[] sleeping;
-	private Bathroom[] bathing;
+	private List<Bedroom> sleeping;
+	private List<Bathroom> bathing;
 	private Kitchen kitchen;
 	private Living living;
 	private Utility utility;
@@ -28,7 +29,7 @@ public class Facilities {
      * @param outdoor, outdoor facility of property
      *
      */
-	public Facilities (Property p, Bedroom[] sleeping, Bathroom[] bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
+	public Facilities (Property p, List<Bedroom> sleeping, List<Bathroom> bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
 		this.sleeping = sleeping;
 		this.bathing = bathing;
 		this.kitchen = kitchen;
@@ -37,27 +38,26 @@ public class Facilities {
 		this.outdoor = outdoor;
 		
 	}
-	
 	// Methods to get bedroom and bathroom numbers
 	public int getBedroomNum() {
-		return (this.sleeping).length;
+		return (this.sleeping).size();
 	}
 	
 	public int getBathroomNum() {
-		return ((this.bathing).length);
+		return ((this.bathing).size());
 	}
 	
 	// Accessor methods
-	public Property getProperty() {
-		return this.property;
+	public Integer getPropertyID() {
+		return this.propertyID;
 	}
 	
 	public Bedroom getBedroom(int bedroomNo) {
-		return (this.sleeping)[bedroomNo - 1];
+		return (this.sleeping).get(bedroomNo-1);
 	} 
 	
 	public Bathroom getBathroom(int bathroomNo) {
-		return (this.bathing)[bathroomNo - 1];
+		return (this.bathing).get(bathroomNo-1);
 	}
 	
 	public Kitchen getKitchen() {
@@ -77,9 +77,6 @@ public class Facilities {
 	}
 	
 	// Set methods
-	public void setProperty(Property p) {
-		this.property = p;
-	}
 	
 	public void setKitchen(Kitchen k) {
 		this.kitchen = k;
@@ -100,28 +97,10 @@ public class Facilities {
 	// Add a bathroom or bedroom
 	
 	public void addBedroom(Bedroom br) {
-		Bedroom[] newBedrooms = new Bedroom[(this.sleeping).length + 1];
-		
-		for (int i = 0; i <= (this.sleeping).length; i++) {
-			if (i < (this.sleeping).length) {
-				newBedrooms[i] = (this.sleeping)[i];
-			}
-			else {
-				newBedrooms[i] = br;
-			}
-		}
+		this.sleeping.add(br);
 	}
 	
 	public void addBathroom(Bathroom b) {
-        Bathroom[] newBathrooms = new Bathroom[(this.bathing).length + 1];
-		
-		for (int i = 0; i <= (this.bathing).length; i++) {
-			if (i < (this.bathing).length) {
-				newBathrooms[i] = (this.bathing)[i];
-			}
-			else {
-				newBathrooms[i] = b;
-			}
-		}
+		this.bathing.add(b);
 	}
 }
