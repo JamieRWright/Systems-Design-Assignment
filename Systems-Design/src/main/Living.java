@@ -42,6 +42,90 @@ public class Living {
 		return this.boardGames;
 	}
 	
+	public boolean setWifi(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "WIFI", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "WIFI", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setTV(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Television", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Television", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setSat(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Satellite", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Satellite", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setStream(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Streaming", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "Streaming", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setDvd(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "DVDPlayer", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "DVDPlayer", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setBoard(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "BoardGames", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Living_Facility", "BoardGames", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
