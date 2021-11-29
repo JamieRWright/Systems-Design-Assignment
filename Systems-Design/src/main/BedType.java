@@ -8,10 +8,10 @@
  */
 package main;
 public enum BedType {
-	Single("Single-sized bed", 1),
-	Double("Double-sized bed", 2),
-	King("King-sized bed", 2),
-	Bunk("Bunk beds", 2);
+	Single("Single bed", 1),
+	Double("Double bed", 2),
+	King("Kingsize bed", 2),
+	Bunk("Bunk bed", 2);
 	
 	private String bedType;
 	private int numSleeper;
