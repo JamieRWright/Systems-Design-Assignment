@@ -751,7 +751,7 @@ public final class TDatabase {
 			Statement stmt = null;
 			int count=0;
 			boolean output = false;
-			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE PropertyID = " +PropertyID+";";
+			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE PropertyID = " +PropertyID+";";
 			try
 			{
 				getConnection();
