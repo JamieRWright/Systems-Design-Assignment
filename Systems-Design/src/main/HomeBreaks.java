@@ -44,7 +44,7 @@ import javax.swing.event.DocumentListener;
 public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
 	CardLayout cards, myAccountCards, crd, myPropertiesCards, facilitiesCards;
 	Container c = getContentPane();
-	String current = "";
+	public static String current = "";
 	Popup k;
 	JPanel home, guestLogin, hostLogin, myAccount, searchResult, viewProperties, myProperties, myFacilities;
 	JButton toHome, host, enquirer, guest, gsuBtn, hsuBtn, glBtn, hlBtn, toGSU, toHSU, search, homeBtn, viewMoreBtn, newPropertyBtn;
@@ -93,8 +93,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setTitle("HomeBreaks Plc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		current = "GH";
-		currentGuest = TDatabase.Guests.get(1);
+		//current = "GH";
+		//currentGuest = TDatabase.Guests.get(1);
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
@@ -108,9 +108,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Guest Home", guestHome());
 		c.add("House View", houseView());
 		// Scrollpane setting
-		JScrollPane vp = viewProperties(null, "City");
-		vp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		c.add("View Properties", vp);
+		c.add("View Properties", viewProperties(null, "City"));
 		c.add("Booking", bookingPage());
 		
 		setVisible(true);
@@ -688,15 +686,14 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel p1 = new JPanel();
 		p1.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
-		g.weightx = 2;
-		g.weighty = 2;
+		//g.weightx = 2;
+		//g.weighty = 2;
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		JScrollPane mp = viewProperties(currentHost, "Host");
-		//p2.setPreferredSize(new Dimension(600, 500));
 		p1.add(mp, g);
 		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
-		g.weightx = 0;
-		g.weighty = 0;
+		//g.weightx = 0;
+		//g.weighty = 0;
 		newPropertyBtn = new JButton("Create New Property");
 		newPropertyBtn.setFont(plain);
 		newPropertyBtn.addActionListener(new ActionListener() {
@@ -1582,85 +1579,152 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 
 	
 	public JScrollPane viewBookings() {
-		JPanel vb = new JPanel();
 		JPanel b = new JPanel();
-		b.setBorder(createTitledBorder(""));
+		b.setLayout(new GridBagLayout());
+		b.setBorder(HomeBreaks.createTitledBorder(""));
+		Font plain = new Font("Verdana", Font.PLAIN, 25);
 		
-		Map<Integer, Booking> filteredBookings = new HashMap<Integer, Booking>();
-		
-		// For guests
-		if (current == "GH") {
+		Map<Integer, Booking> acceptedBookings = new HashMap<Integer, Booking>();
+		Map<Integer, Booking> provisionalBookings = new HashMap<Integer, Booking>();
+		// For guest page
+		if (HomeBreaks.current == "GH") {
 			for (Booking booking : TDatabase.Bookings.values()) {
 				int guestID = booking.getGuestID();
-				int currentGID = Integer.parseInt(currentGuest.getID());
+				int currentGID = Integer.parseInt(HomeBreaks.currentGuest.getID());
+				int bookingID = TDatabase.GetBookingID(booking.getPropertyID(), booking.getGuestID());
+				boolean provisional = booking.getProvisional();
+				boolean rejected = booking.getRejected();
 				
-				if (currentGID == guestID) {filteredBookings.put(currentGID, booking);}
+				if (currentGID == guestID) {
+					if (!(provisional) && !(rejected)) {
+						acceptedBookings.put(bookingID, booking);
+					}
+					else {
+						provisionalBookings.put(bookingID, booking);
+					}
+				}
 			}
 		}
-		// for hosts
-		else if (current == "HH") {
+		// For host page
+		else if (HomeBreaks.current == "HH") {
 			for (Booking booking : TDatabase.Bookings.values()) {
-				int guestID = booking.getGuestID();
-				int currentHID = Integer.parseInt(currentHost.getID());
+				int hostID = booking.getHostID();
+				int currentHID = Integer.parseInt(HomeBreaks.currentHost.getID());
+				int bookingID = TDatabase.GetBookingID(booking.getPropertyID(), booking.getGuestID());
+				boolean provisional = booking.getProvisional();
+				boolean rejected = booking.getRejected();
 				
-				if (currentHID == guestID) {
-					filteredBookings.put(currentHID, booking);
-                    System.out.println(booking);				
+				if (currentHID == hostID) {
+					if (!provisional && !rejected) {
+						acceptedBookings.put(bookingID, booking);
+					}
+					else {
+						provisionalBookings.put(bookingID, booking);
+					}
 				}
 			}
 		}
 		
-		for (Booking userBooking : filteredBookings.values()) {
-			Host host = TDatabase.Hosts.get(userBooking.getHostID());
-			// TODO Get charge band information
-			// For guest's accepted bookings
-			if (!(userBooking.getProvisional())) {
-				JLabel pName, hName, gName, sDate, eDate, contactN, contactE, numNights, pricePerNight, serviceCharge, cleaningCharge;
-				JPanel pn, hn, gn, sd, ed, cn, ce, nn, ppp, sc, cc;
-				
-				pName = new JLabel("Property name: " + properties.get(userBooking.getPropertyID()).getShortName());
-				pName.setFont(plain);
+		JPanel accepted = new JPanel();
+		accepted.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		accepted.setBorder(HomeBreaks.createTitledBorder("Accepted bookings"));
+		
+		JPanel provisional = new JPanel();
+		provisional.setLayout(new GridBagLayout());
+		provisional.setBorder(createTitledBorder("Other bookings"));
+		
+		// For guest's bookings page
+		int guestAccepted = 0;
+		for (Booking acceptedBooking : acceptedBookings.values()) {
+			Host host = TDatabase.Hosts.get(acceptedBooking.getHostID());
+			Guest guest = TDatabase.Guests.get(acceptedBooking.getGuestID());
+			JPanel vb = new JPanel();
+			//vb.setBorder(createTitledBorder(""));
+			JLabel pName, hName, gname, sDate, eDate, contactN, contactE, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
+			hName = null;
+			
+			pName = new JLabel("Property name: " + TDatabase.Properties.get(acceptedBooking.getPropertyID()).getShortName());
+			pName.setFont(plain);
+			if (current == "GH") {
 				hName = new JLabel("Host name: " + host.getName());
 				hName.setFont(plain);
-				contactN = new JLabel("Host mobile number: " + host.getPhone());
-				contactN.setFont(plain);
-				contactE = new JLabel("Host email: " + host.getID());
-				contactE.setFont(plain);
-				sDate = new JLabel("Start date: " + userBooking.getStartDate());
-				sDate.setFont(plain);
-				eDate = new JLabel("End date: " + userBooking.getEndDate());
-				eDate.setFont(plain);
-				
-				pn = new JPanel();
-				hn = new JPanel();
-				cn = new JPanel();
-				ce = new JPanel();
-				sd = new JPanel();
-				ed = new JPanel();
-				
-				BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
-				vb.setLayout(bl);
-				
-				pn.add(pName);
-				hn.add(hName);
-				cn.add(contactN);
-				ce.add(contactE);
-				sd.add(sDate);
-				ed.add(eDate);
-				
-				vb.add(pn);
-				vb.add(hn);
-				vb.add(cn);
-				vb.add(ce);
-				vb.add(sd);
-				vb.add(ed);
-				
-				b.add(vb);
 			}
+			else if (current == "HH") {
+				
+			}
+			contactN = new JLabel("Host mobile number: " + host.getPhone());
+			contactN.setFont(plain);
+			contactE = new JLabel("Host email: " + host.getEmail());
+			contactE.setFont(plain);
+			sDate = new JLabel("Start date: " + acceptedBooking.getStartDate());
+			sDate.setFont(plain);
+			eDate = new JLabel("End date: " + acceptedBooking.getEndDate());
+			eDate.setFont(plain);
+			status = new JLabel("Status: Accepted");
+			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
+			vb.setLayout(bl);
+			
+			vb.add(pName);
+			if (current == "GH") {
+				vb.add(hName);
+			}
+			vb.add(contactN);
+			vb.add(contactE);
+			vb.add(sDate);
+			vb.add(eDate);
+			
+			HomeBreaks.setConstraints(g, 0, guestAccepted, GridBagConstraints.WEST);
+			accepted.add(vb, g);
+			guestAccepted++;
+		}
+		int prov = 0;
+		for (Booking booking : provisionalBookings.values()) {
+			Host host = TDatabase.Hosts.get(booking.getHostID());
+			b.setBorder(createTitledBorder("Other bookings"));
+			JPanel vb = new JPanel();
+			//vb.setBorder(createTitledBorder(""));
+			JLabel pName, hName, sDate, eDate, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
+			String stat = "";
+			
+			if (booking.getRejected()) {
+				stat = "Rejected";
+			}
+			else {
+				stat = "Provisional";
+			}
+			
+			pName = new JLabel("Property name: " + properties.get(booking.getPropertyID()).getShortName());
+			pName.setFont(plain);
+			hName = new JLabel("Host name: " + host.getName());
+			hName.setFont(plain);
+			sDate = new JLabel("Start date: " + booking.getStartDate());
+			sDate.setFont(plain);
+			eDate = new JLabel("End date: " + booking.getEndDate());
+			eDate.setFont(plain);
+			status = new JLabel("Status: " + stat);
+			
+			
+			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
+			vb.setLayout(bl);
+			
+			vb.add(pName);
+			vb.add(hName);
+			vb.add(sDate);
+			vb.add(eDate);
+			
+			setConstraints(g, 0, prov, GridBagConstraints.CENTER);
+			provisional.add(vb, g);
+			prov++;
 		}
 		
-		JScrollPane scroll = new JScrollPane(b);
-		return scroll;
+		// Add accepted booking
+		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		b.add(accepted, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		b.add(provisional, g);
+		JScrollPane s = new JScrollPane(b);
+		return s;
 	}
 	
 	public JPanel bookingPage() {
@@ -1993,7 +2057,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ktchnBtn.setFont(plain);
 		ktchnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "View Kitchen");
+				cards.show(c, "Kitchen");
 				current = "KI";
 				setTitle("Kitchen");
 			}
