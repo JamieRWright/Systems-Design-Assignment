@@ -24,7 +24,6 @@ public final class TDatabase {
 	public static Map<Integer, Booking> Bookings = null;
 	public static Map<Integer, Guest> Guests = null;
 	public static Map<Integer, Host> Hosts = null;
-	public static Map<Integer, Booking> Bookings = null;
 
 	private static Connection con;
 	private static String _SQLGuest = "SELECT * FROM Guest;";
@@ -117,7 +116,7 @@ public final class TDatabase {
 						int Provisional = table.getInt(7);
 						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 						Host current_host = Hosts.get(HostID);	
-						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, false));
+						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, true, false));
 						}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -672,53 +671,27 @@ public static boolean addAddress(String houseNumber, String street, String postc
 			ex.printStackTrace();
 		}
 	}
-
-    public static int GetPropertyID(int hostID, String name, String desc, String houseNum) {
-	ResultSet table=null;
-	int propertyID = 0;
-	Statement stmt;
-	 String n = "'" + name + "'";
-	 String d = "'" + desc + "'";
-	 String h = "'" + houseNum + "'";
-	 String Command = "SELECT * FROM Property WHERE HostID = "+hostID+" AND ShortName = "+n+" AND Descriptions = "+d+" AND HouseNumber = "+h+";";
-
-	 try {
-		getConnection();
-		stmt = con.createStatement();
-		table = stmt.executeQuery(Command);
-	while (table.next()) {
-		propertyID = table.getInt(1);
-	    }
-	       disconnect();
-	}
-	catch (SQLException e) {
-	       e.printStackTrace();
-	}
-	return propertyID;
-    }
     
-  /*  
-    public static String getStartDate(int p, int g) {
-    	ResultSet table=null;
-    	String date = "";
+    public static int GetBookingID(int propertyID, int guestID) {
+    	ResultSet table = null;
     	Statement stmt;
-    	String Command = "SELECT * FROM Bookings WHERE PropertyID = "+p+" AND GuestID = "+g+";";
-
-    	 try {
+    	int bookingID = 0;
+    	String Command = "SELECT * FROM Bookings WHERE PropertyID=" + propertyID + " AND GuestID=" + guestID + ";";
+    	
+    	try {
     		getConnection();
     		stmt = con.createStatement();
     		table = stmt.executeQuery(Command);
-    	while (table.next()) {
-    		date = table.getString(4);
-    	    }
-    	       disconnect();
+    		
+    		while (table.next()) {
+    			bookingID = table.getInt(1);
+    		}
     	}
     	catch (SQLException e) {
-    	       e.printStackTrace();
+    		e.printStackTrace();
     	}
-    	return date;
-        }
-        */
+    	return bookingID;
+    }
     
     public static boolean AddReview(int propertyID, int guestID, int hostID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
  		try {
