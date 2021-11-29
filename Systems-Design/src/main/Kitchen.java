@@ -107,7 +107,7 @@ public class Kitchen {
 		return output;
 	}
 	
-	public boolean Tableware(boolean value, Integer PropertyID)
+	public boolean setTableware(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
 		if (value==true)
@@ -121,7 +121,7 @@ public class Kitchen {
 		return output;
 	}
 	
-	public boolean Cookware(boolean value, Integer PropertyID)
+	public boolean setCookware(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
 		if (value==true)
@@ -135,7 +135,7 @@ public class Kitchen {
 		return output;
 	}
 	
-	public boolean basicProvision(boolean value, Integer PropertyID)
+	public boolean setBasicProvision(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
 		if (value==true)
