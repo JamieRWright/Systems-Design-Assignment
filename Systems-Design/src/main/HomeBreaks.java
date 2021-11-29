@@ -2066,54 +2066,48 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		bedsBtn.setFont(plain);
 		bedsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Beds");
-				current = "BE";
-				setTitle("Bedrooms");
+				Bedroom bed = new Bedroom(true, true, BedType.Bunk, BedType.Single);
+				showMessageDialog(null, "" + bed.toString());
 			}
 		});
 		JButton bathBtn = new JButton("View Bathrooms");
 		bathBtn.setFont(plain);
 		bathBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Baths");
-				current = "BA";
-				setTitle("Bathrooms");
+				Bathroom bath = new Bathroom(true, true, true, true, true,true, true);
+				showMessageDialog(null, "" + bath.toString());
 			}
 		});
 		JButton ktchnBtn = new JButton("View Kitchen");
 		ktchnBtn.setFont(plain);
 		ktchnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Kitchen");
-				current = "KI";
-				setTitle("Kitchen");
+				Kitchen kitchen = new Kitchen(true, true, true, true, true, true, true, true);
+				showMessageDialog(null, "" + kitchen.toString());
 			}
 		});
 		JButton livBtn = new JButton("View Living Space");
 		livBtn.setFont(plain);
 		livBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Living");
-				current = "LI";
-				setTitle("Living Space");
+				Living living = new Living(true, true, true, true, true, true);
+				showMessageDialog(null, "" + living.toString());
 			}
 		});
 		JButton utilBtn = new JButton("View Utilities");
 		utilBtn.setFont(plain);
 		utilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Utility");
-				current = "UT";
-				setTitle("Utility");
+				Utility utility = new Utility(true, true, true, true, true, true);
+				showMessageDialog(null, "" + utility.toString());
 			}
 		});
 		JButton outBtn = new JButton("View Outdoor Facility");
 		outBtn.setFont(plain);
 		outBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Outdoor");
-				current = "OUT";
-				setTitle("Outdoor Facility");
+				Outdoor outdoor = new Outdoor(true, true, ParkType.onRoad);
+				showMessageDialog(null, "" + outdoor.toString());
 			}
 		});
 		
@@ -2157,135 +2151,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hv.add(buttons);
 		
 		return hv;
-	}
-	
-	public JPanel viewKitchen(){
-		Kitchen kitchen = new Kitchen(true, true, true, true, true, true, true, true);
-		JPanel ki = new JPanel();
-		GridBagConstraints g = new GridBagConstraints();
-		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		
-		ki.setBorder(createTitledBorder("View Kitchen"));
-		
-		JPanel t, buttons;
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 20);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		 
-		// create a label
-		JLabel l = new JLabel(kitchen.toString());
-		// create a button
-		JButton b = new JButton("back");
-		// add action listener
-		b.setFont(plain);
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "House View");
-				current = "HV";
-				setTitle("House View");
-			}
-		});
-		ki.add(l);
-		ki.add(b);
-		
-		t = new JPanel();
-		buttons = new JPanel();
-		
-		BoxLayout bl = new BoxLayout(ki, BoxLayout.Y_AXIS);
-		ki.setLayout(bl);	
-		
-		t.add(l);
-		buttons.add(b);
-		ki.add(t);
-		ki.add(buttons);
-		
-		return ki;
-	}
-	
-	public JPanel viewLiving(){
-		Living living = new Living(true, true, true, true, true, true);
-		JPanel li = new JPanel();
-		GridBagConstraints g = new GridBagConstraints();
-		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		
-		li.setBorder(createTitledBorder("View Living Space"));
-		
-		JPanel t, buttons;
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 20);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		 
-		// create a label
-		JLabel l = new JLabel(living.toString());
-		// create a button
-		JButton b = new JButton("back");
-		// add action listener
-		b.setFont(plain);
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "House View");
-				current = "HV";
-				setTitle("House View");
-			}
-		});
-		li.add(l);
-		li.add(b);
-		
-		t = new JPanel();
-		buttons = new JPanel();
-		
-		BoxLayout bl = new BoxLayout(li, BoxLayout.Y_AXIS);
-		li.setLayout(bl);	
-		
-		t.add(l);
-		buttons.add(b);
-		li.add(t);
-		li.add(buttons);
-		
-		return li;
-	}
-	
-	public JPanel viewUtility(){
-		Utility utility = new Utility(true, true, true, true, true, true);
-		JPanel ut = new JPanel();
-		GridBagConstraints g = new GridBagConstraints();
-		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		
-		ut.setBorder(createTitledBorder("View Utility Space"));
-		
-		JPanel t, buttons;
-		
-		final Font plain = new Font("Verdana", Font.PLAIN, 20);
-		final Font bold = new Font("Verdana", Font.BOLD, 50);
-		 
-		// create a label
-		JLabel l = new JLabel(utility.toString());
-		// create a button
-		JButton b = new JButton("back");
-		// add action listener
-		b.setFont(plain);
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "House View");
-				current = "HV";
-				setTitle("House View");
-			}
-		});
-		ut.add(l);
-		ut.add(b);
-		
-		t = new JPanel();
-		buttons = new JPanel();
-		
-		BoxLayout bl = new BoxLayout(ut, BoxLayout.Y_AXIS);
-		ut.setLayout(bl);	
-		
-		t.add(l);
-		buttons.add(b);
-		ut.add(t);
-		ut.add(buttons);
-		
-		return ut;
 	}
 	
 	public JPanel hostProfile(Host host) {
