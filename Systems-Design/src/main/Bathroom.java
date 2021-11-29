@@ -54,6 +54,99 @@ public class Bathroom {
 		return this.shared;
 	}
 	
+	public boolean setHair(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "HairDryer", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "HairDryer", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setShampoo(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Shampoo", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Shampoo", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setToiletPaper(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "ToiletPaper", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "ToiletPaper", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setToilet(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Toilet", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Toilet", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setBath(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Bath", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Bath", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setShower(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Shower", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "Shower", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	public boolean setShared(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "IsShared", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Bathing_Facility", "IsShared", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	
 	public String toString() {
 		String str;
 		str = "Shared: " + getShared() + "\n";
