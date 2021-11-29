@@ -82,3 +82,74 @@ public class Facilities {
 	public void setProperty(Property p) {
 		this.property = p;
 	}
+	
+		public void setKitchen(Kitchen k, Integer PropertyID) {
+		k.setStove(k.getStove(), PropertyID);
+		k.setDishwasher(k.getDishwasher(), PropertyID);
+		k.setTableware(k.getTableware(), PropertyID);
+		k.setCookware(k.getCookware(), PropertyID);
+		k.setBasicProvision(k.getBasicProvisions(), PropertyID);
+		this.kitchen = k;
+		this.kitchen = k;
+	}
+
+	public void setLivingFacility(Living l, Integer PropertyID) {
+		l.setWifi(l.getWifi(), PropertyID);
+		l.setTV(l.getTelevision(), PropertyID);
+		l.setSat(l.getSatellite(), PropertyID);
+		l.setStream(l.getStreaming(), PropertyID);
+		l.setDvd(l.getDvdPlayer(), PropertyID);
+		l.setBoard(l.getBoardGames(), PropertyID);
+		this.living = l;
+		this.living = l;
+	}
+
+	public void setUtility(Utility u, Integer PropertyID) {
+		u.setCentral(u.getCentralHeating(), PropertyID);
+		u.setWashing(u.getWashingMachine(), PropertyID);
+		u.setDrying(u.getDryingMachine(), PropertyID);
+		u.setFire(u.getFireExtinguisher(), PropertyID);
+		u.setSmoke(u.getSmokeAlarm(), PropertyID);
+		u.setFirst(u.getFirstAid(), PropertyID);
+		this.utility = u;
+		this.utility = u;
+	}
+
+	public void setOutdoor(Outdoor o, Integer PropertyID) {
+		o.setBBQ(o.getBbq(), PropertyID);
+		o.setPatio(o.getPatio(), PropertyID);
+		o.setParking(o.getParking(), PropertyID);
+		this.outdoor = o;
+		this.outdoor = o;
+	}
+
+
+	// Add a bathroom or bedroom
+	// Add a bathroom or bedroom
+
+
+	public void addBedroom(Bedroom br, Integer PropertyID) {
+		br.setLinen(br.getBedLinen(), PropertyID);
+		br.setTowels(br.getTowels(), PropertyID);
+		br.setBed1Num(br.getBedOne(), PropertyID);
+		br.setBed1Type(br.getBedOne(), PropertyID);
+		br.setBed2Num(br.getBedTwo(), PropertyID);
+		br.setBed2Type(br.getBedTwo(), PropertyID);
+		this.sleeping.add(br);
+		this.sleeping.add(br);
+	}
+
+
+
+	public void addBathroom(Bathroom b, Integer PropertyID) {
+		b.setBath(b.getBath(), PropertyID);
+		b.setHair(b.getHairDrier(), PropertyID);
+		b.setShampoo(b.getShampoo(), PropertyID);
+		b.setShared(b.getShared(), PropertyID);
+		b.setShower(b.getShower(), PropertyID);
+		b.setToilet(b.getToilet(), PropertyID);
+		b.setToiletPaper(b.getToiletPaper(), PropertyID);
+		this.bathing.add(b);
+		this.bathing.add(b);
+	}
+}
