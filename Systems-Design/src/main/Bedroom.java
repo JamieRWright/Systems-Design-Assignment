@@ -64,11 +64,11 @@ public class Bedroom {
 		boolean output=false;
 		if (value==true)
 		{
-			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "BedLinen", PropertyID.toString(), 1);
+			output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "BedLinen", PropertyID.toString(), 1);
 		}
 		else
 		{
-			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "BedLinen", PropertyID.toString(), 0);
+			output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "BedLinen", PropertyID.toString(), 0);
 		}
 		return output;
 	}
@@ -78,11 +78,11 @@ public class Bedroom {
 		boolean output=false;
 		if (value==true)
 		{
-			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Towels", PropertyID.toString(), 1);
+			output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Towels", PropertyID.toString(), 1);
 		}
 		else
 		{
-			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Towels", PropertyID.toString(), 0);
+			output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Towels", PropertyID.toString(), 0);
 		}
 		return output;
 	}
@@ -90,26 +90,26 @@ public class Bedroom {
 	public boolean setBed1Type(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Bed1Type", PropertyID.toString(), value.getString());
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed1Type", PropertyID.toString(), value.getString());
 		return output;
 	}
 	public boolean setBed1Num(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "PeopleInBed1", PropertyID.toString(), value.getNumSleeper());
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "PeopleInBed1", PropertyID.toString(), value.getNumSleeper());
 		return output;
 	}
 	
 	public boolean setBed2Type(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Bed2Type", PropertyID.toString(), value.getString());
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed2Type", PropertyID.toString(), value.getString());
 		return output;
 	}
 	public boolean setBed2Num(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "PeopleInBed2", PropertyID.toString(), value.getNumSleeper());
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "PeopleInBed2", PropertyID.toString(), value.getNumSleeper());
 		return output;
 	}
 	
