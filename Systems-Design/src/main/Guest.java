@@ -9,6 +9,7 @@
 package main;
 public class Guest extends User {
 	
+	private boolean getSuccess;
 	/**
      * Constructor
      * 
@@ -23,7 +24,7 @@ public class Guest extends User {
 	public Guest(String surname, String forename, Address address, String phone, String email, String password) {
 		super(surname, forename, address, phone, email);
 		
-		TDatabase.signUpGuest(surname, forename, phone, email, address.getID(), password);
+		this.getSuccess = TDatabase.signUpGuest(surname, forename, phone, email, address.getID(), password);
 		this.userID=TDatabase.SearchUserID("Guest", email);
 	
 	}
@@ -53,7 +54,6 @@ public class Guest extends User {
 	
 	
 		public boolean getSuccess() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getSuccess;
 	}
 }
