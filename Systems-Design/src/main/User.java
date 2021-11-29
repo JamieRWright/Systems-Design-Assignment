@@ -1,3 +1,5 @@
+package main;
+
 /**
  * Class designed for Host and Guest to inherit from
  *
@@ -6,7 +8,6 @@
  * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
  *
  */
-package main;
 public class User {
 	protected String surname;
 	protected String forename;
@@ -66,7 +67,7 @@ public class User {
 		return this.phone;
 	}
 	
-	public String getID() {
+	public String getEmail() {
 		return this.userID;
 	}
 	
