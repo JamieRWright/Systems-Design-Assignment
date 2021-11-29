@@ -26,13 +26,16 @@ public class Booking {
 	private String startDate;
 	private String endDate;
 	private boolean provisional;
+	private boolean rejected;
 	
-	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean provisional, boolean updateBackend) {
+	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean provisional, boolean rejected, boolean updateBackend) {
 		this.propertyID = propertyID;
 		this.hostID = hostID;
 		this.guestID = guestID;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.provisional = provisional;
+		this.rejected = rejected;
 		if (updateBackend)
 			TDatabase.AddBooking(propertyID, hostID, guestID, startDate, endDate);
 	}
@@ -43,6 +46,7 @@ public class Booking {
 	public String getStartDate() {return this.startDate;}
 	public String getEndDate() {return this.endDate;}
 	public boolean getProvisional() {return this.provisional;}
+	public boolean getRejected() {return this.rejected;}
 	
 	// Method to check if two bookings overlap
 	public static boolean overlap(String s1, String e1, String s2, String e2) throws ParseException {
