@@ -39,6 +39,42 @@ public class Outdoor {
 		return this.parking;
 	}
 	
+	public boolean setPatio(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Patio", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Patio", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setBBQ(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Barbeque", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Barbeque", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setParking(ParkType value, Integer PropertyID)
+	{
+		boolean output=false;
+		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Parking", PropertyID.toString(), value.getString());
+		return output;
+	}
+	
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
