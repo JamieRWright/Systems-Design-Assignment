@@ -79,16 +79,16 @@ public class Kitchen {
 		return output;
 	}
 	
-	public boolean setStore(boolean value, Integer PropertyID)
+	public boolean setStove(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
 		if (value==true)
 		{
-			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Store", PropertyID.toString(), 1);
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Stove", PropertyID.toString(), 1);
 		}
 		else
 		{
-			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Store", PropertyID.toString(), 0);
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Stove", PropertyID.toString(), 0);
 		}
 		return output;
 	}
