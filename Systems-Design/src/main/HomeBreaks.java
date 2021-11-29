@@ -852,12 +852,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					showMessageDialog(null, "All fields are mandatory.");
 				}
 				else {
-					Address address_temp = new Address(houseNo, street, postcode, city, true);
-					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, true);
-					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
-					showMessageDialog(null, "Property successfully added!");
-					addHostProperties();
-					myPropertiesCards.show(myProperties, "All Properties");
+					address = new Address(houseNo, street, postcode, city, true);
+					chosenHouse = new Property(sName, descr, HomeBreaks.currentHost, address, bfast, null, true);
+					cards.show(c, "Add Living");
+					current = "AL";
+					setTitle("New Living Space");
 				}
 			}
 		});
@@ -879,7 +878,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox checkWifi = new JCheckBox("Wifi", true);
 		checkWifi.setBounds(100,100, 50,50);
@@ -901,6 +899,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				Living living = new Living(checkWifi.isSelected(), checkTV.isSelected(), checkSat.isSelected(),
 						checkStream.isSelected(), checkDvd.isSelected(), checkBoard.isSelected());
 				facility.setLivingFacility(living);
+				cards.show(c, "Add Utility");
+				current = "AU";
+				setTitle("New Utilities");
 			}
 		});
 		
@@ -928,7 +929,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Heating", true);
 		check1.setBounds(100,100, 50,50);
@@ -950,6 +950,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				Utility utility = new Utility(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected());
 				facility.setUtility(utility);
+				cards.show(c, "Add Bath");
+				current = "ABA";
+				setTitle("New Bathroom");
 			}
 		});
 		
@@ -977,7 +980,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Hair Drier", true);
 		check1.setBounds(100,100, 50,50);
@@ -1001,6 +1003,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
 				facility.addBathroom(bathroom);
+				cards.show(c, "Add Bedroom");
+				current = "AB";
+				setTitle("New Bedroom");
 			}
 		});
 		
@@ -1029,7 +1034,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Bed Linen", true);
 		check1.setBounds(100,100, 50,50);
@@ -1067,6 +1071,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			public void actionPerformed(ActionEvent e) {
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
 				facility.addBedroom(bedroom);
+				cards.show(c, "Add Outdoor");
+				current = "AO";
+				setTitle("New Oudoor Facility");
 			}
 		});
 		
@@ -1098,7 +1105,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Patio", true);
 		check1.setBounds(100,100, 50,50);
@@ -1120,6 +1126,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			public void actionPerformed(ActionEvent e) {
 				Outdoor outdoor = new Outdoor(check1.isSelected(), check2.isSelected(), parking);
 				facility.setOutdoor(outdoor);
+				cards.show(c, "Add Kitchen");
+				current = "AK";
+				setTitle("New Kitchen");
 			}
 		});
 		
@@ -1145,7 +1154,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox checkFridge = new JCheckBox("Fridge", true);
 		checkFridge.setBounds(100,100, 50,50);
@@ -1172,6 +1180,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 						checkStore.isSelected(), checkDish.isSelected(), checkTable.isSelected(), checkCook.isSelected(),
 						checkBasic.isSelected());
 				facility.setKitchen(kitchen);
+				chosenHouse.setFacilities(facility);
+				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
+				showMessageDialog(null, "Property successfully added!");
+				addHostProperties();
+				myPropertiesCards.show(myProperties, "All Properties");
 			}
 		});
 		
