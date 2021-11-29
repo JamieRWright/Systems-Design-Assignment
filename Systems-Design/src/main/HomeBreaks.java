@@ -66,6 +66,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	String hostFilter = "";
 	String propertyNameFilter = "";
 	Property chosenHouse;
+	Address address;
 	static Facilities facility;
 	ParkType parking = null;
 	BedType bed1 = null;
@@ -108,6 +109,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
 		c.add("House View", houseView());
+		c.add("Add Living", addLiving());
+		c.add("Add Utility", addUtility());
+		c.add("Add Bath", addBath());
+		c.add("Add Oudoor", addOutdoor());
+		c.add("Add Bedroom", addBedroom());
+		c.add("Add Kitchen", addKitchen());
 		// Scrollpane setting
 		c.add("View Properties", viewProperties(null, "City"));
 		c.add("Booking", bookingPage());
