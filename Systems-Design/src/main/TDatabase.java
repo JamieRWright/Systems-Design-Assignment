@@ -107,6 +107,8 @@ public final class TDatabase {
 			table = SearchFullTable("Bookings", true);
 				try {
 					while (table.next()) {
+						boolean rejected = false;
+						boolean provisional = false;
 						Integer BookingID = table.getInt(2);
 						Integer PropertyID = table.getInt(2);
 						Integer HostID = table.getInt(3);
@@ -114,9 +116,16 @@ public final class TDatabase {
 						String StartDate = table.getString(5);
 						String EndDate = table.getString(6);
 						int Provisional = table.getInt(7);
+						int Rejected = table.getInt(8);
+						if (Rejected > 0) {
+							rejected = true;
+						}
+						if (Provisional == 0) {
+							provisional = true;
+						}
 						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 						Host current_host = Hosts.get(HostID);	
-						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, true, false));
+						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
 						}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
