@@ -874,7 +874,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return hp;
 	}
-	
 	public JPanel addLiving() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		JPanel al = new JPanel();
@@ -905,7 +904,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			public void actionPerformed(ActionEvent e) {
 				Living living = new Living(checkWifi.isSelected(), checkTV.isSelected(), checkSat.isSelected(),
 						checkStream.isSelected(), checkDvd.isSelected(), checkBoard.isSelected());
-				facility.setLivingFacility(living);
+				facility.setLivingFacility(living, chosenHouse.getID());
 				cards.show(c, "Add Utility");
 				current = "AU";
 				setTitle("New Utilities");
@@ -956,7 +955,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			public void actionPerformed(ActionEvent e) {
 				Utility utility = new Utility(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected());
-				facility.setUtility(utility);
+				facility.setUtility(utility, chosenHouse.getID());
 				cards.show(c, "Add Bath");
 				current = "ABA";
 				setTitle("New Bathroom");
@@ -1009,7 +1008,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			public void actionPerformed(ActionEvent e) {
 				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
-				facility.addBathroom(bathroom);
+				facility.addBathroom(bathroom, chosenHouse.getID());
 				cards.show(c, "Add Bedroom");
 				current = "AB";
 				setTitle("New Bedroom");
@@ -1077,7 +1076,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
-				facility.addBedroom(bedroom);
+				facility.addBedroom(bedroom, chosenHouse.getID());
 				cards.show(c, "Add Outdoor");
 				current = "AO";
 				setTitle("New Oudoor Facility");
@@ -1132,7 +1131,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Outdoor outdoor = new Outdoor(check1.isSelected(), check2.isSelected(), parking);
-				facility.setOutdoor(outdoor);
+				facility.setOutdoor(outdoor, chosenHouse.getID());
 				cards.show(c, "Add Kitchen");
 				current = "AK";
 				setTitle("New Kitchen");
@@ -1186,7 +1185,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				Kitchen kitchen = new Kitchen(checkFridge.isSelected(), checkMicro.isSelected(), checkOven.isSelected(),
 						checkStore.isSelected(), checkDish.isSelected(), checkTable.isSelected(), checkCook.isSelected(),
 						checkBasic.isSelected());
-				facility.setKitchen(kitchen);
+				facility.setKitchen(kitchen, chosenHouse.getID());
+				facility.setProperty(chosenHouse);
 				chosenHouse.setFacilities(facility);
 				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 				showMessageDialog(null, "Property successfully added!");
