@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -319,8 +320,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String postcode = add4_gsu.getText();
 				String phone = phone_input_gsu.getText();
 				String email = id_input_gsu.getText();
-				String password = String.valueOf(pw_input_gsu.getPassword());
-				
+				//Hash Password
+				String password="";
+				try {
+					password = TDatabase.encryptThisString(String.valueOf(pw_input_gsu.getPassword()));
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
@@ -487,8 +495,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String postcode = add4_hsu.getText();
 				String phone = phone_input_hsu.getText();
 				String email = id_input_hsu.getText();
-				String password = String.valueOf(pw_input_hsu.getPassword());
-				
+				//Hash Password
+				String password="";
+				try {
+					password = TDatabase.encryptThisString(String.valueOf(pw_input_hsu.getPassword()));
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
@@ -561,7 +576,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		glBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String email = id_input_gl.getText();
-				String pw = String.valueOf(pw_input_gl.getPassword());
+				String pw="";
+				try {
+					pw = TDatabase.encryptThisString(String.valueOf(pw_input_gl.getPassword()));
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				if (TDatabase.GuestLogin(email, pw)) {
 					setTitle("Guest Home");
@@ -638,7 +659,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hlBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String email = id_input_hl.getText();
-				String pw = String.valueOf(pw_input_hl.getPassword());
+				String pw="";
+				try {
+					pw = TDatabase.encryptThisString(String.valueOf(pw_input_hl.getPassword()));
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				String hostID;
 				
 				if (TDatabase.HostLogin(email, pw)) {
@@ -2297,8 +2324,21 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public void checkPasswordsGSU() {
-		String password = String.valueOf(pw_input_gsu.getPassword());
-		String repassword = String.valueOf(confirm_input_gsu.getPassword());
+		String password="";
+		try {
+			password = TDatabase.encryptThisString(String.valueOf(pw_input_gsu.getPassword()));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String repassword="";
+		try {
+			repassword = TDatabase.encryptThisString(String.valueOf(confirm_input_gsu.getPassword()));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 	    if (!password.equals(repassword)) {
 	    	warning_gsu.setFont(new Font("Verdana", Font.PLAIN, 20));
@@ -2314,8 +2354,21 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	public void checkPasswordsHSU() {
-		String password = String.valueOf(pw_input_hsu.getPassword());
-		String repassword = String.valueOf(confirm_input_hsu.getPassword());
+		String password="";
+		try {
+			password = TDatabase.encryptThisString(String.valueOf(pw_input_hsu.getPassword()));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String repassword="";
+		try {
+			repassword = TDatabase.encryptThisString(String.valueOf(confirm_input_hsu.getPassword()));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 	    if (!password.equals(repassword)) {
 	    	warning_hsu.setFont(new Font("Verdana", Font.PLAIN, 20));
