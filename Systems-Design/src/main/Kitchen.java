@@ -37,6 +37,118 @@ public class Kitchen {
 	public boolean getCookware() {return this.cookware;}
 	public boolean getBasicProvisions() {return this.basicProvisions;}
 	
+	public boolean setFridge(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Refrigerator", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Refrigerator", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setMicrowave(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Microwave", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Microwave", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setOven(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Oven", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Oven", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setStore(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Store", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Store", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean setDishwasher(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Dishwasher", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Dishwasher", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean Tableware(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Tableware", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Tableware", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean Cookware(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Cookware", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "Cookware", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
+	public boolean basicProvision(boolean value, Integer PropertyID)
+	{
+		boolean output=false;
+		if (value==true)
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvisions", PropertyID.toString(), 1);
+		}
+		else
+		{
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvisions", PropertyID.toString(), 0);
+		}
+		return output;
+	}
+	
 	public String toString() {
 		String str;
 		str = "Amenities provided" + "\n";
@@ -50,57 +162,5 @@ public class Kitchen {
 		str += "Basic Provisions: " + getBasicProvisions() + "\n";
 		
 		return str;
-	}
-		public String popUpText() {
-		String text ="";
-		if (getFridge()) {
-			text = text + "Fridge u\2713 \n";
-		}
-		else if (!getFridge()){
-			text = text + "Fridge u\02DF \n";
-		}
-		if (getMicrowave()) {
-			text = text + "Microwave u\2713 \n";
-		}
-		else if (!getMicrowave()){
-			text = text + "Microwave u\02DF \n";
-		}
-		if (getOven()) {
-			text = text + "Oven u\2713 \n";
-		}
-		else if (!getOven()){
-			text = text + "Oven u\02DF \n";
-		}
-		if (getStove()) {
-			text = text + "Stove u\2713 \n";
-		}
-		else if (!getStove()){
-			text = text + "Stove u\02DF \n";
-		}
-		if (getDishwasher()) {
-			text = text + "Dishwasher u\2713 \n";
-		}
-		else if (!getDishwasher()){
-			text = text + "Dishwasher u\02DF \n";
-		}
-		if (getTableware()) {
-			text = text + "Tableware u\2713 \n";
-		}
-		else if (!getTableware()){
-			text = text + "Tableware u\02DF \n";
-		}
-		if (getCookware()) {
-			text = text + "Cookware u\2713 \n";
-		}
-		else if (!getCookware()){
-			text = text + "Cookware u\02DF \n";
-		}
-		if (getBasicProvisions()) {
-			text = text + "Basic Provisions u\2713 \n";
-		}
-		else if (!getBasicProvisions()){
-			text = text + "Basic Provisions u\02DF \n";
-		}
-		return text;
 	}
 }
