@@ -716,7 +716,7 @@ public final class TDatabase {
 		{
 			Statement stmt = null;
 			int count=0;
-			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE "+TableName+"ID = " +UserID+";";
+			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE "+TableName+"ID = " +UserID+";";
 			try
 			{
 				getConnection();
@@ -733,7 +733,7 @@ public final class TDatabase {
 		{
 			Statement stmt = null;
 			int count=0;
-			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE "+TableName+"ID = " +UserID+";";
+			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE "+TableName+"ID = " +UserID+";";
 			try
 			{
 				getConnection();
@@ -772,7 +772,7 @@ public final class TDatabase {
 			Statement stmt = null;
 			int count=0;
 			boolean output = false;
-			String Command = "UPDATE" +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE PropertyID = " +PropertyID+";";
+			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE PropertyID = " +PropertyID+";";
 			try
 			{
 				getConnection();
