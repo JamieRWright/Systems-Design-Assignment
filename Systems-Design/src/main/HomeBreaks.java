@@ -1,5 +1,4 @@
 package main;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 import java.awt.BorderLayout;
@@ -14,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +71,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	BedType bed2 = null;
 	
 	// TODO if there's time: enhance the searching feature to search for matching results, not exact ones
+	// check if price input is correct properly
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
@@ -92,6 +93,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setTitle("HomeBreaks Plc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		current = "GH";
+		currentGuest = TDatabase.Guests.get(1);
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
@@ -104,10 +107,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
 		c.add("House View", houseView());
-		c.add("View Properties", viewProperties(null, "City"));
+		// Scrollpane setting
+		JScrollPane vp = viewProperties(null, "City");
+		vp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		c.add("View Properties", vp);
 		c.add("Booking", bookingPage());
-		c.add("View Kitchen", viewKitchen());
-		c.add("Living", viewLiving());
 		
 		setVisible(true);
 	}
@@ -688,10 +692,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		g.weighty = 2;
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		JScrollPane mp = viewProperties(currentHost, "Host");
+		//p2.setPreferredSize(new Dimension(600, 500));
 		p1.add(mp, g);
 		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
-		g.weightx = 1;
-		g.weighty = 1;
+		g.weightx = 0;
+		g.weighty = 0;
 		newPropertyBtn = new JButton("Create New Property");
 		newPropertyBtn.setFont(plain);
 		newPropertyBtn.addActionListener(new ActionListener() {
@@ -825,7 +830,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				else {
 					Address address_temp = new Address(houseNo, street, postcode, city, true);
 					Property temp_prop = new Property(sName, descr, HomeBreaks.currentHost, address_temp, bfast, null, true);
-					myPropertiesCards.show(myProperties, "Add Kitchen");
 					TDatabase.Properties.put(temp_prop.getID(), temp_prop);
 					showMessageDialog(null, "Property successfully added!");
 					addHostProperties();
@@ -938,7 +942,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return au;	        
 	}
-	
+    
 	public JPanel addBath() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		JPanel aba = new JPanel();
@@ -1059,7 +1063,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		return ab;	        
 	}
-	
+    
 	public JPanel addOutdoor() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		JPanel ao = new JPanel();
@@ -1085,7 +1089,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		if (check3a.isSelected()) {parking = ParkType.free;}
 		if (check3b.isSelected()) {parking = ParkType.onRoad;}
 		if (check3c.isSelected()) {parking = ParkType.paid;}
-
 		
 		JButton create = new JButton("Create Outdoor Facilities");
 		create.setFont(plain);
@@ -1322,7 +1325,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myProperties.setLayout(myPropertiesCards);
 		myProperties.add("Add Kitchen", addKitchen());
 		
-		
 		JPanel pBookings = new JPanel();
 		myAccount = new JPanel();
 		myAccountCards = new CardLayout();
@@ -1332,6 +1334,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel propertiesList = new JPanel();
 		
 		myProperties.add("New", newPropertyPanel());
+		
 		
 		hp1 = new JPanel();
 		hp2 = new JPanel();
@@ -1576,6 +1579,90 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		return ma;
 	}
 	
+
+	
+	public JScrollPane viewBookings() {
+		JPanel vb = new JPanel();
+		JPanel b = new JPanel();
+		b.setBorder(createTitledBorder(""));
+		
+		Map<Integer, Booking> filteredBookings = new HashMap<Integer, Booking>();
+		
+		// For guests
+		if (current == "GH") {
+			for (Booking booking : TDatabase.Bookings.values()) {
+				int guestID = booking.getGuestID();
+				int currentGID = Integer.parseInt(currentGuest.getID());
+				
+				if (currentGID == guestID) {filteredBookings.put(currentGID, booking);}
+			}
+		}
+		// for hosts
+		else if (current == "HH") {
+			for (Booking booking : TDatabase.Bookings.values()) {
+				int guestID = booking.getGuestID();
+				int currentHID = Integer.parseInt(currentHost.getID());
+				
+				if (currentHID == guestID) {
+					filteredBookings.put(currentHID, booking);
+                    System.out.println(booking);				
+				}
+			}
+		}
+		
+		for (Booking userBooking : filteredBookings.values()) {
+			Host host = TDatabase.Hosts.get(userBooking.getHostID());
+			// TODO Get charge band information
+			// For guest's accepted bookings
+			if (!(userBooking.getProvisional())) {
+				JLabel pName, hName, gName, sDate, eDate, contactN, contactE, numNights, pricePerNight, serviceCharge, cleaningCharge;
+				JPanel pn, hn, gn, sd, ed, cn, ce, nn, ppp, sc, cc;
+				
+				pName = new JLabel("Property name: " + properties.get(userBooking.getPropertyID()).getShortName());
+				pName.setFont(plain);
+				hName = new JLabel("Host name: " + host.getName());
+				hName.setFont(plain);
+				contactN = new JLabel("Host mobile number: " + host.getPhone());
+				contactN.setFont(plain);
+				contactE = new JLabel("Host email: " + host.getID());
+				contactE.setFont(plain);
+				sDate = new JLabel("Start date: " + userBooking.getStartDate());
+				sDate.setFont(plain);
+				eDate = new JLabel("End date: " + userBooking.getEndDate());
+				eDate.setFont(plain);
+				
+				pn = new JPanel();
+				hn = new JPanel();
+				cn = new JPanel();
+				ce = new JPanel();
+				sd = new JPanel();
+				ed = new JPanel();
+				
+				BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
+				vb.setLayout(bl);
+				
+				pn.add(pName);
+				hn.add(hName);
+				cn.add(contactN);
+				ce.add(contactE);
+				sd.add(sDate);
+				ed.add(eDate);
+				
+				vb.add(pn);
+				vb.add(hn);
+				vb.add(cn);
+				vb.add(ce);
+				vb.add(sd);
+				vb.add(ed);
+				
+				b.add(vb);
+			}
+		}
+		
+		JScrollPane scroll = new JScrollPane(b);
+		return scroll;
+	}
+	
 	public JPanel bookingPage() {
 		JPanel bp = new JPanel();
 		bp.setLayout(new GridBagLayout());
@@ -1660,6 +1747,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		request.setFont(plain);
 		request.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean overlap = false;
+				boolean passed = false;
 				String sY = startYY.getText();
 				String sM = startMM.getText();
 				String sD = startDD.getText();
@@ -1672,16 +1761,49 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				boolean rightEnd = HomeBreaks.isNumericDate(eY) || HomeBreaks.isNumericDate(eM) || HomeBreaks.isNumericDate(eD);
 				boolean unfilledEnd = eY.isEmpty() || eM.isEmpty() || eD.isEmpty();
 				
+				String start = sY + "-" + sM + "-" + sD;
+				String end = eY + "-" + eM + "-" + eD;
+				
+				try {
+					if (Booking.hasPassed(start) || Booking.hasPassed(end)) {
+						showMessageDialog(null, "Cannot book for dates already passed!");
+					}
+				}
+				catch (ParseException p) {
+					p.printStackTrace();
+				}
+								
+				// get list of all bookings, check if any overlaps with given date
+				
+				for (Booking b : TDatabase.Bookings.values()) {
+					String sd = b.getStartDate();
+					String ed = b.getEndDate();
+					
+					boolean accepted = !(b.getProvisional());
+					
+					try {
+						if (!(overlap)) {
+							if (Booking.overlap(sd, ed, start, end) && !(accepted)) {
+								showMessageDialog(null, "Property is unavailable for that date.");
+								overlap = true;
+							}
+						}
+					}
+					catch (ParseException p) {
+						p.printStackTrace();
+					}
+					
+				}
+				
+				boolean validDates = !overlap && !passed;
+				
 				if (unfilledStart || unfilledEnd) {showMessageDialog(null, "Please fill in all blanks.");}
-				else if (rightStart && rightEnd) {
-					// TODO check if date is available
+				else if (rightStart && rightEnd && validDates) {
 					int guestID = Integer.parseInt(currentGuest.getID());
 					int propertyID = chosenHouse.getID();
 					int hostID = Integer.parseInt(chosenHouse.getHost().getID());
-					String start = sY + "-" + sM + "-" + sD;
-					String end = eY + "-" + eM + "-" + eD;
 					TDatabase.AddBooking(propertyID, hostID, guestID, start, end);
-					showMessageDialog(null, "Bookin successfull!");
+					showMessageDialog(null, "Booking successfull!");
 				}
 			}
 		});
@@ -1692,7 +1814,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	// Filter by city
 	public void filterCity(Map<Integer, Property> filteredList) {
-		for (Property house : properties.values())  {
+		for (Property house : TDatabase.Properties.values())  {
 			Address address = house.getFullAddress();
 			String city = address.getCity();
 			
@@ -1766,10 +1888,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			maxsleep.setFont(plain);
 			rating = new JLabel("Rating: " + chosenHouse.getPropertyRating());
 			rating.setFont(plain);
-//			numbaths = new JLabel("Number of Bathrooms: " + facility.getBathroomNum());
-//			numbaths.setFont(plain);
-//			numbeds = new JLabel("Number of Bedrooms: " + facility.getBedroomNum());
-//			numbeds.setFont(plain);
+			//numbaths = new JLabel("Number of Bathrooms: " + chosenHouse.getBathroom());
+			//numbaths.setFont(plain);
+			//numbeds = new JLabel("Number of Bedrooms: " + chosenHouse.getBedroom());
+			//numbeds.setFont(plain);
 			
 			viewMoreBtn = new JButton("View More");
 			viewMoreBtn.setFont(plain);
@@ -1800,8 +1922,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			b.add(breakfast);
 			ms.add(maxsleep);
 			r.add(rating);
-//			nbaths.add(numbaths);
-//			nbeds.add(numbeds);	
+			//nbaths.add(numbaths);
+			//nbeds.add(numbeds);	
 			buttons.add(viewMoreBtn);
 			
 			vp.add(shortName);
@@ -1810,11 +1932,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vp.add(breakfast);
 			vp.add(maxsleep);
 			vp.add(rating);
-//			vp.add(numbaths);
-//			vp.add(numbeds);
+			//vp.add(numbaths);
+			//vp.add(numbeds);
 			vp.add(buttons);
 		}
-		
 		JScrollPane scroll = new JScrollPane(vp);
 		
 		return scroll;
