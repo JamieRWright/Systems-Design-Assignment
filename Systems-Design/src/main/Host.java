@@ -24,7 +24,7 @@ public class Host extends User {
 	public Host(String surname, String forename, Address address, String phone, String email, String password) {
 		super(surname, forename, address, phone, email, password);
 		this.rating = null;
-		this.signupSuccess = TDatabase.signUpHost(forename, surname, email, address.getID(), password);
+		this.signupSuccess = TDatabase.signUpHost(forename, surname, email, phone, address.getID(), password);
 		this.userID=TDatabase.SearchUserID("Host", email);
 		this.email=email;
 	}
