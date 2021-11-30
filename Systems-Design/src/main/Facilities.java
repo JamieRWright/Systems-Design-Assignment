@@ -29,14 +29,14 @@ public class Facilities {
      * @param outdoor, outdoor facility of property
      *
      */
-	public Facilities (Property property, List<Bedroom> sleeping, List<Bathroom> bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
+	public Facilities (Integer propertyID, List<Bedroom> sleeping, List<Bathroom> bathing, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor) {
 		this.sleeping = sleeping;
 		this.bathing = bathing;
 		this.kitchen = kitchen;
 		this.living = living;
 		this.utility = utility;
 		this.outdoor = outdoor;
-		this.property = property;
+		this.propertyID = propertyID;
 		
 	}
 	// Methods to get bedroom and bathroom numbers
@@ -50,7 +50,7 @@ public class Facilities {
 	
 	// Accessor methods
 	public Integer getPropertyID() {
-		return (this.property).getID();
+		return this.propertyID;
 	}
 	
 	public Bedroom getBedroom(int bedroomNo) {
@@ -79,11 +79,7 @@ public class Facilities {
 	
 	// Set methods
 	
-	public void setProperty(Property p) {
-		this.property = p;
-	}
-	
-		public void setKitchen(Kitchen k, Integer PropertyID) {
+	public void setKitchen(Kitchen k, Integer PropertyID) {
 		k.setStove(k.getStove(), PropertyID);
 		k.setDishwasher(k.getDishwasher(), PropertyID);
 		k.setTableware(k.getTableware(), PropertyID);
