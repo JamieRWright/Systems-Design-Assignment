@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -1625,7 +1626,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 
 	
-	public JScrollPane viewBookings() {
+	public JScrollPane viewBookings() throws ParseException {
 		JPanel b = new JPanel();
 		b.setLayout(new GridBagLayout());
 		b.setBorder(HomeBreaks.createTitledBorder(""));
@@ -1681,58 +1682,93 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		provisional.setLayout(new GridBagLayout());
 		provisional.setBorder(createTitledBorder("Other bookings"));
 		
-		// For guest's bookings page
+		// For guest's and hosts' bookings page
 		int guestAccepted = 0;
 		for (Booking acceptedBooking : acceptedBookings.values()) {
 			Host host = TDatabase.Hosts.get(acceptedBooking.getHostID());
 			Guest guest = TDatabase.Guests.get(acceptedBooking.getGuestID());
 			JPanel vb = new JPanel();
 			//vb.setBorder(createTitledBorder(""));
-			JLabel pName, hName, gname, sDate, eDate, contactN, contactE, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
-			hName = null;
+			JLabel pName, personName, sDate, eDate, contactN, contactE, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
+			personName = null;
+			contactN = null;
+			contactE = null;
 			
 			pName = new JLabel("Property name: " + TDatabase.Properties.get(acceptedBooking.getPropertyID()).getShortName());
 			pName.setFont(plain);
 			if (current == "GH") {
-				hName = new JLabel("Host name: " + host.getName());
-				hName.setFont(plain);
+				// print host info
+				personName = new JLabel("Host name: " + host.getName());
+				personName.setFont(plain);
+				contactN = new JLabel("Host mobile number: " + host.getPhone());
+				contactN.setFont(plain);
+				contactE = new JLabel("Host email: " + host.getEmail());
+				contactE.setFont(plain);
 			}
 			else if (current == "HH") {
-				
+				// print guest info
+				personName = new JLabel("Guest name: " + guest.getName());
+				personName.setFont(plain);
+				contactN = new JLabel("Guest mobile number: " + guest.getPhone());
+				contactN.setFont(plain);
+				contactE = new JLabel("Guest email: " + guest.getEmail());
+				contactE.setFont(plain);
 			}
-			contactN = new JLabel("Host mobile number: " + host.getPhone());
-			contactN.setFont(plain);
-			contactE = new JLabel("Host email: " + host.getEmail());
-			contactE.setFont(plain);
 			sDate = new JLabel("Start date: " + acceptedBooking.getStartDate());
 			sDate.setFont(plain);
 			eDate = new JLabel("End date: " + acceptedBooking.getEndDate());
 			eDate.setFont(plain);
+			
+			ChargeBand chargeBand = null;
+			// Add Chargeband info
+			for (ChargeBand c : TDatabase.ChargeBands.values()) {
+				if (c.getPropertyID() == acceptedBooking.getPropertyID()) {
+					if (Booking.overlap(c.getStartDate(), c.getEndDate(), acceptedBooking.getStartDate(), acceptedBooking.getEndDate())) {
+						chargeBand = c;
+					}
+				}
+			}
+			
+			pricePerNight = new JLabel("Price Per Night: " + chargeBand.getPPN());
+			pricePerNight.setFont(plain);
+			serviceCharge = new JLabel("Service Charge: " + chargeBand.getSC());
+			serviceCharge.setFont(plain);
+			cleaningCharge  = new JLabel("Cleaning Charge: " + chargeBand.getCC());
+			cleaningCharge.setFont(plain);
 			status = new JLabel("Status: Accepted");
+			
+			
 			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
 			vb.setLayout(bl);
 			
 			vb.add(pName);
-			if (current == "GH") {
-				vb.add(hName);
-			}
+			vb.add(personName);
 			vb.add(contactN);
 			vb.add(contactE);
 			vb.add(sDate);
 			vb.add(eDate);
 			
+			// add a border between bookings
+			JPanel border = new JPanel();
+			border.setBorder(new LineBorder(Color.BLACK, 4, true));
+			vb.add(border);
+			
 			HomeBreaks.setConstraints(g, 0, guestAccepted, GridBagConstraints.WEST);
 			accepted.add(vb, g);
 			guestAccepted++;
 		}
+		
+		// for guests' and hosts' provisional bookings
 		int prov = 0;
 		for (Booking booking : provisionalBookings.values()) {
 			Host host = TDatabase.Hosts.get(booking.getHostID());
+			Guest guest = TDatabase.Guests.get(booking.getGuestID());
+			
 			b.setBorder(createTitledBorder("Other bookings"));
 			JPanel vb = new JPanel();
-			//vb.setBorder(createTitledBorder(""));
-			JLabel pName, hName, sDate, eDate, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
+			JLabel pName, personName, sDate, eDate, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
 			String stat = "";
+			personName = null;
 			
 			if (booking.getRejected()) {
 				stat = "Rejected";
@@ -1743,22 +1779,49 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			
 			pName = new JLabel("Property name: " + properties.get(booking.getPropertyID()).getShortName());
 			pName.setFont(plain);
-			hName = new JLabel("Host name: " + host.getName());
-			hName.setFont(plain);
+			if (current == "GH") {
+				personName = new JLabel("Host name: " + host.getName());
+				personName.setFont(plain);
+			}
+			else if (current == "HH") {
+				personName = new JLabel("Host name: " + guest.getName());
+				personName.setFont(plain);
+			}
 			sDate = new JLabel("Start date: " + booking.getStartDate());
 			sDate.setFont(plain);
 			eDate = new JLabel("End date: " + booking.getEndDate());
 			eDate.setFont(plain);
 			status = new JLabel("Status: " + stat);
 			
+			ChargeBand chargeBand = null;
+			// Add Chargeband info
+			for (ChargeBand c : TDatabase.ChargeBands.values()) {
+				if (c.getPropertyID() == booking.getPropertyID()) {
+					if (Booking.overlap(c.getStartDate(), c.getEndDate(), booking.getStartDate(), booking.getEndDate())) {
+						chargeBand = c;
+					}
+				}
+			}
+			
+			pricePerNight = new JLabel("Price Per Night: " + chargeBand.getPPN());
+			pricePerNight.setFont(plain);
+			serviceCharge = new JLabel("Service Charge: " + chargeBand.getSC());
+			serviceCharge.setFont(plain);
+			cleaningCharge  = new JLabel("Cleaning Charge: " + chargeBand.getCC());
+			cleaningCharge.setFont(plain);
 			
 			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
 			vb.setLayout(bl);
 			
 			vb.add(pName);
-			vb.add(hName);
+			vb.add(personName);
 			vb.add(sDate);
 			vb.add(eDate);
+			
+			// add a border between bookings
+			JPanel border = new JPanel();
+			border.setBorder(new LineBorder(Color.BLACK, 4, true));
+			vb.add(border);
 			
 			setConstraints(g, 0, prov, GridBagConstraints.CENTER);
 			provisional.add(vb, g);
