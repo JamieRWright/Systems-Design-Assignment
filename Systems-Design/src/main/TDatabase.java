@@ -22,6 +22,7 @@ public final class TDatabase {
 	public static Map<Integer, Property> Properties = null;
 	public static Map<Integer, Property> Bookmarks = null;
 	public static Map<Integer, Booking> Bookings = null;
+	public static Map<Integer, ChargeBand> ChargeBands = null;
 	public static Map<Integer, Guest> Guests = null;
 	public static Map<Integer, Host> Hosts = null;
 
@@ -39,6 +40,7 @@ public final class TDatabase {
 		Properties = TDatabase.LoadProperties();
 		Guests = TDatabase.LoadGuests();
 		Bookings = TDatabase.LoadBookings();
+		ChargeBands = TDatabase.LoadChargeBands();
 		
 		return isSuccess;
 	}
@@ -137,6 +139,32 @@ public final class TDatabase {
 
 			return output;
 		}
+	
+	private static Map<Integer, ChargeBand> LoadChargeBands() {
+		Map<Integer, ChargeBand> output = new HashMap<Integer, ChargeBand>();
+		ResultSet table = null;
+		table = SearchFullTable("Charge_Band", true);
+		
+		try {
+			while (table.next()) {
+				Integer ChargeBandID = table.getInt(1);
+				String StartDate = table.getString(2);
+				String EndDate = table.getString(3);
+				Integer PropertyID = table.getInt(4);
+				Double PricePerNight = table.getDouble(5);
+				Double ServiceCharge = table.getDouble(6);
+				Double CleaningCharge = table.getDouble(7);
+				
+				output.put(ChargeBandID, new ChargeBand(StartDate, EndDate, PropertyID, PricePerNight, ServiceCharge, CleaningCharge, false));
+			}
+			disconnect();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return output;
+	}
 	
 	private static Map<Integer, Property> LoadProperties(){
 		Map<Integer, Property> output = new HashMap<Integer, Property>();
@@ -663,6 +691,25 @@ public final class TDatabase {
 
 	}
 	
+	public static String GetChargeBandID(int propertyID, String startDate, String endDate) {
+		String ChargeBandID = null;
+		ResultSet table = null;
+		Statement stmt;
+		String Command = "SELECT * FROM Charge_Band WHERE PropertyID="+propertyID+" AND  StartDate='"+startDate+"' AND EndDate='"+endDate+"';";
+		
+		try {
+			getConnection();
+			stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+			while (table.next()) {ChargeBandID = table.getString(1);}
+			disconnect();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ChargeBandID;
+	}
+	
 	
 	// Returns true if user exists
 	public static Boolean IsUser(String TableName, String Email) {
@@ -1069,18 +1116,17 @@ public static boolean addAddress(String houseNumber, String street, String postc
  		}
  	}
     
-    public static boolean AddChargeBand(String start, String end, int price, int propertyID, int ppn, int sc, int cc) {
+    public static boolean AddChargeBand(String start, String end, int propertyID, double ppn, double sc, double cc) {
  		try {
  			getConnection();
- 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, Price, PropertyID, PricePerNight, ServiceCharge, CleaningCharge) VALUES (?, ?, ?, ?, ?, ?, ?);";
+ 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, PropertyID, PricePerNight, ServiceCharge, CleaningCharge) VALUES (?, ?, ?, ?, ?, ?);";
  			PreparedStatement pst=con.prepareStatement(sql);
  			pst.setString(1, start);
  			pst.setString(2, end);
- 			pst.setInt(3, price);
- 			pst.setInt(4, propertyID);
- 			pst.setInt(5, ppn);
- 			pst.setInt(6, sc);
- 			pst.setInt(7, cc);
+ 			pst.setInt(3, propertyID);
+ 			pst.setDouble(4, ppn);
+ 			pst.setDouble(5, sc);
+ 			pst.setDouble(6, cc);
  			pst.execute();
  			disconnect();
  			return true;
