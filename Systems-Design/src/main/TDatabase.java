@@ -194,7 +194,7 @@ public final class TDatabase {
 
 		return output;
 	}
-		private static List<Bathroom> loadBathrooms(Integer PropertyID)
+private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	{
 		
 		List<Bathroom> output = new ArrayList<Bathroom>();
@@ -203,19 +203,19 @@ public final class TDatabase {
 		table = SearchFacility("Bathing_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String HairDryer = table.getString(3);
-					String Shampoo = table.getString(4);
-					String ToiletPaper = table.getString(5);
+					int HairDryer = table.getInt(3);
+					int Shampoo = table.getInt(4);
+					int ToiletPaper = table.getInt(5);
 					int Toilet = table.getInt(6);
 					int Bath = table.getInt(7);
 					int Shower = table.getInt(8);
 					int IsShared = table.getInt(9);
 					
-					if (HairDryer=="1")
+					if (HairDryer==1)
 						HDBool = true;
-					if(Shampoo=="1")
+					if(Shampoo==1)
 						ShampBool = true;
-					if (ToiletPaper=="1")
+					if (ToiletPaper==1)
 						TPBool = true;
 					if(Toilet==1)
 						TBool = true;
@@ -245,13 +245,13 @@ public final class TDatabase {
 		table = SearchFacility("Sleeping_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String BedLinen = table.getString(3);
-					String Towels = table.getString(4);
+					int BedLinen = table.getInt(3);
+					int Towels = table.getInt(4);
 					String Bed1Type = table.getString(5);
 					String Bed2Type = table.getString(7);
-					if(BedLinen=="1")
+					if(BedLinen==1)
 						BLBool = true;
-					if(Towels=="1")
+					if(Towels==1)
 						TBool = true;
 					
 					BedType Bed1;
@@ -308,30 +308,30 @@ public final class TDatabase {
 		table = SearchFacility("Kitchen_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String fridge = table.getString(2);
-					String micro = table.getString(3);
-					String oven = table.getString(4);
-					String stove = table.getString(5);
-					String dishwasher = table.getString(6);
-					String tableware = table.getString(7);
-					String cookware = table.getString(8);
-					String provisions = table.getString(9);
+					int fridge = table.getInt(2);
+					int micro = table.getInt(3);
+					int oven = table.getInt(4);
+					int stove = table.getInt(5);
+					int dishwasher = table.getInt(6);
+					int tableware = table.getInt(7);
+					int cookware = table.getInt(8);
+					int provisions = table.getInt(9);
 					
-					if(fridge=="1")
+					if(fridge==1)
 						FBool = true;
-					if(micro=="1")
+					if(micro==1)
 						MBool = true;
-					if(oven=="1")
+					if(oven==1)
 						OBool = true;
-					if(stove=="1")
+					if(stove==1)
 						TBool = true;
-					if(dishwasher=="1")
+					if(dishwasher==1)
 						DBool = true;
-					if(tableware=="1")
+					if(tableware==1)
 						TBool = true;
-					if(cookware=="1")
+					if(cookware==1)
 						CBool = true;
-					if(provisions=="1")
+					if(provisions==1)
 						PBool = true;
 					output = new Kitchen(FBool, MBool, OBool, SBool, DBool, TBool, CBool, PBool);
 					}
@@ -352,23 +352,23 @@ public final class TDatabase {
 		table = SearchFacility("Living_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String wifi = table.getString(2);
-					String tv = table.getString(3);
-					String sat = table.getString(4);
-					String streaming = table.getString(5);
-					String dvd = table.getString(6);
-					String games = table.getString(7);
-					if(wifi=="1")
+					int wifi = table.getInt(2);
+					int tv = table.getInt(3);
+					int sat = table.getInt(4);
+					int streaming = table.getInt(5);
+					int dvd = table.getInt(6);
+					int games = table.getInt(7);
+					if(wifi==1)
 						WBool = true;
-					if(tv=="1")
+					if(tv==1)
 						TVBool = true;
-					if(sat=="1")
+					if(sat==1)
 						SatBool = true;
-					if(streaming=="1")
+					if(streaming==1)
 						StreamBool = true;
-					if(dvd=="1")
+					if(dvd==1)
 						DVDBool = true;
-					if(games=="1")
+					if(games==1)
 						GBool = true;
 					output = new Living(WBool, TVBool, SatBool, StreamBool, DVDBool, GBool);
 					}
@@ -389,23 +389,23 @@ public final class TDatabase {
 		table = SearchFacility("Utility_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String CHeat = table.getString(2);
-					String Washing = table.getString(3);
-					String Drying = table.getString(4);
-					String fireExtinguish = table.getString(5);
-					String Alarm = table.getString(6);
-					String FirstAid = table.getString(7);
-					if(CHeat=="1")
+					int CHeat = table.getInt(2);
+					int Washing = table.getInt(3);
+					int Drying = table.getInt(4);
+					int fireExtinguish = table.getInt(5);
+					int Alarm = table.getInt(6);
+					int FirstAid = table.getInt(7);
+					if(CHeat==1)
 						HeatBool = true;
-					if(Washing=="1")
+					if(Washing==1)
 						WBool = true;
-					if(Drying=="1")
+					if(Drying==1)
 						DBool = true;
-					if(fireExtinguish=="1")
+					if(fireExtinguish==1)
 						FEBool = true;
-					if(Alarm=="1")
+					if(Alarm==1)
 						ABool = true;
-					if(FirstAid=="1")
+					if(FirstAid==1)
 						FABool = true;
 					//(boolean centralHeating, boolean washingMachine, boolean dryingMachine, boolean fireExtinguisher, boolean smokeAlarm, boolean firstAid)
 					output = new Utility(HeatBool, WBool, DBool, FEBool, ABool, FABool);
@@ -427,12 +427,12 @@ public final class TDatabase {
 		table = SearchFacility("Outdoor_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					String Patio = table.getString(2);
-					String BBQ = table.getString(3);
-					String parking = table.getString(4);
-					if(Patio=="1")
+					int Patio = table.getInt(3);
+					int BBQ = table.getInt(4);
+					String parking = table.getString(2);
+					if(Patio==1)
 						PatioBool = true;
-					if(BBQ=="1")
+					if(BBQ==1)
 						BBQBool = true;
 					
 					
@@ -466,7 +466,7 @@ public final class TDatabase {
 	private static Facilities loadFacilities(Integer PropertyID)
 	{
 		//(Property p, Kitchen kitchen, Living living, Utility utility, Outdoor outdoor)
-		return new Facilities(null, loadBedrooms(PropertyID), loadBathrooms(PropertyID), loadKitchen(PropertyID), loadLiving(PropertyID), loadUtility(PropertyID), loadOutdoor(PropertyID));
+		return new Facilities(PropertyID, loadBedrooms(PropertyID), loadBathrooms(PropertyID), loadKitchen(PropertyID), loadLiving(PropertyID), loadUtility(PropertyID), loadOutdoor(PropertyID));
 	}
 
 	private static Map<Integer, Guest> LoadGuests() {
