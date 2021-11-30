@@ -140,11 +140,11 @@ public class Kitchen {
 		boolean output=false;
 		if (value==true)
 		{
-			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvisions", PropertyID.toString(), 1);
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvision", PropertyID.toString(), 1);
 		}
 		else
 		{
-			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvisions", PropertyID.toString(), 0);
+			output=TDatabase.UpdateFacilityValue("Kitchen_Facility", "basicProvision", PropertyID.toString(), 0);
 		}
 		return output;
 	}
