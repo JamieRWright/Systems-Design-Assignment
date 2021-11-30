@@ -9,14 +9,15 @@ import java.util.List;
  *
  */
 
+
 public class Facilities {
-	private Property property;
 	private List<Bedroom> sleeping;
 	private List<Bathroom> bathing;
 	private Kitchen kitchen;
 	private Living living;
 	private Utility utility;
 	private Outdoor outdoor;
+	private Integer propertyID;
 	
 	/**
      * Constructor
@@ -78,6 +79,9 @@ public class Facilities {
 	}
 	
 	// Set methods
+	public void setPropertyID(Integer ID) {
+		this.propertyID = ID;
+	}
 	
 	public void setKitchen(Kitchen k, Integer PropertyID) {
 		k.setStove(k.getStove(), PropertyID);
