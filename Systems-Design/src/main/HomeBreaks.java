@@ -109,15 +109,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Inquiry", enquirer());
 		c.add("Host Home", hostHome());
 		c.add("Guest Home", guestHome());
-		c.add("House View", houseView());
+		//c.add("House View", houseView());
 		c.add("Add Living", addLiving());
 		c.add("Add Utility", addUtility());
 		c.add("Add Bath", addBath());
-		c.add("Add Outdoor", addOutdoor());
+		c.add("Add Oudoor", addOutdoor());
 		c.add("Add Bedroom", addBedroom());
 		c.add("Add Kitchen", addKitchen());
 		// Scrollpane setting
-		c.add("View Properties", viewProperties(null, "City"));
+		//c.add("View Properties", viewProperties(null, "City"));
 		c.add("Booking", bookingPage());
 		
 		setVisible(true);
@@ -132,9 +132,9 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		home.setBorder(createTitledBorder("Welcome to HomeBreaks Plc"));
 		home.setLayout(new GridBagLayout());
 		
-        JPanel buttons, labels;
+        JPanel buttons;
 		
-		JLabel welc, opt;
+		JLabel opt;
 
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		opt = new JLabel("To start, choose a role");
@@ -332,7 +332,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String password="";
 				try {
 					password = TDatabase.encryptThisString(String.valueOf(pw_input_gsu.getPassword()));
-				} catch (NoSuchAlgorithmException e1) {
+				} 
+				catch (NoSuchAlgorithmException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -554,7 +555,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		gl.setLayout(new GridBagLayout());
 		
 		JLabel id, pw;
-		JPanel buttons, hp1, hp2, hp3, hp4;
 		
 		setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		id = new JLabel("User ID: ");
@@ -587,7 +587,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				String pw="";
 				try {
 					pw = TDatabase.encryptThisString(String.valueOf(pw_input_gl.getPassword()));
-				} catch (NoSuchAlgorithmException e1) {
+				} 
+				catch (NoSuchAlgorithmException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -635,9 +636,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hl.setBorder(createTitledBorder("Login as Host"));
 		hl.setLayout(new GridBagLayout());
 		
-		
-		JLabel login, id, pw;
-		JPanel buttons, hp1, hp2, hp3, hp4;
+		JLabel id, pw;
 		
 		setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		id = new JLabel("User ID: ");
@@ -1147,7 +1146,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ao.add(check3a);
 		ao.add(check3b);
 		ao.add(check3c);
-		ao.add(buttons);
 		
 		return ao;	        
 	}
@@ -1313,6 +1311,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		search.setFont(plain);
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cityFilter = searchProperty.getText();
+				c.add("View Properties", viewProperties(null, "City"));
 				cards.show(c, "View Properties");
 				current = "VP";
 				setTitle("View Properties");
@@ -1359,8 +1359,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public JPanel hostHome() {
 		JPanel hh = new JPanel();
-		JPanel hp1, hp2, properties, createProperty, p1;
-		JLabel title;
 		hh.setLayout(new BorderLayout());
 		
 		JTabbedPane hostTabs = new JTabbedPane();
@@ -1377,15 +1375,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myAccount.setLayout(myAccountCards);
 		myAccount.add("My Account", myAccount());
 		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
-		JPanel propertiesList = new JPanel();
 		
 		myProperties.add("New", newPropertyPanel());
-		
-		
-		hp1 = new JPanel();
-		hp2 = new JPanel();
-		properties = new JPanel();
-		createProperty = new JPanel();
 		
 		hostTabs.add("My Properties", myProperties); // shows list of properties, and a button to create a new property
 		hostTabs.add("Provisional Bookings", pBookings);
@@ -1425,7 +1416,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myAccount.setLayout(myAccountCards);
 		myAccount.add("My Account", myAccount());
 		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
-		JPanel propertiesList = new JPanel();
 		
 		myProperties.add("All Properties", p1);
 		
@@ -1467,7 +1457,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		searchPanel.add(searchBar, g);
 		
 		setConstraints(g, 1, 0, GridBagConstraints.CENTER);
-		JComboBox searchSetting = new JComboBox();
+		JComboBox<String> searchSetting = new JComboBox<String>();
 		searchSetting.setFont(plain);
 		searchSetting.addItem("Property name");
 		searchSetting.addItem("Host name");
@@ -1631,7 +1621,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel b = new JPanel();
 		b.setLayout(new GridBagLayout());
 		b.setBorder(HomeBreaks.createTitledBorder(""));
-		Font plain = new Font("Verdana", Font.PLAIN, 25);
+		Font plain = new Font("Verdana", Font.PLAIN, 18);
 		
 		Map<Integer, Booking> acceptedBookings = new HashMap<Integer, Booking>();
 		Map<Integer, Booking> provisionalBookings = new HashMap<Integer, Booking>();
@@ -1729,7 +1719,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					}
 				}
 			}
-			
+			numNights = new JLabel("Number of nights: " + Booking.getNightsNum(acceptedBooking.getStartDate(), acceptedBooking.getEndDate()));
 			pricePerNight = new JLabel("Price Per Night: " + chargeBand.getPPN());
 			pricePerNight.setFont(plain);
 			serviceCharge = new JLabel("Service Charge: " + chargeBand.getSC());
@@ -1748,6 +1738,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vb.add(contactE);
 			vb.add(sDate);
 			vb.add(eDate);
+			vb.add(numNights);
+			vb.add(pricePerNight);
+			vb.add(serviceCharge);
+			vb.add(cleaningCharge);
+			vb.add(status);
 			
 			// add a border between bookings
 			JPanel border = new JPanel();
@@ -1818,6 +1813,10 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vb.add(personName);
 			vb.add(sDate);
 			vb.add(eDate);
+			vb.add(pricePerNight);
+			vb.add(serviceCharge);
+			vb.add(cleaningCharge);
+			vb.add(status);
 			
 			// add a border between bookings
 			JPanel border = new JPanel();
@@ -2072,7 +2071,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			viewMoreBtn.setFont(plain);
 			viewMoreBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					cards.show(c, "House View");
+					c.add(chosenHouse.getShortName(), houseView(chosenHouse));
+					cards.show(c, chosenHouse.getShortName());
 					current = "HV";
 					setTitle("House View");
 				}
@@ -2117,8 +2117,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	
-	public JPanel houseView() {
-		facility = chosenHouse.getFacilities();
+	public JPanel houseView(Property house) {
+		facility = house.getFacilities();
 		JPanel hv = new JPanel();
 		hv.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
@@ -2135,15 +2135,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		JPanel sn, d, h, pl, a, bekfast, ms, r, rooms, b, buttons;
 		
 		//house information
-		shortName = new JLabel("Name: "+ chosenHouse.getShortName());
+		shortName = new JLabel("Name: "+ house.getShortName());
 		shortName.setFont(bold);
-		description = new JLabel("Description: " + chosenHouse.getDescription());
+		description = new JLabel("Description: " + house.getDescription());
 		description.setFont(plain);
-		location = new JLabel("Location: "+ chosenHouse.getPublicLocation());
+		location = new JLabel("Location: "+ house.getPublicLocation());
 		location.setFont(plain);
-		host = new JLabel("" + chosenHouse.getHost());
+		host = new JLabel("" + house.getHost().getName());
 		host.setFont(plain);
-		breakfast = new JLabel("breakfast: " + chosenHouse.getBreakfast());
+		breakfast = new JLabel("breakfast: " + house.getBreakfast());
 		breakfast.setFont(plain);
 		
 		JButton bedsBtn = new JButton("View Bedrooms");
