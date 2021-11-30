@@ -840,7 +840,7 @@ public final class TDatabase {
 	public static boolean signUpHost(String fName, String lName, String email, String phone, String addressID, String hostPW) {
 		try {
 			getConnection();
-			String sql = "INSERT INTO Host(FirstName, LastName, IsSuperHost, Email, Phone, AddressID) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO Host(FirstName, LastName, IsSuperHost, Email, PhoneNumber, AddressID) VALUES (?,?,?,?,?,?)";
 			String sql2 = "INSERT INTO Host_Passwords(HostID, Passwords) VALUES(?,?)";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, fName);
