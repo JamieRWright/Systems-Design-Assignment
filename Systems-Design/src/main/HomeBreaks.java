@@ -1187,7 +1187,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 						checkStore.isSelected(), checkDish.isSelected(), checkTable.isSelected(), checkCook.isSelected(),
 						checkBasic.isSelected());
 				facility.setKitchen(kitchen, chosenHouse.getID());
-				facility.setProperty(chosenHouse);
+				facility.setPropertyID(chosenHouse.getID());
 				chosenHouse.setFacilities(facility);
 				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 				showMessageDialog(null, "Property successfully added!");
