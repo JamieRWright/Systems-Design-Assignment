@@ -837,7 +837,7 @@ public final class TDatabase {
 		}
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
-	public static boolean signUpHost(String fName, String lName, String email, String addressID, String hostPW) {
+	public static boolean signUpHost(String fName, String lName, String email, String phone, String addressID, String hostPW) {
 		try {
 			getConnection();
 			String sql = "INSERT INTO Host(FirstName, LastName, IsSuperHost, Email, Phone, AddressID) VALUES (?,?,?,?,?,?)";
@@ -848,7 +848,7 @@ public final class TDatabase {
 			// default isSuperHost is false
 			pst.setInt(3, 0);
 			pst.setString(4, email);
-			pst.setString(5, email);
+			pst.setString(5, phone);
 			pst.setString(6, addressID);
 			
 			pst.execute();
