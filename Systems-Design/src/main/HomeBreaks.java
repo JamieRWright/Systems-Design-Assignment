@@ -113,7 +113,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Add Living", addLiving());
 		c.add("Add Utility", addUtility());
 		c.add("Add Bath", addBath());
-		c.add("Add Oudoor", addOutdoor());
+		c.add("Add Outdoor", addOutdoor());
 		c.add("Add Bedroom", addBedroom());
 		c.add("Add Kitchen", addKitchen());
 		// Scrollpane setting
@@ -1146,6 +1146,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ao.add(check3a);
 		ao.add(check3b);
 		ao.add(check3c);
+		ao.add(buttons);
 		
 		return ao;	        
 	}
