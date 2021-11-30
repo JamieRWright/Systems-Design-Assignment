@@ -1,15 +1,11 @@
+package main;
+
 /**
  * Class designed to be used to create Guest objects when a user signs up as guest
  *
- * @version 1.0 
- *
- * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
- *
  */
-package main;
 public class Guest extends User {
-	
-	private boolean getSuccess;
+	private boolean signUpSuccess;
 	/**
      * Constructor
      * 
@@ -24,7 +20,7 @@ public class Guest extends User {
 	public Guest(String surname, String forename, Address address, String phone, String email, String password) {
 		super(surname, forename, address, phone, email);
 		
-		this.getSuccess = TDatabase.signUpGuest(surname, forename, phone, email, address.getID(), password);
+		this.signUpSuccess = TDatabase.signUpGuest(surname, forename, phone, email, address.getID(), password);
 		this.userID=TDatabase.SearchUserID("Guest", email);
 	
 	}
@@ -32,11 +28,10 @@ public class Guest extends User {
 		
 	public Guest(String surname, String forename, Address address, String phone, String email) {
 		super(surname, forename, address, phone, email);
-		
-		
-		
-	
+		this.signUpSuccess = true;
 	}
+	
+	public boolean getSuccess() {return this.signUpSuccess;}
 
 	
 	public String toString() {
@@ -50,10 +45,5 @@ public class Guest extends User {
 	{
 		
 		return TDatabase.SearchUserID("Guest", email);
-	}
-	
-	
-		public boolean getSuccess() {
-		return this.getSuccess;
 	}
 }
