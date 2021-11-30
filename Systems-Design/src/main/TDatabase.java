@@ -85,13 +85,14 @@ public final class TDatabase {
 				String getSuperHost = table.getString(4);
 				String email = table.getString(5);
 				String AddressID = table.getString(6);
+				String phone = table.getString(7);
 				
 				Address host_add = getAddress(AddressID);
 				if (getSuperHost == "1")
 					isSuperHost = true;
 
 
-				output.put(Integer.parseInt(HostID), new Host(surname, forename, host_add, "", email));
+				output.put(Integer.parseInt(HostID), new Host(surname, forename, host_add, phone, email));
 			}
 			 disconnect();
 		} catch (SQLException e) {
@@ -839,7 +840,7 @@ public final class TDatabase {
 	public static boolean signUpHost(String fName, String lName, String email, String addressID, String hostPW) {
 		try {
 			getConnection();
-			String sql = "INSERT INTO Host(FirstName, LastName, IsSuperHost, Email, AddressID) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO Host(FirstName, LastName, IsSuperHost, Email, Phone, AddressID) VALUES (?,?,?,?,?,?)";
 			String sql2 = "INSERT INTO Host_Passwords(HostID, Passwords) VALUES(?,?)";
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, fName);
@@ -847,7 +848,9 @@ public final class TDatabase {
 			// default isSuperHost is false
 			pst.setInt(3, 0);
 			pst.setString(4, email);
-			pst.setString(5, addressID);
+			pst.setString(5, email);
+			pst.setString(6, addressID);
+			
 			pst.execute();
 
 			PreparedStatement pst2 = con.prepareStatement(sql2);
