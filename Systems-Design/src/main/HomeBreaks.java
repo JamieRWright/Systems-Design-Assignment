@@ -2151,7 +2151,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		bedsBtn.setFont(plain);
 		bedsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Bedroom bed = new Bedroom(true, true, BedType.Bunk, BedType.Single);
+				Bedroom bed = facility.getBedroom(1);
 				showMessageDialog(null, "" + bed.toString());
 			}
 		});
@@ -2159,7 +2159,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		bathBtn.setFont(plain);
 		bathBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Bathroom bath = new Bathroom(true, true, true, true, true,true, true);
+				Bathroom bath = facility.getBathroom(1);
 				showMessageDialog(null, "" + bath.toString());
 			}
 		});
@@ -2167,7 +2167,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		ktchnBtn.setFont(plain);
 		ktchnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Kitchen kitchen = new Kitchen(true, true, true, true, true, true, true, true);
+				Kitchen kitchen = facility.getKitchen();
 				showMessageDialog(null, "" + kitchen.toString());
 			}
 		});
@@ -2175,7 +2175,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		livBtn.setFont(plain);
 		livBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Living living = new Living(true, true, true, true, true, true);
+				Living living = facility.getLivingFacility();
 				showMessageDialog(null, "" + living.toString());
 			}
 		});
@@ -2183,7 +2183,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		utilBtn.setFont(plain);
 		utilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Utility utility = new Utility(true, true, true, true, true, true);
+				Utility utility = facility.getUtilityFacility();
 				showMessageDialog(null, "" + utility.toString());
 			}
 		});
@@ -2191,7 +2191,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		outBtn.setFont(plain);
 		outBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Outdoor outdoor = new Outdoor(true, true, ParkType.onRoad);
+				Outdoor outdoor = facility.getOutdoorFacility();
 				showMessageDialog(null, "" + outdoor.toString());
 			}
 		});
