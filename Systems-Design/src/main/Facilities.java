@@ -127,9 +127,7 @@ public class Facilities {
 	public void addBedroom(Bedroom br, Integer PropertyID) {
 		br.setLinen(br.getBedLinen(), PropertyID);
 		br.setTowels(br.getTowels(), PropertyID);
-		br.setBed1Num(br.getBedOne(), PropertyID);
 		br.setBed1Type(br.getBedOne(), PropertyID);
-		br.setBed2Num(br.getBedTwo(), PropertyID);
 		br.setBed2Type(br.getBedTwo(), PropertyID);
 		this.sleeping.add(br);
 	}
