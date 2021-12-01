@@ -105,7 +105,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home",  viewReviews());
+		c.add("Home",  home());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
@@ -692,7 +692,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					
 					// Create panel that shows current host's properties
 					addHostProperties();
-					current = "HH";					
+					current = "HH";	
+					c.add("Host Home", hostHome());
 					cards.show(c, "Host Home");
 				}
 				else {
@@ -1393,7 +1394,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			hostTabs.add("My Bookings", new JPanel());
 		}
 		hostTabs.add("My Account", myAccount);
 		
@@ -1404,10 +1404,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	
 	public JPanel guestHome() {
 		JPanel gh = new JPanel();
-		JPanel p1;
 		
 		gh.setLayout(new BorderLayout());
-		JButton newProperty;
 		
 		JTabbedPane guestTabs = new JTabbedPane();
 		guestTabs.setFont(plain);
@@ -1432,7 +1430,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			guestTabs.add("My Bookings", new JPanel());
 		}
 		guestTabs.add("My Bookings", pBookings);
 		guestTabs.add("Book a property", guestBookingPanel());
@@ -1542,6 +1539,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			viewProfile.setFont(plain);
 			viewProfile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					currentHost = host;
 					hp.add("Profile", hostProfile(host));
 					crd.show(hp, "Profile");
 				}
@@ -1869,10 +1867,10 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			double ovrll = r.overallRating();
 			System.out.println(ovrll);
 			
-			if (ovrll >= 4.7) {overall.setText("*****");}
-			else if (ovrll > 4 && ovrll < 4.7) {overall.setText("****");}
-			else if (ovrll > 3 && ovrll <= 4) {overall.setText("***");}
-			else if (ovrll > 2 && ovrll <=3) {overall.setText("**");}
+			if (ovrll >= 4.7) {overall.setText("* * * * *");}
+			else if (ovrll > 4 && ovrll < 4.7) {overall.setText("* * * *");}
+			else if (ovrll > 3 && ovrll <= 4) {overall.setText("* * *");}
+			else if (ovrll > 2 && ovrll <=3) {overall.setText("* *");}
 			else if (ovrll > 1 && ovrll <=2) {overall.setText("*");}
 			
 			JLabel description = new JLabel(r.getText());
@@ -2297,11 +2295,13 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		hv.add(host);
 		hv.add(breakfast);
 		hv.add(buttons);
+		hv.add(avgPropertyRating());
 		hv.add(viewReviews());
 		
 		return hv;
 	}
 	
+	// Show host's information
 	public JPanel hostProfile(Host host) {
 		JPanel p = new JPanel();
 		p.setLayout(new GridBagLayout());
@@ -2315,12 +2315,107 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		n.setFont(plain);
 		p.add(n, g);
 		
+		// Get host's rating in a new map if available
+		// if not, set to no ratings
+		Map<Integer, Review> relatedRatings = new HashMap<Integer, Review>();
+		for (Review rating : TDatabase.Reviews.values()) {
+			// Get the property from its ID
+			Property house = TDatabase.Properties.get(rating.getPropertyID());
+			if (Integer.parseInt(currentHost.getID()) == house.getID()) {relatedRatings.put(rating.getID(), rating);}
+		}
+		
+		// Show default rating and superhost status
+		JLabel superHost = new JLabel("Status: Host");
+		JLabel rating = new JLabel("Host rating: This host has no ratings yet");
+		
+		// Iterate over the values in map and calculate average ratings if there's at least a review
+		if (!(relatedRatings.isEmpty())) {
+			double averages = 0;
+			int count = 0;
+			for (Review rv : relatedRatings.values()) {
+				averages += rv.overallRating();
+				count++;
+			}
+			double hostAverage = averages / count;
+			hostAverage = Math.round(hostAverage * 10.0) / 10.0;
+			System.out.println("HA " + hostAverage);
+			rating.setText("Host rating: " + hostAverage);
+			if (hostAverage > 4.7) {superHost.setText("Status: Superhost!");}
+		}
+		
+		rating.setFont(plain);
+		superHost.setFont(plain);
+		
+		// Add everything to panel p
 		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		p.add(rating, g);
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		p.add(superHost, g);
+		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
 		p.add(hostProperties, g);
 		
 		return p;
 	}
 	
+	public JPanel avgPropertyRating() {
+		JPanel categories = new JPanel();
+		categories.setLayout(new GridLayout(1, 6));
+		Property p = chosenHouse;
+		
+		// Get all reviews related to property p and store them in a map
+		Map<Integer, Review> related = new HashMap<Integer, Review>();
+		for (Review r : TDatabase.Reviews.values()) {
+			if (p.getID() == r.getPropertyID()) {related.put(r.getID(), r);}
+		}
+		
+		// Set default labels with no String in case the property has no reviews
+		JLabel cl = new JLabel();
+		JLabel com = new JLabel();
+		JLabel ck = new JLabel();
+		JLabel ac = new JLabel();
+		JLabel lo = new JLabel();
+		JLabel val = new JLabel();
+		JLabel overall = new JLabel();
+		
+		JLabel[] labels = {cl, com, ck, ac, lo, val};
+		
+		// Set text if there are reviews
+		if (!(related.isEmpty())) {
+			// Calculate for each category
+			RatingCategory[] category = {RatingCategory.Cleanliness, RatingCategory.Communication, RatingCategory.CheckIn, 
+					RatingCategory.Accuracy, RatingCategory.Location,RatingCategory.Value};
+			double[] values = new double[6];
+			int numReviews = 0;
+			
+			for (int i = 0; i < labels.length; i++) {
+				for (Review r : related.values()) {
+					values[i] += r.getRatingMap().get(category[i]);
+					numReviews++;
+				}
+				
+				values[i] = values[i] / numReviews;
+				labels[i].setText(category[i].getName() + ": " + values[i]);
+				numReviews = 0;
+			}
+			
+			// Calculate overall property rating
+			int total = 0;
+			for (int i = 0; i < values.length; i++) {total += values[i];}
+			overall.setText("Overall: " + (total / values.length));
+		}
+		
+		// Add everything, including the property's overall rating
+		JPanel rating = new JPanel();
+		BoxLayout b = new BoxLayout(rating, BoxLayout.Y_AXIS);
+		rating.setLayout(b);
+		rating.add(overall);
+		
+		for (int i = 0; i < labels.length; i++) {categories.add(labels[i]);}
+		
+		rating.add(categories);
+		
+		return rating;
+	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
