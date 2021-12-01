@@ -397,7 +397,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(endDate, g);
 		
 		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
-		ppn = new JLabel("Price per night (Â£): ");
+		ppn = new JLabel("Price per night (Ã‚Â£): ");
 		ppn.setFont(plain);
 		acb.add(ppn, g);
 		
@@ -407,7 +407,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(pricePerNight, g);
 		
 		HomeBreaks.setConstraints(g, 0, 3, GridBagConstraints.EAST);
-		sc = new JLabel("Service charge (Â£): ");
+		sc = new JLabel("Service charge (Ã‚Â£): ");
 		sc.setFont(plain);
 		acb.add(sc, g);
 		
@@ -417,7 +417,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(serviceCharge, g);
 		
 		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
-		cc = new JLabel("Cleaning charge (Â£): ");
+		cc = new JLabel("Cleaning charge (Ã‚Â£): ");
 		cc.setFont(plain);
 		acb.add(cc, g);
 		
@@ -456,7 +456,7 @@ public class HBPanels extends HomeBreaks {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
 					
-					TDatabase.AddChargeBand(start, end, Integer.parseInt(price), 25, Integer.parseInt(price), Integer.parseInt(service), Integer.parseInt(cleaning)); // TODO get propertyID from current property
+					TDatabase.AddChargeBand(start, end, 25, Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning)); // TODO get propertyID from current property
 				}
 				else {
 					showMessageDialog(null, "Incorrect input");
@@ -472,3 +472,4 @@ public class HBPanels extends HomeBreaks {
 		return hp;
 	}
 }
+
