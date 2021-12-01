@@ -2116,10 +2116,10 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			maxsleep.setFont(plain);
 			rating = new JLabel("Rating: " + chosenHouse.getPropertyRating());
 			rating.setFont(plain);
-			//numbaths = new JLabel("Number of Bathrooms: " + chosenHouse.getBathroom());
-			//numbaths.setFont(plain);
-			//numbeds = new JLabel("Number of Bedrooms: " + chosenHouse.getBedroom());
-			//numbeds.setFont(plain);
+			numbaths = new JLabel("Number of Bathrooms: " + facility.getBathroomNum());
+			numbaths.setFont(plain);
+			numbeds = new JLabel("Number of Bedrooms: " + facility.getBedroomNum());
+			numbeds.setFont(plain);
 			
 			viewMoreBtn = new JButton("View More");
 			viewMoreBtn.setFont(plain);
@@ -2151,8 +2151,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			b.add(breakfast);
 			ms.add(maxsleep);
 			r.add(rating);
-			//nbaths.add(numbaths);
-			//nbeds.add(numbeds);	
+			nbaths.add(numbaths);
+			nbeds.add(numbeds);	
 			buttons.add(viewMoreBtn);
 			
 			vp.add(shortName);
@@ -2161,8 +2161,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			vp.add(breakfast);
 			vp.add(maxsleep);
 			vp.add(rating);
-			//vp.add(numbaths);
-			//vp.add(numbeds);
+			vp.add(numbaths);
+			vp.add(numbeds);
 			vp.add(buttons);
 		}
 		JScrollPane scroll = new JScrollPane(vp);
