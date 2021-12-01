@@ -283,8 +283,8 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 				while (table.next()) {
 					int BedLinen = table.getInt(2);
 					int Towels = table.getInt(3);
-					String Bed1Type = table.getString(4);
-					String Bed2Type = table.getString(5);
+					String Bed1Type = table.getString(4).toUpperCase();
+					String Bed2Type = table.getString(5).toUpperCase();
 					if(BedLinen==1)
 						BLBool = true;
 					if(Towels==1)
@@ -293,15 +293,18 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 					BedType Bed1;
 					switch(Bed1Type)
 					{
-						case "Single Bed": 
+						case "SINGLE BED": 
 							Bed1=BedType.Single;
 							break;
-						case "Double Bed":
+						case "DOUBLE BED":
 							Bed1=BedType.Double;
-						case "Bunk Bed":
+							break;
+						case "BUNK BED":
 							Bed1=BedType.Bunk;
-						case "Kingsize Bed":
+							break;
+						case "KINGSIZE BED":
 							Bed1=BedType.King;
+							break;
 						default:
 							Bed1=null;
 					}
@@ -311,17 +314,20 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 					{
 						switch(Bed2Type)
 						{
-							case "Single Bed": 
-								Bed2=BedType.Single;
+							case "SINGLE BED": 
+								Bed1=BedType.Single;
 								break;
-							case "Double Bed":
-								Bed2=BedType.Double;
-							case "Bunk Bed":
-								Bed2=BedType.Bunk;
-							case "Kingsize Bed":
-								Bed2=BedType.King;
+							case "DOUBLE BED":
+								Bed1=BedType.Double;
+								break;
+							case "BUNK BED":
+								Bed1=BedType.Bunk;
+								break;
+							case "KINGSIZE BED":
+								Bed1=BedType.King;
+								break;
 							default:
-								Bed2=null;
+								Bed1=null;
 						}
 					}
 
