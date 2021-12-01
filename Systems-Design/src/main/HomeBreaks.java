@@ -864,6 +864,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				else {
 					address = new Address(houseNo, street, postcode, city, true);
 					chosenHouse = new Property(sName, descr, HomeBreaks.currentHost, address, bfast, null, true);
+					facility = new Facilities(chosenHouse.getID(), new ArrayList<Bedroom>(), new ArrayList<Bathroom>(), null, null, null, null);
+					chosenHouse.setFacilities(facility);
+
 					cards.show(c, "Add Living");
 					current = "AL";
 					setTitle("New Living Space");
