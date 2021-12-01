@@ -1034,7 +1034,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	}
 	
 	public JPanel addBedroom() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		final Font plain = new Font("Verdana", Font.PLAIN, 15);
 		JPanel ab = new JPanel();
 		JPanel buttons;
 		
@@ -1044,35 +1044,59 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JPanel hp = new JPanel();
 		hp.setLayout(new GridBagLayout());
 		
+		ButtonGroup grp = new ButtonGroup();
+		JRadioButton single1 = new JRadioButton("Bed 1 = Single");
+		single1.setFont(plain);
+		JRadioButton double1 = new JRadioButton("Bed 1 = Double");
+		double1.setFont(plain);
+		JRadioButton king1 = new JRadioButton("Bed 1 = King");
+		king1.setFont(plain);
+		JRadioButton bunk1 = new JRadioButton("Bed 1 = Bunk");
+		bunk1.setFont(plain);
+		grp.add(single1);
+		grp.add(double1);
+		grp.add(king1);
+		grp.add(bunk1);
+		JPanel bedOne = new JPanel();
+		bedOne.add(single1);
+		bedOne.add(double1);
+		bedOne.add(king1);
+		bedOne.add(bunk1);
+		
+		ButtonGroup grp2 = new ButtonGroup();
+		JRadioButton single2 = new JRadioButton("Bed 2 = Single");
+		single2.setFont(plain);
+		JRadioButton double2 = new JRadioButton("Bed 2 = Double");
+		double2.setFont(plain);
+		JRadioButton king2 = new JRadioButton("Bed 2 = King");
+		king2.setFont(plain);
+		JRadioButton bunk2 = new JRadioButton("Bed 2 = Bunk");
+		bunk2.setFont(plain);
+		grp2.add(single2);
+		grp2.add(double2);
+		grp2.add(king2);
+		grp2.add(bunk2);
+		JPanel bedTwo = new JPanel();
+		bedTwo.add(single2);
+		bedTwo.add(double2);
+		bedTwo.add(king2);
+		bedTwo.add(bunk2);
+		
 		JCheckBox check1 = new JCheckBox("Bed Linen", true);
 		check1.setBounds(100,100, 50,50);
+		check1.setFont(plain);
 		JCheckBox check2 = new JCheckBox("Towels", true);
 		check2.setBounds(100,150, 50,50);
-		JCheckBox check3a = new JCheckBox("Bed 1 = Single", true);
-		check3a.setBounds(150,200, 50,50);
-		JCheckBox check3b = new JCheckBox("Bed 1 = Double", true);
-		check3b.setBounds(200,200, 50,50);
-		JCheckBox check3c = new JCheckBox("Bed 1 = King", true);
-		check3c.setBounds(150,200, 50,50);
-		JCheckBox check3d = new JCheckBox("Bed 1 = Bunk", true);
-		check3d.setBounds(300,200, 50,50);
-		JCheckBox check4a = new JCheckBox("Bed 2 = Single", true);
-		check4a.setBounds(150,200, 50,50);
-		JCheckBox check4b = new JCheckBox("Bed 2 = Double", true);
-		check4b.setBounds(200,200, 50,50);
-		JCheckBox check4c = new JCheckBox("Bed 2 = King", true);
-		check4c.setBounds(150,200, 50,50);
-		JCheckBox check4d = new JCheckBox("Bed 2 = Bunk", true);
-		check4d.setBounds(300,200, 50,50);
+		check2.setFont(plain);
 		
-		if (check3a.isSelected()) {bed1 = BedType.Single;}
-		if (check3b.isSelected()) {bed1 = BedType.Double;}
-		if (check3c.isSelected()) {bed1 = BedType.King;}
-		if (check3d.isSelected()) {bed1 = BedType.Bunk;}
-		if (check4a.isSelected()) {bed2 = BedType.Single;}
-		if (check4b.isSelected()) {bed2 = BedType.Double;}
-		if (check4c.isSelected()) {bed2 = BedType.King;}
-		if (check4d.isSelected()) {bed2 = BedType.Bunk;}
+		if (single1.isSelected()) {bed1 = BedType.Single;}
+		else if (double1.isSelected()) {bed1 = BedType.Double;}
+		else if (king1.isSelected()) {bed1 = BedType.King;}
+		else if (bunk1.isSelected()) {bed1 = BedType.Bunk;}
+		if (single2.isSelected()) {bed2 = BedType.Single;}
+		else if (double2.isSelected()) {bed2 = BedType.Double;}
+		else if (king1.isSelected()) {bed2 = BedType.King;}
+		else if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
 		
 		JButton create = new JButton("Create Bedroom");
 		create.setFont(plain);
@@ -1091,21 +1115,15 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		ab.add(check1);
 		ab.add(check2);
-		ab.add(check3a);
-		ab.add(check3b);
-		ab.add(check3c);
-		ab.add(check3d);
-		ab.add(check4a);
-		ab.add(check4b);
-		ab.add(check4c);
-		ab.add(check4d);
+		ab.add(bedOne);
+		ab.add(bedTwo);
 		ab.add(buttons);
 		
 		return ab;	        
 	}
     
 	public JPanel addOutdoor() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		final Font plain = new Font("Verdana", Font.PLAIN, 10);
 		JPanel ao = new JPanel();
 		JPanel buttons;
 		
@@ -1117,17 +1135,29 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		JCheckBox check1 = new JCheckBox("Patio", true);
 		check1.setBounds(100,100, 50,50);
+		check1.setFont(plain);
 		JCheckBox check2 = new JCheckBox("BBQ", true);
 		check2.setBounds(100,150, 50,50);
-		JCheckBox check3a = new JCheckBox("Parking = Free On-Site", true);
-		check3a.setBounds(150,200, 50,50);
-		JCheckBox check3b = new JCheckBox("Parking = On-Road", true);
-		check3b.setBounds(200,200, 50,50);
-		JCheckBox check3c = new JCheckBox("Parking = Paid", true);
+		check2.setFont(plain);
+
+		ButtonGroup grp = new ButtonGroup();
+		JRadioButton free = new JRadioButton("Free Parking");
+		free.setFont(plain);
+		JRadioButton onRoad = new JRadioButton("On Road Parking");
+		onRoad.setFont(plain);
+		JRadioButton paid = new JRadioButton("Paid Parking");
+		paid.setFont(plain);
+		grp.add(free);
+		grp.add(onRoad);
+		grp.add(paid);
+		JPanel park = new JPanel();
+		park.add(free);
+		park.add(onRoad);
+		park.add(paid);
 		
-		if (check3a.isSelected()) {parking = ParkType.free;}
-		if (check3b.isSelected()) {parking = ParkType.onRoad;}
-		if (check3c.isSelected()) {parking = ParkType.paid;}
+		if (free.isSelected()) {parking = ParkType.free;}
+		if (onRoad.isSelected()) {parking = ParkType.onRoad;}
+		if (paid.isSelected()) {parking = ParkType.paid;}
 		
 		JButton create = new JButton("Create Outdoor Facilities");
 		create.setFont(plain);
@@ -1146,9 +1176,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		ao.add(check1);
 		ao.add(check2);
-		ao.add(check3a);
-		ao.add(check3b);
-		ao.add(check3c);
+		ao.add(park);
 		ao.add(buttons);
 		
 		return ao;	        
@@ -1194,14 +1222,22 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				chosenHouse.setFacilities(facility);
 				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 				showMessageDialog(null, "Property successfully added!");
-				addHostProperties();
+			}
+		});
+		
+		JButton home = new JButton("Home Page");
+		home.setFont(plain);
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, "Host Home");
 				current = "HH";
-				myPropertiesCards.show(myProperties, "All Properties");
+				setTitle("Host Home");
 			}
 		});
 		
 		buttons = new JPanel();
 		buttons.add(create);
+		buttons.add(home);
 		
 		ak.add(checkFridge);
 		ak.add(checkMicro);
