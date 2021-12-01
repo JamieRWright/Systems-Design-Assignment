@@ -93,23 +93,11 @@ public class Bedroom {
 		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed1Type", PropertyID.toString(), value.getString());
 		return output;
 	}
-	public boolean setBed1Num(BedType value, Integer PropertyID)
-	{
-		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "PeopleInBed1", PropertyID.toString(), value.getNumSleeper());
-		return output;
-	}
 	
 	public boolean setBed2Type(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
 		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed2Type", PropertyID.toString(), value.getString());
-		return output;
-	}
-	public boolean setBed2Num(BedType value, Integer PropertyID)
-	{
-		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "PeopleInBed2", PropertyID.toString(), value.getNumSleeper());
 		return output;
 	}
 	
