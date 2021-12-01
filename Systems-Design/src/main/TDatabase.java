@@ -962,7 +962,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			getConnection();
 			String sql = "INSERT INTO Property(HostID, AddressID, ShortName, Descriptions, Breakfast) VALUES (?,?,?,?,?)";
 			String sql2 = "INSERT INTO Bathing_Facility(PropertyID, BathroomCount, HairDryer, Shampoo, ToiletPaper, Toilet, Bath, Shower, IsShared) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			String sql3 = "INSERT INTO Sleeping_Facility(PropertyID, BedroomNumber, BedLinen, Towels, Bed1Type, PeopleInBed1, Bed2Type, PeopleInBed2) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql3 = "INSERT INTO Sleeping_Facility(PropertyID, BedroomNumber, BedLinen, Towels, Bed1Type, Bed2Type) VALUES (?, ?, ?, ?, ?, ?);";
 			String sql4 = "INSERT INTO Kitchen_Facility(PropertyID, Refrigerator, Microwave, Oven, Stove, Dishwasher, Tableware, Cookware, basicProvision) VALUES (?, null, null, null, null, null, null, null, null);";
 			String sql5 = "INSERT INTO Outdoor_Facility(PropertyID, Parking, Patio, Barbeque) VALUES (?, null, null, null);";
 			String sql6 = "INSERT INTO Living_Facility(PropertyID, WIFI, Television, Satellite, Streaming, DVDPlayer, BoardGames) VALUES (?, null, null, null, null, null, null);";
@@ -987,9 +987,9 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			// Bathing Facility
 			pst2.setInt(1, propertyID);
 			pst2.setInt(2, 1);
-			pst2.setString(3, null);
-			pst2.setString(4, null);
-			pst2.setString(5, null);
+			pst2.setInt(3, 0);
+			pst2.setInt(4, 0);
+			pst2.setInt(5, 0);
 			pst2.setInt(6, 0);
 			pst2.setInt(7, 0);
 			pst2.setInt(8, 0);
@@ -997,14 +997,13 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst2.execute();
 
 			// Sleeping Facility
+			// Sleeping Facility
 			pst3.setInt(1, propertyID);
 			pst3.setInt(2, 1);
 			pst3.setInt(3, 0);
 			pst3.setInt(4, 0);
-			pst3.setString(5, "Single Bed");
-			pst3.setInt(6, 1);
-			pst3.setString(7, null);
-			pst3.setString(8, null);
+			pst3.setString(5, null);
+			pst3.setString(6, null);
 			pst3.execute();
 
 			// Kitchen Facility
