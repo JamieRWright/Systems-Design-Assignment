@@ -90,7 +90,6 @@ public class Facilities {
 		k.setCookware(k.getCookware(), PropertyID);
 		k.setBasicProvision(k.getBasicProvisions(), PropertyID);
 		this.kitchen = k;
-		this.kitchen = k;
 	}
 
 	public void setLivingFacility(Living l, Integer PropertyID) {
@@ -112,7 +111,6 @@ public class Facilities {
 		u.setSmoke(u.getSmokeAlarm(), PropertyID);
 		u.setFirst(u.getFirstAid(), PropertyID);
 		this.utility = u;
-		this.utility = u;
 	}
 
 	public void setOutdoor(Outdoor o, Integer PropertyID) {
@@ -120,11 +118,9 @@ public class Facilities {
 		o.setPatio(o.getPatio(), PropertyID);
 		o.setParking(o.getParking(), PropertyID);
 		this.outdoor = o;
-		this.outdoor = o;
 	}
 
 
-	// Add a bathroom or bedroom
 	// Add a bathroom or bedroom
 
 
@@ -135,7 +131,6 @@ public class Facilities {
 		br.setBed1Type(br.getBedOne(), PropertyID);
 		br.setBed2Num(br.getBedTwo(), PropertyID);
 		br.setBed2Type(br.getBedTwo(), PropertyID);
-		this.sleeping.add(br);
 		this.sleeping.add(br);
 	}
 
@@ -149,7 +144,6 @@ public class Facilities {
 		b.setShower(b.getShower(), PropertyID);
 		b.setToilet(b.getToilet(), PropertyID);
 		b.setToiletPaper(b.getToiletPaper(), PropertyID);
-		this.bathing.add(b);
 		this.bathing.add(b);
 	}
 }
