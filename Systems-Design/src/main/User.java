@@ -1,5 +1,4 @@
 package main;
-
 /**
  * Class designed for Host and Guest to inherit from
  *
@@ -56,7 +55,7 @@ public class User {
 	
 	// Accessor methods
 	public String getName() {
-		return (this.forename) + " " + (this.surname);
+		return (this.surname) + " " + (this.forename);
 	}
 	
 	public Address getAddress() {
