@@ -281,10 +281,10 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 		table = SearchFacility("Sleeping_Facility", PropertyID.toString(), true);
 			try {
 				while (table.next()) {
-					int BedLinen = table.getInt(3);
-					int Towels = table.getInt(4);
-					String Bed1Type = table.getString(5);
-					String Bed2Type = table.getString(7);
+					int BedLinen = table.getInt(2);
+					int Towels = table.getInt(3);
+					String Bed1Type = table.getString(4);
+					String Bed2Type = table.getString(5);
 					if(BedLinen==1)
 						BLBool = true;
 					if(Towels==1)
