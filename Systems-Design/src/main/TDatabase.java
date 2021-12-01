@@ -23,6 +23,7 @@ public final class TDatabase {
 	public static Map<Integer, Property> Bookmarks = null;
 	public static Map<Integer, Booking> Bookings = null;
 	public static Map<Integer, ChargeBand> ChargeBands = null;
+	public static Map<Integer, Review> Reviews = null;
 	public static Map<Integer, Guest> Guests = null;
 	public static Map<Integer, Host> Hosts = null;
 
@@ -41,6 +42,7 @@ public final class TDatabase {
 		Guests = TDatabase.LoadGuests();
 		Bookings = TDatabase.LoadBookings();
 		ChargeBands = TDatabase.LoadChargeBands();
+		Reviews = TDatabase.LoadReviews();
 		
 		return isSuccess;
 	}
@@ -124,7 +126,7 @@ public final class TDatabase {
 						if (Rejected > 0) {
 							rejected = true;
 						}
-						if (Provisional == 0) {
+						if (Provisional > 0) {
 							provisional = true;
 						}
 						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
@@ -157,6 +159,40 @@ public final class TDatabase {
 				Double CleaningCharge = table.getDouble(7);
 				
 				output.put(ChargeBandID, new ChargeBand(StartDate, EndDate, PropertyID, PricePerNight, ServiceCharge, CleaningCharge, false));
+			}
+			disconnect();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return output;
+	}
+	
+	public static Map<Integer, Review> LoadReviews() {
+		Map<Integer, Review> output = new HashMap<Integer, Review>();
+		ResultSet table = null;
+		table = SearchFullTable("Reviews", true);
+		
+		try {
+			while (table.next()) {
+				Integer ReviewID = table.getInt(1);
+				Integer PropertyID = table.getInt(2);
+				Integer GuestID = table.getInt(3);
+				Integer Cleanliness = table.getInt(4);
+				Integer Communication = table.getInt(5);
+				Integer CheckIn = table.getInt(6);
+				Integer Accuracy = table.getInt(7);
+				Integer Location = table.getInt(8);
+				Integer Value_for_money = table.getInt(9);
+				String OptionalDescription = table.getString(10);
+				RatingCategory[] key = new RatingCategory[] {RatingCategory.Cleanliness, RatingCategory.Communication, RatingCategory.CheckIn,
+						RatingCategory.Accuracy, RatingCategory.Location, RatingCategory.Value};
+				Integer[] value = {Cleanliness, Communication, CheckIn, Accuracy, Location, Value_for_money};
+				RatingMap rm = new RatingMap();
+				
+				for (int i = 0; i < value.length; i++) {rm.put(key[i], value[i]);}
+				output.put(ReviewID, new Review(GuestID, PropertyID, OptionalDescription, rm));
 			}
 			disconnect();
 		}
@@ -710,6 +746,25 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 		}
 		return ChargeBandID;
 	}
+	public static String GetReviewID(int propertyID, int guestID) {
+		String ReviewID = null;
+		ResultSet table = null;
+		Statement stmt;
+		String Command = "SELECT * FROM Reviews WHERE PropertyID=" + propertyID + " AND GuestID=" + guestID + ";";
+		
+		try {
+			getConnection();
+			stmt = con.createStatement();
+			table = stmt.executeQuery(Command);
+			while (table.next()) {ReviewID = table.getString(1);}
+			disconnect();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ReviewID;
+	}
 	
 	
 	// Returns true if user exists
@@ -1093,22 +1148,21 @@ public static boolean addAddress(String houseNumber, String street, String postc
     	return bookingID;
     }
     
-    public static boolean AddReview(int propertyID, int guestID, int hostID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
+    public static boolean AddReview(int propertyID, int guestID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
  		try {
  			getConnection();
- 			String sql="INSERT INTO Reviews(PropertyID, GuestID, HostID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+ 			String sql="INSERT INTO Reviews(PropertyID, GuestID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
  			PreparedStatement pst=con.prepareStatement(sql);
  			pst.setInt(1, propertyID);
  			pst.setInt(2, guestID);
- 			pst.setInt(3, hostID);
- 			pst.setInt(4, cl);
- 			pst.setInt(5, com);
- 			pst.setInt(6, chk);
- 			pst.setInt(7, ac);
- 			pst.setInt(8, loc);
- 			pst.setInt(9, val);
- 			if (desc == "") {pst.setString(10, null);}
- 			else {pst.setString(10, desc);}
+ 			pst.setInt(3, cl);
+ 			pst.setInt(4, com);
+ 			pst.setInt(5, chk);
+ 			pst.setInt(6, ac);
+ 			pst.setInt(7, loc);
+ 			pst.setInt(8, val);
+ 			if (desc == "") {pst.setString(9, null);}
+ 			else {pst.setString(9, desc);}
  			pst.execute();
  			disconnect();
  			return true;
