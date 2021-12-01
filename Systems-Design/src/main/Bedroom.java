@@ -90,14 +90,20 @@ public class Bedroom {
 	public boolean setBed1Type(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed1Type", PropertyID.toString(), value.getString());
+		String properValue = "";
+		if (value != null)
+			properValue=value.getString();
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed1Type", PropertyID.toString(), properValue);
 		return output;
 	}
 	
 	public boolean setBed2Type(BedType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed2Type", PropertyID.toString(), value.getString());
+		String properValue = "";
+		if (value != null)
+			properValue=value.getString();
+		output=TDatabase.UpdateFacilityValue("Sleeping_Facility", "Bed2Type", PropertyID.toString(), properValue);
 		return output;
 	}
 	
