@@ -75,6 +75,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	ParkType parking = null;
 	BedType bed1 = null;
 	BedType bed2 = null;
+	Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
 	
 	// TODO if there's time: enhance the searching feature to search for matching results, not exact ones
 	// check if price input is correct properly
@@ -2096,8 +2097,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
 		
-		Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
-		
 		if (filter == "City") {filterCity(filterProperties);}
 		else if (filter == "Host") {filterHost(host, filterProperties);}
 		else if (filter == "Name") {filterPName(filterProperties);}
@@ -2167,6 +2166,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			vp.add(buttons);
 		}
 		JScrollPane scroll = new JScrollPane(vp);
+		vp.add(createHomeBtnPanel(), gbc);
 		
 		return scroll;
 	}
@@ -2273,6 +2273,17 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		bekfast = new JPanel();
 		buttons = new JPanel();
 
+		JButton back = new JButton("back");
+		back.setFont(plain);
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.add("View Properties", viewProperties(null, "City"));
+				cards.show(c, "View Properties");
+				current = "VP";
+				setTitle("View Properties");
+			}
+		});
+
 		BoxLayout bl = new BoxLayout(hv, BoxLayout.Y_AXIS);
 		hv.setLayout(bl);
 		
@@ -2288,6 +2299,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		buttons.add(utilBtn);
 		buttons.add(outBtn);
 		buttons.add(bookBtn);
+		buttons.add(back);
 		
 		hv.add(shortName);
 		hv.add(location);
