@@ -70,7 +70,10 @@ public class Outdoor {
 	public boolean setParking(ParkType value, Integer PropertyID)
 	{
 		boolean output=false;
-		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Parking", PropertyID.toString(), value.getString());
+		String properValue = "";
+		if (value != null)
+			properValue=value.getString();
+		output=TDatabase.UpdateFacilityValue("Outdoor_Facility", "Parking", PropertyID.toString(), properValue);
 		return output;
 	}
 	
