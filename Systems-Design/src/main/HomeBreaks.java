@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -43,7 +45,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class HomeBreaks extends JFrame implements ActionListener, DocumentListener {
+public class HomeBreaks extends JFrame implements DocumentListener {
 	CardLayout cards, myAccountCards, crd, myPropertiesCards, facilitiesCards;
 	Container c = getContentPane();
 	public static String current = "";
@@ -58,6 +60,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	JPasswordField pw_input_gsu, confirm_input_gsu, pw_input_gl;
 	JPasswordField pw_input_hsu, confirm_input_hsu, pw_input_hl;
 	JPanel p = new JPanel();
+	JPanel pBookings = new JPanel();
 	public static Dimension screen;
 	public static Host currentHost;
 	public static Guest currentGuest;
@@ -79,7 +82,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
 	
-	public HomeBreaks() {
+	public HomeBreaks() throws ParseException {
 		System.out.println("Loading...");
 		TDatabase.Initialise();
 		properties = TDatabase.Properties;
@@ -88,7 +91,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		System.out.println("Successfully loaded.");
 	}
 	
-	public void startGUI() {
+	public void startGUI() throws ParseException {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		screen = tk.getScreenSize();
 				
@@ -97,18 +100,18 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//current = "GH";
-		//currentGuest = TDatabase.Guests.get(1);
+		//currentGuest = TDatabase.Guests.get(7);
+		chosenHouse = TDatabase.Properties.get(71);
 		
 		cards = new CardLayout();
 		c.setLayout(cards);
-		c.add("Home", home());
+		c.add("Home",  viewReviews());
 		c.add("Guest Sign Up", guestSU());
 		c.add("Host Sign Up", hostSU());
 		c.add("Guest Login", guestLogin());
 		c.add("Host Login", hostLogin());
 		c.add("Inquiry", enquirer());
 		c.add("Host Home", hostHome());
-		c.add("Guest Home", guestHome());
 		//c.add("House View", houseView());
 		c.add("Add Living", addLiving());
 		c.add("Add Utility", addUtility());
@@ -118,7 +121,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		c.add("Add Kitchen", addKitchen());
 		// Scrollpane setting
 		//c.add("View Properties", viewProperties(null, "City"));
-		c.add("Booking", bookingPage());
+		//c.add("Booking", bookingPage());
 		
 		setVisible(true);
 	}
@@ -593,8 +596,15 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					e1.printStackTrace();
 				}
 				
+				String guestID;
+				
 				if (TDatabase.GuestLogin(email, pw)) {
+					guestID = TDatabase.SearchUserID("Guest", email);
 					setTitle("Guest Home");
+					current = "GH";
+					currentGuest = TDatabase.Guests.get(Integer.parseInt(guestID));
+					c.add("Guest Home", guestHome());
+					//c.add("Guest Home", guestHome(currentGuest));
 					cards.show(c, "Guest Home");
 				}
 				else {
@@ -682,9 +692,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 					
 					// Create panel that shows current host's properties
 					addHostProperties();
-					
-					// TODO add page that shows provisional bookings
-					
+					current = "HH";					
 					cards.show(c, "Host Home");
 				}
 				else {
@@ -1192,6 +1200,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 				showMessageDialog(null, "Property successfully added!");
 				addHostProperties();
+				current = "HH";
 				myPropertiesCards.show(myProperties, "All Properties");
 			}
 		});
@@ -1370,7 +1379,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myProperties.setLayout(myPropertiesCards);
 		myProperties.add("Add Kitchen", addKitchen());
 		
-		JPanel pBookings = new JPanel();
 		myAccount = new JPanel();
 		myAccountCards = new CardLayout();
 		myAccount.setLayout(myAccountCards);
@@ -1380,7 +1388,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		myProperties.add("New", newPropertyPanel());
 		
 		hostTabs.add("My Properties", myProperties); // shows list of properties, and a button to create a new property
-		hostTabs.add("Provisional Bookings", pBookings);
+		try {
+			hostTabs.add("My Bookings", viewBookings());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			hostTabs.add("My Bookings", new JPanel());
+		}
 		hostTabs.add("My Account", myAccount);
 		
 		hh.add(hostTabs, BorderLayout.CENTER);
@@ -1402,35 +1416,25 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		CardLayout c = new CardLayout();
 		myProperties.setLayout(c);
 		
-		p1 = new JPanel();
-		newProperty = new JButton("Create New Property");
-		newProperty.setFont(plain);
-		p1.add(newProperty);
-		
-		JPanel pBookings = new JPanel();
-		pBookings.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
-		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		
 		myAccount = new JPanel();
 		myAccountCards = new CardLayout();
 		myAccount.setLayout(myAccountCards);
 		myAccount.add("My Account", myAccount());
 		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
-		
-		myProperties.add("All Properties", p1);
-		
-		newProperty.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				c.show(myProperties, "New");
-			}
-		});
-		
+				
 		CardLayout card = new CardLayout();
 		JPanel booking = new JPanel();
 		booking.setLayout(card);
 		
-		guestTabs.add("Provisional Bookings", pBookings);
+		try {
+			current = "GH";
+			guestTabs.add("My Bookings", viewBookings());
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			guestTabs.add("My Bookings", new JPanel());
+		}
+		guestTabs.add("My Bookings", pBookings);
 		guestTabs.add("Book a property", guestBookingPanel());
 		guestTabs.add("My Account", myAccount);
 		
@@ -1563,13 +1567,6 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public JPanel myAccount() {
 		JPanel ma = new JPanel();
 		ma.setLayout(new GridBagLayout());
@@ -1620,7 +1617,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	public JScrollPane viewBookings() throws ParseException {
 		JPanel b = new JPanel();
-		b.setLayout(new GridBagLayout());
+		b.setLayout(new GridLayout(1, 2));
 		b.setBorder(HomeBreaks.createTitledBorder(""));
 		Font plain = new Font("Verdana", Font.PLAIN, 18);
 		
@@ -1666,44 +1663,46 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		}
 		
 		JPanel accepted = new JPanel();
-		accepted.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
+		BoxLayout b1 = new BoxLayout(accepted, BoxLayout.Y_AXIS);
+		accepted.setLayout(b1);
 		accepted.setBorder(HomeBreaks.createTitledBorder("Accepted bookings"));
 		
 		JPanel provisional = new JPanel();
+		BoxLayout b2 = new BoxLayout(provisional, BoxLayout.Y_AXIS);
 		provisional.setLayout(new GridBagLayout());
 		provisional.setBorder(createTitledBorder("Other bookings"));
 		
 		// For guest's and hosts' bookings page
-		int guestAccepted = 0;
+		int acceptedCount = 0;
 		for (Booking acceptedBooking : acceptedBookings.values()) {
 			Host host = TDatabase.Hosts.get(acceptedBooking.getHostID());
 			Guest guest = TDatabase.Guests.get(acceptedBooking.getGuestID());
+			System.out.println("Accepted" + host.getName() + guest.getName());
 			JPanel vb = new JPanel();
 			//vb.setBorder(createTitledBorder(""));
 			JLabel pName, personName, sDate, eDate, contactN, contactE, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
-			personName = null;
-			contactN = null;
-			contactE = null;
+			personName = new JLabel();
+			contactN = new JLabel();
+			contactE = new JLabel();
 			
 			pName = new JLabel("Property name: " + TDatabase.Properties.get(acceptedBooking.getPropertyID()).getShortName());
 			pName.setFont(plain);
 			if (current == "GH") {
 				// print host info
-				personName = new JLabel("Host name: " + host.getName());
+				personName.setText("Host name: " + host.getName());
 				personName.setFont(plain);
-				contactN = new JLabel("Host mobile number: " + host.getPhone());
+				contactN.setText("Host phone number: " + host.getPhone());
 				contactN.setFont(plain);
-				contactE = new JLabel("Host email: " + host.getEmail());
+				contactE.setText("Host email: " + host.getEmail());
 				contactE.setFont(plain);
 			}
 			else if (current == "HH") {
 				// print guest info
-				personName = new JLabel("Guest name: " + guest.getName());
+				personName.setText("Guest name: " + guest.getName());
 				personName.setFont(plain);
-				contactN = new JLabel("Guest mobile number: " + guest.getPhone());
+				contactN.setText("Guest mobile number: " + guest.getPhone());
 				contactN.setFont(plain);
-				contactE = new JLabel("Guest email: " + guest.getEmail());
+				contactE.setText("Guest email: " + guest.getEmail());
 				contactE.setFont(plain);
 			}
 			sDate = new JLabel("Start date: " + acceptedBooking.getStartDate());
@@ -1721,6 +1720,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				}
 			}
 			numNights = new JLabel("Number of nights: " + Booking.getNightsNum(acceptedBooking.getStartDate(), acceptedBooking.getEndDate()));
+			numNights.setFont(plain);
 			pricePerNight = new JLabel("Price Per Night: " + chargeBand.getPPN());
 			pricePerNight.setFont(plain);
 			serviceCharge = new JLabel("Service Charge: " + chargeBand.getSC());
@@ -1728,10 +1728,13 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			cleaningCharge  = new JLabel("Cleaning Charge: " + chargeBand.getCC());
 			cleaningCharge.setFont(plain);
 			status = new JLabel("Status: Accepted");
+			status.setFont(plain);
 			
 			
 			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
 			vb.setLayout(bl);
+			
+			JSeparator s = new JSeparator();
 			
 			vb.add(pName);
 			vb.add(personName);
@@ -1744,28 +1747,24 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vb.add(serviceCharge);
 			vb.add(cleaningCharge);
 			vb.add(status);
+			if (acceptedCount < acceptedBookings.size()) {vb.add(s);}
 			
-			// add a border between bookings
-			JPanel border = new JPanel();
-			border.setBorder(new LineBorder(Color.BLACK, 4, true));
-			vb.add(border);
-			
-			HomeBreaks.setConstraints(g, 0, guestAccepted, GridBagConstraints.WEST);
-			accepted.add(vb, g);
-			guestAccepted++;
+			accepted.add(vb);
+			acceptedCount++;
 		}
 		
 		// for guests' and hosts' provisional bookings
-		int prov = 0;
+		int pCount = 0;
 		for (Booking booking : provisionalBookings.values()) {
 			Host host = TDatabase.Hosts.get(booking.getHostID());
 			Guest guest = TDatabase.Guests.get(booking.getGuestID());
 			
-			b.setBorder(createTitledBorder("Other bookings"));
+			System.out.println("Provisional: " + host.getName() + " " +  guest.getName());
+			provisional.setBorder(createTitledBorder("Other bookings"));
 			JPanel vb = new JPanel();
 			JLabel pName, personName, sDate, eDate, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
 			String stat = "";
-			personName = null;
+			personName = new JLabel();
 			
 			if (booking.getRejected()) {
 				stat = "Rejected";
@@ -1777,11 +1776,11 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			pName = new JLabel("Property name: " + properties.get(booking.getPropertyID()).getShortName());
 			pName.setFont(plain);
 			if (current == "GH") {
-				personName = new JLabel("Host name: " + host.getName());
+				personName.setText("Host name: " + host.getName());
 				personName.setFont(plain);
 			}
 			else if (current == "HH") {
-				personName = new JLabel("Host name: " + guest.getName());
+				personName.setText("Host name: " + guest.getName());
 				personName.setFont(plain);
 			}
 			sDate = new JLabel("Start date: " + booking.getStartDate());
@@ -1789,6 +1788,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			eDate = new JLabel("End date: " + booking.getEndDate());
 			eDate.setFont(plain);
 			status = new JLabel("Status: " + stat);
+			status.setFont(plain);
 			
 			ChargeBand chargeBand = null;
 			// Add Chargeband info
@@ -1810,6 +1810,8 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			BoxLayout bl = new BoxLayout(vb, BoxLayout.Y_AXIS);
 			vb.setLayout(bl);
 			
+			JSeparator s = new JSeparator();
+			
 			vb.add(pName);
 			vb.add(personName);
 			vb.add(sDate);
@@ -1818,23 +1820,77 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 			vb.add(serviceCharge);
 			vb.add(cleaningCharge);
 			vb.add(status);
+			if (pCount < acceptedBookings.size()) {vb.add(s);}
 			
-			// add a border between bookings
-			JPanel border = new JPanel();
-			border.setBorder(new LineBorder(Color.BLACK, 4, true));
-			vb.add(border);
-			
-			setConstraints(g, 0, prov, GridBagConstraints.CENTER);
-			provisional.add(vb, g);
-			prov++;
+			provisional.add(vb);
+			pCount++;
 		}
 		
 		// Add accepted booking
+		GridBagConstraints g = new GridBagConstraints();
 		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.CENTER);
-		b.add(accepted, g);
+		g.weightx = 1;
+		b.add(accepted);
 		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
-		b.add(provisional, g);
+		b.add(provisional);
 		JScrollPane s = new JScrollPane(b);
+		return s;
+	}
+	
+	// Shows reviews related to a property
+	public JScrollPane viewReviews() {
+		// New map to store related reviews
+		Property p = chosenHouse;
+		Map<Integer, Review> pr = new HashMap<Integer, Review>();
+		
+		for (Review r : TDatabase.Reviews.values()) {
+			if (p.getID() == r.getPropertyID()) {pr.put(r.getID(), r);}
+		}
+		
+		// Elements needed to display the reviews
+		JPanel reviews = new JPanel();
+		BoxLayout b = new BoxLayout(reviews, BoxLayout.Y_AXIS);
+		reviews.setLayout(b);
+		reviews.setBorder(createTitledBorder("Reviews"));
+		
+		// Iterate through related reviews and print them out
+		int count = 0;
+		for (Review r : pr.values()) {
+			JPanel singleReview = new JPanel();
+			singleReview.setLayout(new GridLayout(0, 1));
+			Guest guest = TDatabase.Guests.get(r.getGuestID());
+			
+			JLabel gName = new JLabel(guest.getName());
+			gName.setFont(new Font("Verdana", Font.BOLD, 30));
+			JLabel overall = new JLabel();
+			overall.setFont(bold);
+			
+			// Get guest's overall rating for the property and print out number of stars
+			double ovrll = r.overallRating();
+			System.out.println(ovrll);
+			
+			if (ovrll >= 4.7) {overall.setText("*****");}
+			else if (ovrll > 4 && ovrll < 4.7) {overall.setText("****");}
+			else if (ovrll > 3 && ovrll <= 4) {overall.setText("***");}
+			else if (ovrll > 2 && ovrll <=3) {overall.setText("**");}
+			else if (ovrll > 1 && ovrll <=2) {overall.setText("*");}
+			
+			JLabel description = new JLabel(r.getText());
+			description.setFont(plain);
+			
+			JSeparator sep = new JSeparator();
+			
+			// Add elements to the review
+			singleReview.add(gName);
+			singleReview.add(overall);
+			singleReview.add(description);
+			if (count < pr.size()) {singleReview.add(sep);}
+			reviews.add(singleReview);
+			count++;
+		}
+		
+		
+		JScrollPane s = new JScrollPane(reviews);
 		return s;
 	}
 	
@@ -2022,7 +2078,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	// Default host should be null
 	public JScrollPane viewProperties(Host host, String filter) {
 		JPanel vp = new JPanel();
-		current = "View Properties";
+		//current = "View Properties";
 		
 		JPanel home = new JPanel();
 		vp.setLayout(new GridBagLayout());
@@ -2074,7 +2130,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 				public void actionPerformed(ActionEvent e) {
 					c.add(chosenHouse.getShortName(), houseView(chosenHouse));
 					cards.show(c, chosenHouse.getShortName());
-					current = "HV";
+					//current = "HV";
 					setTitle("House View");
 				}
 			});
@@ -2119,6 +2175,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	
 	
 	public JPanel houseView(Property house) {
+		chosenHouse = house;
 		facility = house.getFacilities();
 		JPanel hv = new JPanel();
 		hv.setLayout(new GridBagLayout());
@@ -2198,6 +2255,12 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		
 		JButton bookBtn = new JButton("Book");
 		bookBtn.setFont(plain);
+		bookBtn.setVisible(false);
+		bookBtn.setEnabled(false);
+		if (current == "GH") {
+			bookBtn.setVisible(true);
+			bookBtn.setEnabled(true);
+		}
 		bookBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cards.show(c, "Booking");
@@ -2234,6 +2297,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 		hv.add(host);
 		hv.add(breakfast);
 		hv.add(buttons);
+		hv.add(viewReviews());
 		
 		return hv;
 	}
@@ -2413,7 +2477,7 @@ public class HomeBreaks extends JFrame implements ActionListener, DocumentListen
 	}
 	
 	
-	public static void main (String [] args) {
+	public static void main (String [] args) throws ParseException {
 		new HomeBreaks();
 	}
 }
