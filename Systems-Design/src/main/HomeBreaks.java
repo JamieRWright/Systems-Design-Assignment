@@ -1089,19 +1089,18 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		check2.setBounds(100,150, 50,50);
 		check2.setFont(plain);
 		
-		if (single1.isSelected()) {bed1 = BedType.Single;}
-		else if (double1.isSelected()) {bed1 = BedType.Double;}
-		else if (king1.isSelected()) {bed1 = BedType.King;}
-		else if (bunk1.isSelected()) {bed1 = BedType.Bunk;}
-		if (single2.isSelected()) {bed2 = BedType.Single;}
-		else if (double2.isSelected()) {bed2 = BedType.Double;}
-		else if (king1.isSelected()) {bed2 = BedType.King;}
-		else if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
-		
 		JButton create = new JButton("Create Bedroom");
 		create.setFont(plain);
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (single1.isSelected()) {bed1 = BedType.Single;}
+				if (double1.isSelected()) {bed1 = BedType.Double;}
+				if (king1.isSelected()) {bed1 = BedType.King;}
+				if (bunk1.isSelected()) {bed1 = BedType.Bunk;}
+				if (single2.isSelected()) {bed2 = BedType.Single;}
+				if (double2.isSelected()) {bed2 = BedType.Double;}
+				if (king1.isSelected()) {bed2 = BedType.King;}
+				if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
 				facility.addBedroom(bedroom, chosenHouse.getID());
 				cards.show(c, "Add Outdoor");
@@ -1155,14 +1154,13 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		park.add(onRoad);
 		park.add(paid);
 		
-		if (free.isSelected()) {parking = ParkType.free;}
-		if (onRoad.isSelected()) {parking = ParkType.onRoad;}
-		if (paid.isSelected()) {parking = ParkType.paid;}
-		
 		JButton create = new JButton("Create Outdoor Facilities");
 		create.setFont(plain);
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (free.isSelected()) {parking = ParkType.free;}
+				if (onRoad.isSelected()) {parking = ParkType.onRoad;}
+				if (paid.isSelected()) {parking = ParkType.paid;}
 				Outdoor outdoor = new Outdoor(check1.isSelected(), check2.isSelected(), parking);
 				facility.setOutdoor(outdoor, chosenHouse.getID());
 				cards.show(c, "Add Kitchen");
