@@ -112,7 +112,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		c.add("Guest Login", guestLogin());
 		c.add("Host Login", hostLogin());
 		c.add("Inquiry", enquirer());
-		c.add("Host Home", hostHome());
+		//c.add("Host Home", hostHome());
 		//c.add("House View", houseView());
 		c.add("Add Living", addLiving());
 		c.add("Add Utility", addUtility());
@@ -692,9 +692,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					setTitle("Host Home");
 					
 					// Create panel that shows current host's properties
-					addHostProperties();
-					current = "HH";	
 					c.add("Host Home", hostHome());
+					current = "HH";	
 					cards.show(c, "Host Home");
 				}
 				else {
@@ -728,16 +727,10 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	
 	public void addHostProperties() {
 		JPanel p1 = new JPanel();
-		p1.setLayout(new GridBagLayout());
-		GridBagConstraints g = new GridBagConstraints();
-		//g.weightx = 2;
-		//g.weighty = 2;
-		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		p1.setLayout(new BorderLayout());
 		JScrollPane mp = viewProperties(currentHost, "Host");
-		p1.add(mp, g);
-		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
-		//g.weightx = 0;
-		//g.weighty = 0;
+		p1.add(mp, BorderLayout.CENTER);
+		
 		newPropertyBtn = new JButton("Create New Property");
 		newPropertyBtn.setFont(plain);
 		newPropertyBtn.addActionListener(new ActionListener() {
@@ -745,7 +738,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				myPropertiesCards.show(myProperties, "New");
 			}
 		});
-		p1.add(newPropertyBtn, g);
+		p1.add(newPropertyBtn, BorderLayout.SOUTH);
 		
 		myProperties.add("All Properties", p1);
 		myPropertiesCards.show(myProperties, "All Properties");
@@ -1207,19 +1200,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			}
 		});
 		
-		JButton home = new JButton("Home Page");
-		home.setFont(plain);
-		home.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cards.show(c, "Host Home");
-				current = "HH";
-				setTitle("Host Home");
-			}
-		});
-		
 		buttons = new JPanel();
 		buttons.add(create);
-		buttons.add(home);
 		
 		ak.add(checkFridge);
 		ak.add(checkMicro);
@@ -1390,7 +1372,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		myProperties = new JPanel();
 		myPropertiesCards = new CardLayout();
 		myProperties.setLayout(myPropertiesCards);
-		myProperties.add("Add Kitchen", addKitchen());
+		addHostProperties();
 		
 		myAccount = new JPanel();
 		myAccountCards = new CardLayout();
@@ -1400,13 +1382,15 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		myProperties.add("New", newPropertyPanel());
 		
-		hostTabs.add("My Properties", myProperties); // shows list of properties, and a button to create a new property
+		hostTabs.add("My Properties", myProperties);
+		
 		try {
 			hostTabs.add("My Bookings", viewBookings());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		hostTabs.add("My Account", myAccount);
 		
 		hh.add(hostTabs, BorderLayout.CENTER);
@@ -1422,9 +1406,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JTabbedPane guestTabs = new JTabbedPane();
 		guestTabs.setFont(plain);
 		
-		JPanel myProperties = new JPanel();
-		CardLayout c = new CardLayout();
-		myProperties.setLayout(c);
+		myProperties = new JPanel();
+		myPropertiesCards = new CardLayout();
+		myProperties.setLayout(myPropertiesCards);
 		
 		myAccount = new JPanel();
 		myAccountCards = new CardLayout();
@@ -1687,7 +1671,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		for (Booking acceptedBooking : acceptedBookings.values()) {
 			Host host = TDatabase.Hosts.get(acceptedBooking.getHostID());
 			Guest guest = TDatabase.Guests.get(acceptedBooking.getGuestID());
-			System.out.println("Accepted" + host.getName() + guest.getName());
 			JPanel vb = new JPanel();
 			//vb.setBorder(createTitledBorder(""));
 			JLabel pName, personName, sDate, eDate, contactN, contactE, status, numNights, pricePerNight, serviceCharge, cleaningCharge;
@@ -1877,7 +1860,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			
 			// Get guest's overall rating for the property and print out number of stars
 			double ovrll = r.overallRating();
-			System.out.println(ovrll);
 			
 			if (ovrll >= 4.7) {overall.setText("* * * * *");}
 			else if (ovrll > 4 && ovrll < 4.7) {overall.setText("* * * *");}
@@ -2380,6 +2362,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		return p;
 	}
 	
+	// returns a panel with calculated average rating for each category of each property
 	public JPanel avgPropertyRating() {
 		JPanel categories = new JPanel();
 		categories.setLayout(new GridLayout(1, 6));
