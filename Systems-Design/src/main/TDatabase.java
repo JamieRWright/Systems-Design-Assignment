@@ -284,7 +284,8 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 					int BedLinen = table.getInt(2);
 					int Towels = table.getInt(3);
 					String Bed1Type = table.getString(4).toUpperCase();
-					String Bed2Type = table.getString(5).toUpperCase();
+					String Bed2Type = table.getString(5);
+					if (Bed2Type != null) {Bed2Type = Bed2Type.toUpperCase();}
 					if(BedLinen==1)
 						BLBool = true;
 					if(Towels==1)
