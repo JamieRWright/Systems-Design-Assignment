@@ -1,16 +1,9 @@
 package main;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.util.Set;
 
 /*
 * Class designed to create booking objects
@@ -26,6 +19,8 @@ public class Booking {
 	private String endDate;
 	private boolean provisional;
 	private boolean rejected;
+	static public Set<String> Columns = Set.of("Provisional", "Rejected");
+
 	
 	public Booking (int propertyID, int hostID, int guestID, String startDate, String endDate, boolean provisional, boolean rejected, boolean updateBackend) {
 		this.propertyID = propertyID;
