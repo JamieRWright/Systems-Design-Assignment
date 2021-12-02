@@ -36,8 +36,9 @@ public class Property {
 		this.shortName = shortName;
 		this.description = description;
 		this.host = host;
-		this.publicLocation = address.getPublicLocation();
 		this.address = address;
+		if (this.address != null) 
+			this.publicLocation = address.getPublicLocation();
 		if (breakfast==1)
 			this.breakfast=true;
 		else 
