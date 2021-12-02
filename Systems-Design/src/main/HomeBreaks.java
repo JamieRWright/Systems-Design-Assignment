@@ -2519,9 +2519,12 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		bedsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Bedroom> beds = facility.getBedroom();
+				int i = 1;
+				String str = "";
 				for (Bedroom bed : beds) {
-					showMessageDialog(null, "" + bed.toString());
+					str += "Bedroom " + i + "\n" + bed.toString();
 				}
+				showMessageDialog(null, "" + str);
 			}
 		});
 		JButton bathBtn = new JButton("View Bathrooms");
@@ -2529,9 +2532,12 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		bathBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Bathroom> baths = facility.getBathroom();
+				int i = 1;
+				String str = "";
 				for (Bathroom bath : baths) {
-					showMessageDialog(null, "" + bath.toString());
+					str += "Bathroom " + i + "\n" + bath.toString();
 				}
+				showMessageDialog(null, "" + str);
 			}
 		});
 		JButton ktchnBtn = new JButton("View Kitchen");
