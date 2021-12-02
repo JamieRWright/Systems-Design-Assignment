@@ -1,4 +1,5 @@
 package main;
+import java.util.Set;
 public class Utility {
 	private boolean centralHeating;
 	private boolean washingMachine;
@@ -6,6 +7,8 @@ public class Utility {
 	private boolean fireExtinguisher;
 	private boolean smokeAlarm;
 	private boolean firstAid;
+	static public Set<String> Columns = Set.of("BedLinen", "Towels", "Bed1Type", "Bed2Type");
+	
 	
 	// utility space creator
 	public Utility(boolean centralHeating, boolean washingMachine, boolean dryingMachine, boolean fireExtinguisher, boolean smokeAlarm, 
