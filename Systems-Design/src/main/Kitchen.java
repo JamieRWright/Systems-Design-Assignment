@@ -7,6 +7,7 @@
  *
  */
 package main;
+import java.util.Set;
 public class Kitchen {
 	private boolean fridge;
 	private boolean microwave;
@@ -16,6 +17,8 @@ public class Kitchen {
 	private boolean tableware;
 	private boolean cookware;
 	private boolean basicProvisions;
+	static public Set<String> Columns = Set.of("Refrigerator","Microwave", "Oven", "Stove", "Dishwasher", "Tableware", "basicProvision");
+	
 	
 	public Kitchen(boolean fridge, boolean microwave, boolean oven, boolean stove, boolean dishwasher, boolean tableware, boolean cookware, boolean basicProvisions) {
 		this.fridge = fridge;
