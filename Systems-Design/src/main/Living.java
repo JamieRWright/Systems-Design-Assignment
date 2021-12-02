@@ -129,7 +129,7 @@ public class Living {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Wifi: ");
+		sb.append("Amenities Provided: \nWifi: ");
 		sb.append(getWifi());
 		sb.append("\n");
 		sb.append("Television: ");
@@ -146,8 +146,13 @@ public class Living {
 		sb.append("\n");
 		sb.append("Board Games: ");
 		sb.append(getBoardGames());
+		
+		String result = sb.toString();
+		
+		result = result.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
 	
-		return sb.toString();
+		return result;
 	}
 		
 }
