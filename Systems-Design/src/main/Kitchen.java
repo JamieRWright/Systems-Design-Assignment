@@ -149,9 +149,9 @@ public class Kitchen {
 		return output;
 	}
 	
-	public String toString() {
+		public String toString() {
 		String str;
-		str = "Amenities provided" + "\n";
+		str = "Amenities provided:" + "\n";
 		str += "Fridge: " + getFridge() + "\n";
 		str += "Microwave: " + getMicrowave() + "\n";
 		str += "Oven: " + getOven() + "\n";
@@ -161,6 +161,10 @@ public class Kitchen {
 		str += "Cookware: " + getCookware() + "\n";
 		str += "Basic Provisions: " + getBasicProvisions() + "\n";
 		
-		return str;
+		String result = str.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
+		
+		
+		return result;
 	}
 }
