@@ -1134,6 +1134,75 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			return false;
 		}
 	}
+	public static boolean addBathroom(int PropertyID, int BathroomCount, boolean HairDryer, boolean Shampoo, boolean ToiletPaper, boolean Toilet, boolean Bath, boolean Shower, boolean IsShared) {
+		int HD_int=0, S_int=0, TP_int=0, T_int=0, B_int=0, Shower_int=0, IS_int=0;
+		if (HairDryer)
+			HD_int=1;
+		if (Shampoo)
+			S_int=1;
+		if (ToiletPaper)
+			TP_int=1;
+		if (Toilet)
+			T_int=1;
+		if (Bath)
+			B_int=1;
+		if (Shower)
+			Shower_int=1;
+		if (IsShared)
+			IS_int=1;
+		try {
+			getConnection();
+			String sql = "INSERT INTO Bathing_Facility(PropertyID, BathroomCount, HairDryer, Shampoo, ToiletPaper, Toilet, Bath, Shower, IsShared) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement pst = con.prepareStatement(sql);
+
+			pst.setInt(1, PropertyID);
+			pst.setInt(2, BathroomCount);
+			pst.setInt(3, HD_int);
+			pst.setInt(4, S_int);
+			pst.setInt(5, TP_int);
+			pst.setInt(6, T_int);
+			pst.setInt(7, B_int);
+			pst.setInt(8, Shower_int);
+			pst.setInt(9, IS_int);
+			
+			pst.execute();
+			pst.close();	
+
+			disconnect();
+			return true;
+		} catch (Exception e) {
+			disconnect();
+			return false;
+		}
+	}
+	public static boolean addBedroom(int PropertyID, int BedroomNumber, boolean BedLinen, boolean Towels, String Bed1Type, String Bed2Type) {
+		int BL_int=0, T_int=0;
+		if (BedLinen)
+			BL_int=1;
+		if (Towels)
+			T_int=1;
+		try {
+			getConnection();
+			String sql = "INSERT INTO Sleeping_Facility(PropertyID, BedroomNumber, BedLinen, Towels, Bed1Type, Bed2Type) VALUES (?, ?, ?, ?, ?, ?);";
+			PreparedStatement pst = con.prepareStatement(sql);
+
+			pst.setInt(1, PropertyID);
+			pst.setInt(2, BedroomNumber);
+			pst.setInt(3, BL_int);
+			pst.setInt(4, T_int);
+			pst.setString(5, Bed1Type);
+			pst.setString(6, Bed2Type);
+			
+			pst.execute();
+			pst.close();	
+
+			disconnect();
+			return true;
+		} catch (Exception e) {
+			disconnect();
+			return false;
+		}
+	}
 
    public static boolean addProperty(int HostID, String AddressID, String ShortName, String Descriptions, int Breakfast,
 			String HouseNumber) {
