@@ -81,10 +81,10 @@ public class Outdoor {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Patio: ");
+		sb.append("Amenities Provided: \nPatio: ");
 		sb.append(getPatio());
 		sb.append("\n");
-		sb.append("Bbq provided: ");
+		sb.append("Bbq: ");
 		sb.append(getBbq());
 		sb.append("\n");
 		sb.append("Parking facility: ");
@@ -93,8 +93,17 @@ public class Outdoor {
 			sb.append(getParking().getString());
 			sb.append("\n");
 			}
+		else if (parking == null) {
+			sb.append("None");
+			sb.append("\n");
+			}
 		
-		return sb.toString();
+		String result = sb.toString();
+		
+		result = result.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
+	
+		return result;
 	}
 		
 }
