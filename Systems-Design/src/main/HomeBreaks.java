@@ -1584,9 +1584,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					showMessageDialog(null, "All fields must not be blank.");
 				}
 				else {
-					TDatabase.UpdateValue("Host", "firstName", "", fn);
-					TDatabase.UpdateValue("Host", "lastName", "", ln);
-					TDatabase.UpdateValue("Host", "Phone", "", pn);
+					TDatabase.UpdateValue("Host", "FirstName", currentHost.getID(), fn);
+					TDatabase.UpdateValue("Host", "LastName", currentHost.getID(), ln);
+					TDatabase.UpdateValue("Host", "PhoneNumber", currentHost.getID(), pn);
 				}
 			}
 		});
