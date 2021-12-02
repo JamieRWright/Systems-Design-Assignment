@@ -76,6 +76,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	BedType bed1 = null;
 	BedType bed2 = null;
 	Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
+	String lastPage;
+	String lp; 
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
@@ -1564,6 +1566,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		searchBtn.setFont(plain);
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				lastPage = "Guest Home";
+				lp = "GH";
 				String setting = searchSetting.getSelectedItem().toString();
 				String search = searchBar.getText();
 				
@@ -2277,6 +2281,10 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			viewMoreBtn.setFont(plain);
 			viewMoreBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if (lastPage != "Guest Home") {
+						lastPage = "View Properties";
+						lp = "VP";
+					}
 					c.add(chosenHouse.getShortName(), houseView(chosenHouse));
 					cards.show(c, chosenHouse.getShortName());
 					//current = "HV";
@@ -2447,10 +2455,17 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		back.setFont(plain);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c.add("View Properties", viewProperties(null, "City"));
-				cards.show(c, "View Properties");
-				current = "VP";
-				setTitle("View Properties");
+				if (lastPage == "View Properties"){
+					c.add("View Properties", viewProperties(null, "City"));
+					cards.show(c, "View Properties");
+					current = "VP";
+					setTitle("View Properties");
+				}
+				else {
+					cards.show(c, lastPage);
+					current = lp;
+					setTitle(lastPage);
+				}
 			}
 		});
 
