@@ -54,12 +54,12 @@ public class Facilities {
 		return this.propertyID;
 	}
 	
-	public Bedroom getBedroom(int bedroomNo) {
-		return (this.sleeping).get(bedroomNo-1);
+	public List<Bedroom> getBedroom() {
+		return this.sleeping;
 	} 
 	
-	public Bathroom getBathroom(int bathroomNo) {
-		return (this.bathing).get(bathroomNo-1);
+	public List<Bathroom> getBathroom() {
+		return this.bathing;
 	}
 	
 	public Kitchen getKitchen() {
