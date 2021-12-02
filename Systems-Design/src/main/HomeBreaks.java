@@ -333,9 +333,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				String houseName = add1_gsu.getText();
 				String streetName = add2_gsu.getText();
 				String city = add3_gsu.getText();
-				String postcode = add4_gsu.getText();
+				String postcode = add4_gsu.getText().toUpperCase();
 				String phone = phone_input_gsu.getText();
-				String email = id_input_gsu.getText();
+				String email = id_input_gsu.getText().toLowerCase();
 				//Hash Password
 				String password="";
 				try {
@@ -351,9 +351,11 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
 				}
-				if (TDatabase.IsUser("Guest", email)) {
-					//throw new UserAlreadyExistsException("User with email " + email + " already exists");
+				
+				else if (TDatabase.IsUser("Guest", email)) {
+					showMessageDialog(null, "A user with this email already exists!");
 				}
+				
 				// Create new guest if all inputs are correct
 				else {
 					Address add = new Address(houseName, streetName, postcode, city, true);
@@ -521,9 +523,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				String houseName = add1_hsu.getText();
 				String streetName = add2_hsu.getText();
 				String city = add3_hsu.getText();
-				String postcode = add4_hsu.getText();
+				String postcode = add4_hsu.getText().toUpperCase();
 				String phone = phone_input_hsu.getText();
-				String email = id_input_hsu.getText();
+				String email = id_input_hsu.getText().toLowerCase();
 				//Hash Password
 				String password="";
 				try {
@@ -536,6 +538,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
                 // Show a message if any field is blank
 				if (fName.isEmpty() || lName.isEmpty() || houseName.isEmpty() || streetName.isEmpty() || city.isEmpty() || fName.isEmpty() || postcode.isEmpty() || phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
 					showMessageDialog(null, "Please fill in all blanks.");
+				}
+				else if (TDatabase.IsUser("Host", email)) {
+					showMessageDialog(null, "A user with this email already exists!");
 				}
 				else {
 					// Sign up host if inputs are correct
@@ -610,7 +615,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		glBtn.setFont(plain);
 		glBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = id_input_gl.getText();
+				String email = id_input_gl.getText().toLowerCase();
 				String pw="";
 				try {
 					pw = TDatabase.encryptThisString(String.valueOf(pw_input_gl.getPassword()));
@@ -883,7 +888,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				String descr = desc.getText();
 				String houseNo = add1.getText();
 				String street = add2.getText();
-				String postcode = add3.getText();
+				String postcode = add3.getText().toUpperCase();
 				String city = add4.getText();
 				int bfast = 0;
 				boolean notAllFilled = sName.isEmpty() || descr.isEmpty() || houseNo.isEmpty() || street.isEmpty() || postcode.isEmpty() || city.isEmpty();
@@ -894,6 +899,10 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				
 				if (notAllFilled) {
 					showMessageDialog(null, "All fields are mandatory.");
+				}
+				else if (TDatabase.isProperty(houseNo, postcode))
+				{
+					showMessageDialog(null, "This property already exists!");
 				}
 				else {
 					address = new Address(houseNo, street, postcode, city, true);
