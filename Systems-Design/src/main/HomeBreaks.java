@@ -1444,8 +1444,11 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		return e;
 	}
 	
+	
 	// Creates page for hosts upon successful login
 	public JPanel hostHome() {
+		lastPage = "Host Home";
+		lp = "HH";
 		JPanel hh = new JPanel();
 		hh.setLayout(new BorderLayout());
 		
@@ -1461,7 +1464,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		myAccountCards = new CardLayout();
 		myAccount.setLayout(myAccountCards);
 		myAccount.add("My Account", myAccount());
-		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
+		myAccount.add("Edit Info", changeInfoPanel());
 		
 		myProperties.add("New", newPropertyPanel());
 		
@@ -1483,6 +1486,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	
 	// Creates page for guests upon successful login
 	public JPanel guestHome() {
+		lastPage = "Guest Home";
+		lp = "GH";
 		JPanel gh = new JPanel();
 		
 		gh.setLayout(new BorderLayout());
@@ -1498,7 +1503,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		myAccountCards = new CardLayout();
 		myAccount.setLayout(myAccountCards);
 		myAccount.add("My Account", myAccount());
-		myAccount.add("Edit Info", HBPanels.changeInfoPanel());
+		myAccount.add("Edit Info", changeInfoPanel());
 				
 		CardLayout card = new CardLayout();
 		JPanel booking = new JPanel();
@@ -1518,6 +1523,94 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		gh.add(guestTabs, BorderLayout.CENTER);
 		
 		return gh;
+	}
+	
+	public JPanel changeInfoPanel() {
+		final Font plain = new Font("Verdana", Font.PLAIN, 25);
+		
+        JPanel ci = new JPanel();
+        JPanel buttons = new JPanel();
+		
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		
+		ci.setBorder(HomeBreaks.createTitledBorder("My info"));
+		ci.setLayout(new GridBagLayout());
+		
+		JLabel fName, lName, phone;
+		JTextField f, l, p;
+		
+		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.EAST);
+		fName = new JLabel("First Name: ");
+		fName.setFont(plain);
+		ci.add(fName, g);
+		
+		HomeBreaks.setConstraints(g, 1, 0, GridBagConstraints.WEST);
+		f = new JTextField(20); //TODO add host's name as default text
+		f.setFont(plain);
+		ci.add(f, g);
+		
+		HomeBreaks.setConstraints(g, 0, 1, GridBagConstraints.EAST);
+		lName = new JLabel("Last Name: ");
+		lName.setFont(plain);
+		ci.add(lName, g);
+		
+		HomeBreaks.setConstraints(g, 1, 1, GridBagConstraints.WEST);
+		l = new JTextField(20);
+		l.setFont(plain);
+		ci.add(l, g);
+		
+		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
+		phone = new JLabel("Phone Number: ");
+		phone.setFont(plain);
+		ci.add(phone, g);
+		
+		HomeBreaks.setConstraints(g, 1, 2, GridBagConstraints.WEST);
+		p = new JTextField(20);
+		p.setFont(plain);
+		ci.add(p, g);
+		
+		HomeBreaks.setConstraints(g, 1, 3, GridBagConstraints.WEST);
+		JButton confirm = new JButton("Confirm");
+		confirm.setFont(plain);
+		confirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fn = f.getText();
+				String ln = f.getText();
+				String pn = p.getText();
+				
+				if (fn.isEmpty() || ln.isEmpty() || pn.isEmpty()) {
+					showMessageDialog(null, "All fields must not be blank.");
+				}
+				else {
+					TDatabase.UpdateValue("Host", "firstName", "", fn);
+					TDatabase.UpdateValue("Host", "lastName", "", ln);
+					TDatabase.UpdateValue("Host", "Phone", "", pn);
+				}
+			}
+		});
+		
+		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
+		JButton back = new JButton("back");
+		back.setFont(plain);
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cards.show(c, lastPage);
+				current = lp;
+				setTitle(lastPage);
+			}
+		});
+		
+		buttons.add(confirm);
+		buttons.add(back);
+		
+		ci.add(buttons, g);	
+		
+		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		hp.add(ci, g);
+		
+		return hp;
 	}
 	
 	// Creates page for guests to choose properties they want to book
