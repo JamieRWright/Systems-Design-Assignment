@@ -897,6 +897,27 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			}
 			return output;
 		}
+		
+		public static boolean UpdateBookingValue(int bookingID, String columnName, int value) {
+			Statement stmt = null;
+			int count=0;
+			boolean output = false;
+			String Command = "UPDATE Bookings" + " SET "+ columnName+ "= '" + value + "' WHERE BookingID = " +bookingID+ ";";
+			try
+			{
+				getConnection();
+				stmt = con.createStatement();
+				count = stmt.executeUpdate(Command);
+				disconnect();
+				if (count>0) 
+					output=true;
+			}
+			catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return output;
+		}
+		
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
 	public static boolean signUpHost(String fName, String lName, String email, String phone, String addressID, String hostPW) {
@@ -923,7 +944,8 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			disconnect();
 			return true;
 
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			return false;
 		}
 
@@ -1099,7 +1121,7 @@ public static boolean addAddress(String houseNumber, String street, String postc
 	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
 		try {
 			getConnection();
-			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional) VALUES (?,?,?,?,?,?);";
+			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?,?);";
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,propertyID);
 			pst.setInt(2,hostID);
@@ -1107,6 +1129,7 @@ public static boolean addAddress(String houseNumber, String street, String postc
 			pst.setString(4,startDate);
 			pst.setString(5,endDate);
 			pst.setInt(6, 1);
+			pst.setInt(7, 0);
 			pst.execute();
 			disconnect();
 			return true;
