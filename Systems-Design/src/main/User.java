@@ -1,4 +1,5 @@
 package main;
+import java.util.Set;
 /**
  * Class designed for Host and Guest to inherit from
  *
@@ -15,6 +16,8 @@ public class User {
 	protected String phone;
 	protected String email;
 	protected Address address;
+	static public Set<String> Columns = Set.of("FirstName", "LastName", "PhoneNumber");
+	
 	
 	/**
      * Constructor
