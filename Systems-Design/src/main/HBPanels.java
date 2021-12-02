@@ -8,10 +8,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,6 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class HBPanels extends HomeBreaks {
+
+	public HBPanels() throws ParseException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public static JPanel changeInfoPanel() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
@@ -121,7 +129,7 @@ public class HBPanels extends HomeBreaks {
 		return hp;
 	}
 	
-	public static JPanel reviewPanel() {
+	public JPanel reviewPanel(Property house, Guest guest, CardLayout card, JPanel p) {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		
 		JPanel rp = new JPanel();
@@ -137,14 +145,13 @@ public class HBPanels extends HomeBreaks {
 		
 		JLabel c1, c2, c3, c4, c5, c6, desc;
 		ButtonGroup cleanliness, communication, checkin, accuracy, location, value;
-		JRadioButton c_1, c_2, c_3, c_4, c_5;
 		JRadioButton c1_1, c1_2, c1_3, c1_4, c1_5;
 		JRadioButton c2_1, c2_2, c2_3, c2_4, c2_5;
 		JRadioButton c3_1, c3_2, c3_3, c3_4, c3_5;
 		JRadioButton c4_1, c4_2, c4_3, c4_4, c4_5;
 		JRadioButton c5_1, c5_2, c5_3, c5_4, c5_5;
 		JRadioButton c6_1, c6_2, c6_3, c6_4, c6_5;
-		JPanel g1, g2, g3, g4, g5, g6, g7;
+		JPanel g2, g3, g4, g5, g6, g7;
 		JTextArea description;
 		JButton submit;
 		
@@ -303,8 +310,8 @@ public class HBPanels extends HomeBreaks {
 					ac = HomeBreaks.findSelectedValue(c4_1, c4_2, c4_3, c4_4, c4_5);
 					loc = HomeBreaks.findSelectedValue(c5_1, c5_2, c5_3, c5_4,c5_5);
 					val = HomeBreaks.findSelectedValue(c6_1, c6_2, c6_3, c6_4, c6_5);
-					TDatabase.AddReview(1, 1, 1, cl, com, chk, ac, loc, val, description.getText());
-					//TODO add the propertyID, guestID, and hostID
+					TDatabase.AddReview(house.getID(), Integer.parseInt(guest.getID()), cl, com, chk, ac, loc, val, description.getText());
+					card.show(p, "My Bookings");
 				}
 			}
 		});
@@ -319,7 +326,7 @@ public class HBPanels extends HomeBreaks {
 		return hp;
 	}
 	
-	public static JPanel chargeBandPanel() {
+	public static JPanel chargeBandPanel(Property house, CardLayout card, JPanel p) {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		
 		JPanel acb = new JPanel();
@@ -397,7 +404,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(endDate, g);
 		
 		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
-		ppn = new JLabel("Price per night (Ã‚Â£): ");
+		ppn = new JLabel("Price per night (Â£): ");
 		ppn.setFont(plain);
 		acb.add(ppn, g);
 		
@@ -407,7 +414,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(pricePerNight, g);
 		
 		HomeBreaks.setConstraints(g, 0, 3, GridBagConstraints.EAST);
-		sc = new JLabel("Service charge (Ã‚Â£): ");
+		sc = new JLabel("Service charge (Â£): ");
 		sc.setFont(plain);
 		acb.add(sc, g);
 		
@@ -417,7 +424,7 @@ public class HBPanels extends HomeBreaks {
 		acb.add(serviceCharge, g);
 		
 		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
-		cc = new JLabel("Cleaning charge (Ã‚Â£): ");
+		cc = new JLabel("Cleaning charge (Â£): ");
 		cc.setFont(plain);
 		acb.add(cc, g);
 		
@@ -456,7 +463,9 @@ public class HBPanels extends HomeBreaks {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
 					
-					TDatabase.AddChargeBand(start, end, 25, Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning)); // TODO get propertyID from current property
+					TDatabase.AddChargeBand(start, end, house.getID(), Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning));
+					showMessageDialog(null, "Charge Band added!");
+					card.show(p, "All Properties");
 				}
 				else {
 					showMessageDialog(null, "Incorrect input");
@@ -472,4 +481,3 @@ public class HBPanels extends HomeBreaks {
 		return hp;
 	}
 }
-
