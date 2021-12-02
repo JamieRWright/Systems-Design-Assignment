@@ -124,7 +124,7 @@ public class Utility {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Central Heating: ");
+		sb.append("Amenities Provided: \nCentral Heating: ");
 		sb.append(getCentralHeating());
 		sb.append("\n");
 		sb.append("Washing Machine: ");
@@ -142,6 +142,11 @@ public class Utility {
 		sb.append("First Aid: ");
 		sb.append(getFirstAid());
 	
-		return sb.toString();
+		String result = sb.toString();
+		
+		result = result.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
+	
+		return result;
 	}
 }
