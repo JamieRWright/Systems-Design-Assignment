@@ -1281,20 +1281,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			}
 		});
 		
-		JButton home = new JButton("Home Page");
-		home.setFont(plain);
-		home.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//cards.show(c, "Host Home");
-				addHostProperties();
-				current = "HH";
-				setTitle("Host Home");
-			}
-		});
-		
 		buttons = new JPanel();
 		buttons.add(create);
-		buttons.add(home);
 		
 		ak.add(checkFridge);
 		ak.add(checkMicro);
