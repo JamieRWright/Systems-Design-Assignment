@@ -7,11 +7,15 @@
  *
  */
 package main;
+import java.util.Set;
+
 public class Bedroom {
 	private boolean bedLinen;
 	private boolean towels;
 	private BedType bedOne;
 	private BedType bedTwo;
+	static public Set<String> Columns = Set.of("BedLinen", "Towels", "Bed1Type", "Bed2Type");
+
 	
 	// Bedroom with only one bed
 	public Bedroom(boolean bedLinen, boolean towels, BedType bedOne) {
