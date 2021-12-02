@@ -1046,7 +1046,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 		boolean output = false;
 		String sql="";
 		if (Booking.Columns.contains(columnName))
-			sql = "UPDATE Bookings SET "+ columnName+ "= '? WHERE BookingID = ?;";
+			sql = "UPDATE Bookings SET "+ columnName+ "= ? WHERE BookingID = ?;";
 		else return output;
 		try
 		{
@@ -1085,17 +1085,20 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst.setString(6, addressID);
 			
 			pst.execute();
+			pst.close();
 
 			PreparedStatement pst2 = con.prepareStatement(sql2);
 			pst2.setString(1, SearchUserID("Host", email));
 			pst2.setString(2, hostPW);
 
 			pst2.execute();
+			pst2.close();
 			disconnect();
 			return true;
 
 		} 
 		catch (Exception e) {
+			disconnect();
 			return false;
 		}
 
@@ -1115,16 +1118,19 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst.setString(4, email);
 			pst.setString(5, addressID);
 			pst.execute();
+			pst.close();
 
 			PreparedStatement pst2 = con.prepareStatement(sql2);
 			pst2.setString(1, SearchUserID("Guest", email));
 			pst2.setString(2, guestPW);
 
 			pst2.execute();
+			pst2.close();
 			disconnect();
 			return true;
 
 		} catch (Exception e) {
+			disconnect();
 			return false;
 		}
 	}
@@ -1155,6 +1161,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst.setString(4, Descriptions);
 			pst.setInt(5, Breakfast);
 			pst.execute();
+			pst.close();
 
 			Integer propertyID = Integer.parseInt(TDatabase.GetPropertyID(AddressID));
 			// Bathing Facility
@@ -1168,6 +1175,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst2.setInt(8, 0);
 			pst2.setInt(9, 0);
 			pst2.execute();
+			pst2.close();
 
 			// Sleeping Facility
 			// Sleeping Facility
@@ -1178,31 +1186,37 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst3.setString(5, null);
 			pst3.setString(6, null);
 			pst3.execute();
+			pst3.close();
 
 			// Kitchen Facility
 			pst4.setInt(1, propertyID);
 			pst4.execute();
+			pst4.close();
 
 			// Outdoor Facility
 			pst5.setInt(1, propertyID);
 			pst5.execute();
+			pst5.close();
 
 			// Living Facility
 			pst6.setInt(1, propertyID);
 			pst6.execute();
+			pst6.close();
 
 			// Utility Facility
 			pst7.setInt(1, propertyID);
 			pst7.execute();
+			pst7.close();
 
 			disconnect();
 			return true;
 		} catch (Exception e) {
+			disconnect();
 			return false;
 		}
 	}
 
-public static boolean addAddress(String houseNumber, String street, String postcode, String city) {
+	public static boolean addAddress(String houseNumber, String street, String postcode, String city) {
 		try {
 			getConnection();
 			String sql = "INSERT INTO Address(HouseNumber, Street, Postcode, City) VALUES (?,?,?,?)";
@@ -1212,25 +1226,28 @@ public static boolean addAddress(String houseNumber, String street, String postc
 			pst.setString(3, postcode);
 			pst.setString(4, city);
 			pst.execute();
+			pst.close();
 			disconnect();
 			return true;
 
 		} catch (Exception e) {
+			disconnect();
 			return false;
 		}
 	}
 
-				public static boolean GuestLogin(String email, String Password)
-				{
-					if (IsUser("Guest", email))
-					{
-						String UserID = SearchUserID("Guest", email);
-						String password= getPassword("Guest",UserID);
-						if (password.equals(Password))
-							return true;
-					}
-					return false;
-				}
+	public static boolean GuestLogin(String email, String Password)
+	{
+		if (IsUser("Guest", email))
+		{
+			String UserID = SearchUserID("Guest", email);
+			String password= getPassword("Guest",UserID);
+			if (password.equals(Password))
+				return true;
+		}
+		return false;
+	}
+
 
 	public static boolean HostLogin(String email, String Password) {
 		if (IsUser("Host", email)) {
@@ -1247,24 +1264,37 @@ public static boolean addAddress(String houseNumber, String street, String postc
 	}
 	public static String getPassword(String TableName, String USERID) {
 		ResultSet table = null;
-		Statement stmt;
 		String password = null;
-		String Command = "SELECT * FROM " + TableName + "_Passwords WHERE " + TableName + "ID = " + USERID + ";";
+		String sql = "";
+		int user = Integer.parseInt(USERID);	
+
+		if (TableName == "Guest")
+			sql = "SELECT * FROM Guest_Passwords WHERE GuestID = ?;";
+		else if (TableName == "Host")
+			sql = "SELECT * FROM Host_Passwords WHERE HostID = ?;";
+		else 
+			return "Invalid";
+
+
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, user);
+			table = pst.executeQuery(); 
 			while (table.next()) {
 				password = table.getString(2);
 			}
-			disconnect();
-		} catch (SQLException e) {
+			table.close();
+			pst.close();  
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			e1.printStackTrace();
+		}		
+		disconnect();
 		return password;
 
 	}
+
 
 
 	// A method for adding a booking to the Bookings table
@@ -1281,95 +1311,140 @@ public static boolean addAddress(String houseNumber, String street, String postc
 			pst.setInt(6, 1);
 			pst.setInt(7, 0);
 			pst.execute();
+			pst.close();
 			disconnect();
 			return true;
 
-			}
+		}
 		catch (Exception e) {
+			disconnect();
 			return false;
 		}
 	}
 
        public static void DeleteBooking(int p, int g){
-		Statement stmt = null;
-		int count=0;
-		String Command = "DELETE FROM Bookings WHERE PropertyID=" + p + " AND GuestID=" + g + ";";
+		String sql = "DELETE FROM Bookings WHERE PropertyID=? AND GuestID=?;";
 		try
 		{
 			getConnection();
-			stmt = con.createStatement();
-			count = stmt.executeUpdate(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, p);
+			pst.setInt(2, g);
+			pst.executeUpdate();
+			pst.close();
 			disconnect();
 		}
 		catch (SQLException ex) {
 			ex.printStackTrace();
+			disconnect();
 		}
 	}
-    
-    public static int GetBookingID(int propertyID, int guestID) {
-    	ResultSet table = null;
-    	Statement stmt;
-    	int bookingID = 0;
-    	String Command = "SELECT * FROM Bookings WHERE PropertyID=" + propertyID + " AND GuestID=" + guestID + ";";
-    	
-    	try {
-    		getConnection();
-    		stmt = con.createStatement();
-    		table = stmt.executeQuery(Command);
-    		
-    		while (table.next()) {
-    			bookingID = table.getInt(1);
-    		}
-    	}
-    	catch (SQLException e) {
-    		e.printStackTrace();
-    	}
-    	return bookingID;
-    }
-    
-    public static boolean AddReview(int propertyID, int guestID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
- 		try {
- 			getConnection();
- 			String sql="INSERT INTO Reviews(PropertyID, GuestID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
- 			PreparedStatement pst=con.prepareStatement(sql);
- 			pst.setInt(1, propertyID);
- 			pst.setInt(2, guestID);
- 			pst.setInt(3, cl);
- 			pst.setInt(4, com);
- 			pst.setInt(5, chk);
- 			pst.setInt(6, ac);
- 			pst.setInt(7, loc);
- 			pst.setInt(8, val);
- 			if (desc == "") {pst.setString(9, null);}
- 			else {pst.setString(9, desc);}
- 			pst.execute();
- 			disconnect();
- 			return true;
+	//
+	public static int GetBookingID(int propertyID, int guestID) {
+		ResultSet table = null;
+		int bookingID = -1;
+		String sql = "SELECT * FROM Bookings WHERE PropertyID=? AND GuestID=?;";
 
- 			}
- 		catch (Exception e) {
- 			return false;
- 		}
- 	}
-    
-    public static boolean AddChargeBand(String start, String end, int propertyID, double ppn, double sc, double cc) {
- 		try {
- 			getConnection();
- 			String sql="INSERT INTO Charge_Band(StartDate, EndDate, PropertyID, PricePerNight, ServiceCharge, CleaningCharge) VALUES (?, ?, ?, ?, ?, ?);";
- 			PreparedStatement pst=con.prepareStatement(sql);
- 			pst.setString(1, start);
- 			pst.setString(2, end);
- 			pst.setInt(3, propertyID);
- 			pst.setDouble(4, ppn);
- 			pst.setDouble(5, sc);
- 			pst.setDouble(6, cc);
- 			pst.execute();
- 			disconnect();
- 			return true;
+		try {
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, propertyID);
+			pst.setInt(2, guestID);
 
- 			}
- 		catch (Exception e) {
- 			return false;
- 		}
- 	}
+			table = pst.executeQuery(); 
+
+			while (table.next()) {
+				bookingID = table.getInt(1);
+			}
+			table.close();
+			pst.close();  
+			disconnect();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			disconnect();
+		}
+		return bookingID;
+	}
+
+	public static boolean AddReview(int propertyID, int guestID, int cl, int com, int chk, int ac, int loc, int val, String desc) {
+		try {
+			getConnection();
+			String sql="INSERT INTO Reviews(PropertyID, GuestID, Cleanliness, Communication, Checkin, Accuracy, Location, Value_for_money, OptionalDescription) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, propertyID);
+			pst.setInt(2, guestID);
+			pst.setInt(3, cl);
+			pst.setInt(4, com);
+			pst.setInt(5, chk);
+			pst.setInt(6, ac);
+			pst.setInt(7, loc);
+			pst.setInt(8, val);
+			if (desc == "") {pst.setString(9, null);}
+			else {pst.setString(9, desc);}
+			pst.execute();
+			pst.close();
+			disconnect();
+			return true;
+
+		}
+		catch (Exception e) {
+			disconnect();
+			return false;
+		}
+	}
+
+	public static boolean AddChargeBand(String start, String end, int propertyID, double ppn, double sc, double cc) {
+		try {
+			getConnection();
+			String sql="INSERT INTO Charge_Band(StartDate, EndDate, PropertyID, PricePerNight, ServiceCharge, CleaningCharge) VALUES (?, ?, ?, ?, ?, ?);";
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setString(1, start);
+			pst.setString(2, end);
+			pst.setInt(3, propertyID);
+			pst.setDouble(4, ppn);
+			pst.setDouble(5, sc);
+			pst.setDouble(6, cc);
+			pst.execute();
+			pst.close();
+			disconnect();
+			return true;
+
+		}
+		catch (Exception e) {
+			disconnect();
+			return false;
+		}
+	}
+
+
+	public static boolean isProperty(String houseNo, String postcode) {
+		ResultSet table=null;
+		 String AddressID="";
+		 String sql="SELECT Property.AddressID FROM Property"
+		 		+ " INNER JOIN Address ON Property.AddressID = Address.AddressID"
+		 		+ " WHERE HouseNumber = ? AND Postcode = ?;";
+		 
+		 try {
+			 getConnection();
+			 PreparedStatement pst=con.prepareStatement(sql);
+			 pst.setString(1, houseNo);
+			 pst.setString(2, postcode);
+			 table = pst.executeQuery(); 
+			 while (table.next()) {
+				AddressID = table.getString(1);
+			}			
+			 table.close();
+			 pst.close();
+			 disconnect();
+		 }
+		 catch (SQLException e) {
+			 disconnect();
+			 e.printStackTrace();
+		 }
+		 if (AddressID == "")
+			 return false;
+		 else 
+			 return true;
+	}
 }
