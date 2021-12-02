@@ -1534,6 +1534,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		return gh;
 	}
 	
+	// Creates panel for changing a person's info
 	public JPanel changeInfoPanel() {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		
@@ -1601,11 +1602,11 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		});
 		
 		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
-		JButton back = new JButton("back");
+		JButton back = new JButton("Back");
 		back.setFont(plain);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cards.show(c, lastPage);
+				myAccountCards.show(myAccount, "My Account");
 				current = lp;
 				setTitle(lastPage);
 			}
