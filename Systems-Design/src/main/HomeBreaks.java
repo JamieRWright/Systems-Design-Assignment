@@ -2372,7 +2372,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			viewMoreBtn.setFont(plain);
 			viewMoreBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (lastPage != "Guest Home") {
+					if (lastPage != "Guest Home" && lastPage != "Host Home") {
 						lastPage = "View Properties";
 						lp = "VP";
 					}
