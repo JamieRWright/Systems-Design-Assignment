@@ -1,5 +1,4 @@
 package main;
-
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -47,6 +46,8 @@ public class Booking {
 	public String getEndDate() {return this.endDate;}
 	public boolean getProvisional() {return this.provisional;}
 	public boolean getRejected() {return this.rejected;}
+	
+	public int getID() {return TDatabase.GetBookingID(this.propertyID, this.guestID);}
 	
 	// Method to check if two bookings overlap
 	public static boolean overlap(String s1, String e1, String s2, String e2) throws ParseException {
