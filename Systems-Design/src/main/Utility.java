@@ -7,7 +7,7 @@ public class Utility {
 	private boolean fireExtinguisher;
 	private boolean smokeAlarm;
 	private boolean firstAid;
-	static public Set<String> Columns = Set.of("BedLinen", "Towels", "Bed1Type", "Bed2Type");
+	static public Set<String> Columns = Set.of("CentralHeating", "WashingMachine", "DryingMachine", "FireExtinguisher", "SmokeAlarm", "FirstAid");
 	
 	
 	// utility space creator
