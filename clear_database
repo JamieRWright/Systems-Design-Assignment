@@ -1,0 +1,15 @@
+DELETE FROM Bathing_Facility;
+DELETE FROM Living_Facility;
+DELETE FROM Kitchen_Facility;
+DELETE FROM Utility_Facility;
+DELETE FROM Outdoor_Facility;
+DELETE FROM Sleeping_Facility;
+DELETE FROM Bookings;
+DELETE FROM Charge_Band;
+DELETE FROM Reviews;
+DELETE FROM Property;
+DELETE FROM Host_Passwords;
+DELETE FROM Host;
+DELETE FROM Guest_Passwords;
+DELETE FROM Guest;
+DELETE FROM Address;
