@@ -111,13 +111,13 @@ public class Bedroom {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Bed linen provided: ");
+		sb.append("Ameinities Provided: \nBed linen: ");
 		sb.append(getBedLinen());
 		sb.append("\n");
-		sb.append("Towels provided: ");
+		sb.append("Towels: ");
 		sb.append(getTowels());
 		sb.append("\n");
-		sb.append("Bed(s) provided: ");
+		sb.append("Bed(s): ");
 		sb.append("\n");
 		sb.append(getBedOne().getString());
 		sb.append("\n");
@@ -129,7 +129,12 @@ public class Bedroom {
 		sb.append("\n");
 		sb.append(maxSleep(getBedOne(), getBedTwo()));
 		
-		return sb.toString();
+		String result = sb.toString();
+		
+		result = result.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
+	
+		return result;
 	}
 		
 }
