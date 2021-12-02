@@ -12,6 +12,8 @@ public class Outdoor {
 	private boolean patio;
 	private boolean bbq;
 	private ParkType parking;
+	static public Set<String> Columns = Set.of("Parking", "Patio", "Barbeque");
+	
 	
 	// Outdoor with parking
 	public Outdoor(boolean patio, boolean bbq, ParkType parking) {
