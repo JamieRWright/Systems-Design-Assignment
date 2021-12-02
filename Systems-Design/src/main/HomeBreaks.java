@@ -1061,13 +1061,14 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JCheckBox check7 = new JCheckBox("Shared?", true);
 		check7.setBounds(100,350, 50,50);
 		
-		JButton create = new JButton("Create Bathroom");
+		JButton create = new JButton("Create Bathroom(s)");
 		create.setFont(plain);
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
-				facility.addBathroom(bathroom, chosenHouse.getID());
+				baths.add(bathroom);
+				facility.addBathroom(baths, chosenHouse.getID());
 				//cards.show(c, "Add Bedroom");
 				myProperties.add("Add Bedroom", addBedroom());
 				myPropertiesCards.show(myProperties, "Add Bedroom");
@@ -1076,8 +1077,24 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			}
 		});
 		
+		JButton another = new JButton("Add Another");
+		another.setFont(plain);
+		another.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
+						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
+				baths.add(bathroom);
+				//cards.show(c, "Add Bedroom");
+				myProperties.add("Add Bath", addBath());
+				myPropertiesCards.show(myProperties, "Add Bath");
+				current = "ABA";
+				setTitle("New Bathroom");
+			}
+		});
+		
 		buttons = new JPanel();
 		buttons.add(create);
+		buttons.add(another);
 		
 		aba.add(check1);
 		aba.add(check2);
@@ -1148,7 +1165,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		check2.setBounds(100,150, 50,50);
 		check2.setFont(plain);
 		
-		JButton create = new JButton("Create Bedroom");
+		JButton create = new JButton("Create Bedroom(s)");
 		create.setFont(plain);
 		create.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1161,7 +1178,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (king1.isSelected()) {bed2 = BedType.King;}
 				if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
-				facility.addBedroom(bedroom, chosenHouse.getID());
+				beds.add(bedroom);
+				facility.addBedroom(beds, chosenHouse.getID());
 				//cards.show(c, "Add Outdoor");
 				myProperties.add("Add Outdoor", addOutdoor());
 				myPropertiesCards.show(myProperties, "Add Outdoor");
@@ -1169,6 +1187,32 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				setTitle("New Oudoor Facility");
 			}
 		});
+		
+		JButton another = new JButton("Add Another");
+		another.setFont(plain);
+		another.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (single1.isSelected()) {bed1 = BedType.Single;}
+				if (double1.isSelected()) {bed1 = BedType.Double;}
+				if (king1.isSelected()) {bed1 = BedType.King;}
+				if (bunk1.isSelected()) {bed1 = BedType.Bunk;}
+				if (single2.isSelected()) {bed2 = BedType.Single;}
+				if (double2.isSelected()) {bed2 = BedType.Double;}
+				if (king1.isSelected()) {bed2 = BedType.King;}
+				if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
+				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
+				beds.add(bedroom);
+				//cards.show(c, "Add Outdoor");
+				myProperties.add("Add Bedroom", addBedroom());
+				myPropertiesCards.show(myProperties, "Add Bedroom");
+				current = "AB";
+				setTitle("New Bedroom");
+			}
+		});
+			
+		buttons = new JPanel();
+		buttons.add(create);
+		buttons.add(another);
 		
 		buttons = new JPanel();
 		buttons.add(create);
