@@ -1,4 +1,5 @@
 package main;
+import java.util.Set;
 public class Living {
 	private boolean wifi;
 	private boolean television;
@@ -6,6 +7,8 @@ public class Living {
 	private boolean streaming;
 	private boolean dvdPlayer;
 	private boolean boardGames;
+	static public Set<String> Columns = Set.of("WIFI", "Television", "Satellite", "Streaming", "DVDPlayer", "BoardGames");
+	
 	
 	// living space creator
 	public Living(boolean wifi, boolean television, boolean satellite, boolean streaming, boolean dvdPlayer, 
