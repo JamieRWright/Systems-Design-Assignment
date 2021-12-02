@@ -149,15 +149,18 @@ public class Bathroom {
 	
 	public String toString() {
 		String str;
-		str = "Shared: " + getShared() + "\n";
-		str += "Amenities provided" + "\n";
+		str = "Amenities provided:" + "\n";
 		str += "Hair Drier: " + getHairDrier() + "\n";
 		str += "Shampoo: " + getShampoo() + "\n";
 		str += "Toilet Paper: " + getToiletPaper() + "\n";
 		str += "Toilet: " + getToilet() + "\n";
 		str += "Bath Tub: " + getBath() + "\n";
 		str += "Shower: " + getShower() + "\n";
+		str += "Shared: " + getShared() + "\n";
 		
-		return str;
+		String result = str.replaceAll("true", "\u2713");
+		result = result.replaceAll("false", "\u2717");
+		
+		return result;
 	}
 }
