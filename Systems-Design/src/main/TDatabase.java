@@ -28,10 +28,7 @@ public final class TDatabase {
 	public static Map<Integer, Host> Hosts = null;
 
 	private static Connection con;
-	private static String _SQLGuest = "SELECT * FROM Guest;";
-	private static String _SQLHost = "SELECT * FROM Host;";
-	private static String _SQLProperty = "SELECT * FROM Property;";
-	private static String _SQLBeds = "SELECT * FROM Beds";
+
 
 	public static boolean Initialise()
 	{
@@ -566,25 +563,48 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 		}
 	}
 
-	//Returns a full table, this may return Array in future
+	//Returns a full table
 	 public static ResultSet SearchFullTable(String TableName, boolean keepConnectionOpen)
      {
-		 
 		 ResultSet table=null;
-		 Statement stmt;
-         String Command = "SELECT * FROM "+TableName+";";
+		 String sql="";
+		 switch(TableName)
+			{
+			case "Bookings":
+				sql = "SELECT * FROM Bookings;";
+				break;
+			case "Charge_Band":
+				sql = "SELECT * FROM Charge_Band;";
+				break;
+			case "Guest":
+				sql = "SELECT * FROM Guest;";
+				break;
+			case "Host":
+				sql = "SELECT * FROM Host;";
+				break;
+			case "Property":
+				sql = "SELECT * FROM Property;";
+				break;
+			case "Reviews":
+				sql = "SELECT * FROM Reviews;";
+				break;
+			default:
+				return table;
+			}
                  
          try {
         	 getConnection();
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			 PreparedStatement pst=con.prepareStatement(sql);
+			 table = pst.executeQuery();
 			if (!keepConnectionOpen)
 			{
+				table.close();
+				pst.close();
 				disconnect();
 			}
 		} 
         catch (SQLException e) {
-			// TODO Auto-generated catch block
+			disconnect();
 			e.printStackTrace();
 		}
          return table;
@@ -592,18 +612,28 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	 //returns a given user
 	 public static ResultSet SearchUser(String TableName, String UserID, boolean keepConnection) {
 		ResultSet table = null;
-		Statement stmt;
-		String Command = "SELECT * FROM " + TableName + " WHERE " + TableName + "ID = '" + UserID + "';";
-
+		String sql="";
+		if (TableName == "Guest")
+			sql = "SELECT * FROM Guest WHERE GuestID = ?;";
+		else if (TableName == "Host")
+			sql = "SELECT * FROM Host WHERE HostID = ?;";
+		else if (TableName == "Address")
+			sql = "SELECT * FROM Address WHERE AddressID = ?;";
+		else 
+			return null;
+		
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, Integer.parseInt(UserID));
+			table = pst.executeQuery();
 			if (!keepConnection) {
+				table.close();
+				pst.close();
 				disconnect();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			disconnect();
 			e.printStackTrace();
 		}
 		return table;
@@ -612,99 +642,121 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	//returns a given Facility
 	 public static ResultSet SearchFacility(String TableName, String PropertyID, boolean keepConnection) {
 		ResultSet table = null;
-		Statement stmt;
-		String Command = "SELECT * FROM " + TableName + " WHERE PropertyID = '" + PropertyID + "';";
-
+		String sql = "";
+		switch(TableName)
+		{
+		case "Sleeping_Facility":
+			sql = "SELECT * FROM Sleeping_Facility WHERE PropertyID = ?;";
+			break;
+		case "Bathing_Facility":
+			sql = "SELECT * FROM Bathing_Facility WHERE PropertyID = ?;";
+			break;
+		case "Living_Facility":
+			sql = "SELECT * FROM Living_Facility WHERE PropertyID = ?;";
+			break;
+		case "Kitchen_Facility":
+			sql = "SELECT * FROM Kitchen_Facility WHERE PropertyID = ?;";
+			break;
+		case "Utility_Facility":
+			sql = "SELECT * FROM Utility_Facility WHERE PropertyID = ?;";
+			break;
+		case "Outdoor_Facility":
+			sql = "SELECT * FROM Outdoor_Facility WHERE PropertyID = ?;";
+			break;
+		default:
+			return null;
+		}
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			 PreparedStatement pst=con.prepareStatement(sql);
+			 pst.setInt(1, Integer.parseInt(PropertyID));
+			 table = pst.executeQuery();
 			if (!keepConnection) {
+				table.close();
+				pst.close();
 				disconnect();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			disconnect();
 			e.printStackTrace();
 		}
 		return table;
 	}
 
-	public static Address getAddress(String AddressID) throws SQLException {
+	public static Address getAddress(String AddressID) {
 		ResultSet output = SearchUser("Address", AddressID, true);
 		Address temp = null;
 
-		while (output.next()) {
-			String HouseNumber = output.getString(2);
-			String Street = output.getString(3);
-			String Postcode = output.getString(4);
-			String City = output.getString(5);
-			temp = new Address(HouseNumber, Street, Postcode, City, false);
+		try {
+			while (output.next()) {
+				String HouseNumber = output.getString(2);
+				String Street = output.getString(3);
+				String Postcode = output.getString(4);
+				String City = output.getString(5);
+				temp = new Address(HouseNumber, Street, Postcode, City, false);
+			}
+			output.close();
+				disconnect();
 
+	
+		} catch (SQLException e) {
+			disconnect();
+			e.printStackTrace();
 		}
 		disconnect();
 		return temp;
 	}
 	
-	 //Returns all properties owned by a given HostID
-	 public static ResultSet SearchProperty(String TableName, String UserID) {
-		 ResultSet table=null;
-		 Statement stmt;
-        	 String Command = "SELECT * FROM Property WHERE HostID = " +UserID+";";
-
-         try {
-        	 getConnection();
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-			disconnect();
-		} 
-        catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         return table;
-     }
-
+	
 	 public static String SearchUserID(String TableName, String email) {
 		 ResultSet table=null;
-		 Statement stmt;
-		 String GuestID=null;
-        	 String Command = "SELECT "+ TableName+"ID FROM "+TableName+" WHERE Email = '" +email+"';";
-
-         try {
-		 getConnection();
-        	stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-		    while (table.next()) {
-		        GuestID = table.getString(1);
-		        
-		    }
-		 disconnect();
-		}
-        catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         return GuestID;
-
+		  String UserID="";
+		 String sql="";
+		 if (TableName == "Guest")
+			 sql = "SELECT GuestID FROM Guest WHERE Email = ?;";
+		 else if (TableName == "Host")
+			 sql = "SELECT HostID FROM Host WHERE Email = ?;";
+		 else 
+			 return UserID;
+		 
+		 try {
+			 getConnection();
+			 PreparedStatement pst=con.prepareStatement(sql);
+			 pst.setString(1, email);
+			 table = pst.executeQuery(); 
+			 while (table.next()) {
+				UserID = table.getString(1);
+			}			
+			 table.close();
+			 pst.close();
+			 disconnect();
+		 }
+		 catch (SQLException e) {
+			 disconnect();
+			 e.printStackTrace();
+		 }
+		 return UserID;
      }
 
 	public static String GetPropertyID(String AddressID) {
 		ResultSet table = null;
-		Statement stmt;
 		String PropertyID = null;
-		String Command = "SELECT PropertyID FROM Property WHERE AddressID = " + AddressID + ";";
+		String sql = "SELECT PropertyID FROM Property WHERE AddressID = ?;";
 
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, Integer.parseInt(AddressID));
+			table = pst.executeQuery(); 
 			while (table.next()) {
 				PropertyID = table.getString(1);
 
 			}
+			table.close();
+			pst.close();
 			disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			disconnect();
 			e.printStackTrace();
 		}
 		return PropertyID;
@@ -713,22 +765,24 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 
 	public static String SearchAddressID(String houseNumber, String postcode) {
 		ResultSet table = null;
-		Statement stmt;
 		String AddressID = null;
-		String Command = "SELECT AddressID FROM Address WHERE HouseNumber = '" + houseNumber + "' AND Postcode = '"
-				+ postcode + "';";
+		String sql = "SELECT AddressID FROM Address WHERE HouseNumber = ? AND Postcode = ?;";
 
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setString(1, houseNumber);
+			pst.setString(2, postcode);
+			table = pst.executeQuery(); 
 			while (table.next()) {
 				AddressID = table.getString(1);
 
 			}
+			table.close();
+			pst.close();
 			disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			disconnect();
 			e.printStackTrace();
 		}
 		return AddressID;
@@ -738,17 +792,22 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	public static String GetChargeBandID(int propertyID, String startDate, String endDate) {
 		String ChargeBandID = null;
 		ResultSet table = null;
-		Statement stmt;
-		String Command = "SELECT * FROM Charge_Band WHERE PropertyID="+propertyID+" AND  StartDate='"+startDate+"' AND EndDate='"+endDate+"';";
+		String sql = "SELECT * FROM Charge_Band WHERE PropertyID=? AND  StartDate=? AND EndDate=?;";
 		
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, propertyID);
+			pst.setString(2, startDate);
+			pst.setString(3, endDate);
+			table = pst.executeQuery(); 
 			while (table.next()) {ChargeBandID = table.getString(1);}
+			table.close();
+			pst.close();
 			disconnect();
 		}
 		catch (SQLException e) {
+			disconnect();
 			e.printStackTrace();
 		}
 		return ChargeBandID;
@@ -756,17 +815,21 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	public static String GetReviewID(int propertyID, int guestID) {
 		String ReviewID = null;
 		ResultSet table = null;
-		Statement stmt;
-		String Command = "SELECT * FROM Reviews WHERE PropertyID=" + propertyID + " AND GuestID=" + guestID + ";";
+		String sql = "SELECT * FROM Reviews WHERE PropertyID=? AND GuestID=?;";
 		
 		try {
 			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, propertyID);
+			pst.setInt(2, guestID);
+			table = pst.executeQuery(); 
 			while (table.next()) {ReviewID = table.getString(1);}
+			table.close();
+			pst.close();
 			disconnect();
 		}
 		catch (SQLException e) {
+			disconnect();
 			e.printStackTrace();
 		}
 		
@@ -776,24 +839,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	
 	// Returns true if user exists
 	public static Boolean IsUser(String TableName, String Email) {
-		ResultSet table = null;
-		Statement stmt;
-		String Command = "SELECT "+ TableName +"ID FROM " + TableName + " WHERE Email = '" + Email + "';";
-		String UserID ="";
-		try {
-			getConnection();
-			stmt = con.createStatement();
-			table = stmt.executeQuery(Command);
-			while (table.next()) {
-				UserID = table.getString(1);
-
-			}
-			
-			disconnect();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			return false;
-		}
+		String UserID = SearchUserID(TableName, Email);
 		if (UserID == "")
 			return false;
 		else
@@ -821,102 +867,206 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 	        return output;
 	     }
 
-		//Overloaded function, depending on the value being updated this may be an integer or a String
-		public static void UpdateValue(String TableName, String ColumnName, String UserID, String Value)
+		//generates an update string for SQL
+	private static String getUpdateString(String TableName, String ColumnName, boolean isFacilityUpdate)
+	{
+		String sql="";
+		if (isFacilityUpdate)
 		{
-			Statement stmt = null;
-			int count=0;
-			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE "+TableName+"ID = " +UserID+";";
-			try
-			{
-				getConnection();
-				stmt = con.createStatement();
-				count = stmt.executeUpdate(Command);
-				disconnect();
-			}
-			catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-		}
+			String sql_bed="", sql_bath="", sql_living="",
+					sql_kitchen="", sql_util="", sql_outdoor="";
+			//Since PreparedStatement does not allow dynamic table/column calls, validate string and do manually 
+			if (Bedroom.Columns.contains(ColumnName))
+				sql_bed = "UPDATE Sleeping_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";
+			if (Bathroom.Columns.contains(ColumnName))
+				sql_bath = "UPDATE Bathing_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";
+			if (Living.Columns.contains(ColumnName))
+				sql_living = "UPDATE Living_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";	
+			if (Kitchen.Columns.contains(ColumnName))
+				sql_kitchen = "UPDATE Kitchen_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";	
+			if (Utility.Columns.contains(ColumnName))
+				sql_util = "UPDATE Utility_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";	
+			if (Outdoor.Columns.contains(ColumnName))
+				sql_outdoor = "UPDATE Outdoor_Facility SET "+ColumnName +"= ? WHERE PropertyID = ?;";	
 
-		public static void UpdateValue(String TableName, String ColumnName, String UserID, int Value)
-		{
-			Statement stmt = null;
-			int count=0;
-			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE "+TableName+"ID = " +UserID+";";
-			try
-			{
-				getConnection();
-				stmt = con.createStatement();
-				count = stmt.executeUpdate(Command);
-				disconnect();
-			}
-			catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-		}
 
-			public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, int Value)
+			switch(TableName)
+			{
+			case "Sleeping_Facility":
+				sql = sql_bed;
+				break;
+			case "Bathing_Facility":
+				sql = sql_bath;
+				break;
+			case "Living_Facility":
+				sql = sql_living;
+				break;
+			case "Kitchen_Facility":
+				sql = sql_kitchen;
+				break;
+			case "Utility_Facility":
+				sql = sql_util;
+				break;
+			case "Outdoor_Facility":
+				sql = sql_outdoor;
+				break;
+			default:
+				return "";
+			}
+			return sql;
+		}
+		else 
 		{
-			Statement stmt = null;
-			int count=0;
-			boolean output = false;
-			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= " + Value + " WHERE PropertyID = " +PropertyID+";";
-			try
-			{
-				getConnection();
-				stmt = con.createStatement();
-				count = stmt.executeUpdate(Command);
-				disconnect();
-				if (count>0) 
-					output=true;
-			}
-			catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			return output;
+			String sql_host="", sql_guest="";
+			if (Host.Columns.contains(ColumnName))
+				sql_host="UPDATE Host SET "+ ColumnName+ "= ? WHERE HostID = ?;";
+			if (Guest.Columns.contains(ColumnName))
+				sql_host="UPDATE Guest SET "+ ColumnName+ "= ? WHERE GuestID = ?;";
+
+			if (TableName == "Host")
+				sql=sql_host;
+			else if (TableName == "Guest")
+				sql=sql_guest;
+			return sql;
 		}
-		
-		public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, String Value)
+	}
+	//Overloaded function, depending on the value being updated this may be an integer or a String
+	public static boolean UpdateValue(String TableName, String ColumnName, String UserID, String Value)
+	{
+		int count=0;
+		String sql ="";
+		boolean output = false;
+		sql=getUpdateString(TableName, ColumnName, false);
+		if (sql == "")
+			return false;
+		try
 		{
-			Statement stmt = null;
-			int count=0;
-			boolean output = false;
-			String Command = "UPDATE " +TableName + " SET "+ ColumnName+ "= '" + Value + "' WHERE PropertyID = " +PropertyID+";";
-			try
-			{
-				getConnection();
-				stmt = con.createStatement();
-				count = stmt.executeUpdate(Command);
-				disconnect();
-				if (count>0) 
-					output=true;
-			}
-			catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			return output;
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setString(1, Value);
+			pst.setInt(2, Integer.parseInt(UserID));
+			count = pst.executeUpdate();
+			pst.close();
+			disconnect();
+			if (count>0) 
+				output=true;
 		}
+		catch (SQLException ex) {
+			disconnect();
+			ex.printStackTrace();
+		}
+		return output;
+	}
+
+	public static boolean UpdateValue(String TableName, String ColumnName, String UserID, int Value)
+	{
+		int count=0;
+		String sql ="";
+		boolean output = false;
+		sql=getUpdateString(TableName, ColumnName, false);
+		if (sql == "")
+			return false;
+		try
+		{
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, Value);
+			pst.setInt(2, Integer.parseInt(UserID));
+			count = pst.executeUpdate();
+			pst.close();
+			disconnect();
+			if (count>0) 
+				output=true;
+		}
+		catch (SQLException ex) {
+			disconnect();
+			ex.printStackTrace();
+		}
+		return output;
+	}
+
+	public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, int Value)
+	{
+		int count=0;
+		String sql ="";
+		boolean output = false;
+		sql=getUpdateString(TableName, ColumnName, true);
+		if (sql == "")
+			return false;
+		try
+		{
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1, Value);
+			pst.setInt(2, Integer.parseInt(PropertyID));
+			count = pst.executeUpdate();
+			pst.close();
+			disconnect();
+			
+			if (count>0) 
+				output=true;
+		}
+		catch (SQLException ex) {
+			disconnect();
+			ex.printStackTrace();
+		}
+		return output;
+	}
+
+	public static boolean UpdateFacilityValue(String TableName, String ColumnName, String PropertyID, String Value)
+	{
+		int count=0;
+		String sql ="";
+		boolean output = false;
+		sql=getUpdateString(TableName, ColumnName, true);
+		if (sql == "")
+			return false;
+		try
+		{
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setString(1, Value);
+			pst.setInt(2, Integer.parseInt(PropertyID));
+			count = pst.executeUpdate();
+			pst.close();
+			disconnect();
+			if (count>0) 
+				output=true;
+		}
+		catch (SQLException ex) {
+			disconnect();
+			ex.printStackTrace();
+		}
+		return output;
+	}
 		
-		public static boolean UpdateBookingValue(int bookingID, String columnName, int value) {
-			Statement stmt = null;
-			int count=0;
-			boolean output = false;
-			String Command = "UPDATE Bookings" + " SET "+ columnName+ "= '" + value + "' WHERE BookingID = " +bookingID+ ";";
-			try
-			{
-				getConnection();
-				stmt = con.createStatement();
-				count = stmt.executeUpdate(Command);
-				disconnect();
-				if (count>0) 
-					output=true;
-			}
-			catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			return output;
+	public static boolean UpdateBookingValue(int bookingID, String columnName, int value) {
+
+		int count=0;
+		boolean output = false;
+		String sql="";
+		if (Booking.Columns.contains(columnName))
+			sql = "UPDATE Bookings SET "+ columnName+ "= '? WHERE BookingID = ?;";
+		else return output;
+		try
+		{
+			getConnection();
+			PreparedStatement pst=con.prepareStatement(sql);
+			pst.setInt(1,value);
+			pst.setInt(2,bookingID);
+			count = pst.executeUpdate();
+			pst.close();
+			disconnect();
+			if (count>0) 
+				output=true;
+			
 		}
+		catch (SQLException ex) {
+			disconnect();
+			ex.printStackTrace();
+		}
+		return output;
+	}
 		
 		/*This is a method for Guest's sign up. Using GuestSignUp class and Guest&Guest_Passwords table.
  */
