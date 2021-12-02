@@ -8,6 +8,7 @@
  */
 
 package main;
+import java.util.Set;
 public class Outdoor {
 	private boolean patio;
 	private boolean bbq;
