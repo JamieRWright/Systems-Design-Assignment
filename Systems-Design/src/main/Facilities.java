@@ -124,24 +124,28 @@ public class Facilities {
 	// Add a bathroom or bedroom
 
 
-	public void addBedroom(Bedroom br, Integer PropertyID) {
-		br.setLinen(br.getBedLinen(), PropertyID);
-		br.setTowels(br.getTowels(), PropertyID);
-		br.setBed1Type(br.getBedOne(), PropertyID);
-		br.setBed2Type(br.getBedTwo(), PropertyID);
-		this.sleeping.add(br);
+	public void addBedroom(List<Bedroom> beds, Integer PropertyID) {
+		for (Bedroom br : beds) {
+			br.setLinen(br.getBedLinen(), PropertyID);
+			br.setTowels(br.getTowels(), PropertyID);
+			br.setBed1Type(br.getBedOne(), PropertyID);
+			br.setBed2Type(br.getBedTwo(), PropertyID);
+		}
+		this.sleeping = (beds);
 	}
 
 
 
-	public void addBathroom(Bathroom b, Integer PropertyID) {
-		b.setBath(b.getBath(), PropertyID);
-		b.setHair(b.getHairDrier(), PropertyID);
-		b.setShampoo(b.getShampoo(), PropertyID);
-		b.setShared(b.getShared(), PropertyID);
-		b.setShower(b.getShower(), PropertyID);
-		b.setToilet(b.getToilet(), PropertyID);
-		b.setToiletPaper(b.getToiletPaper(), PropertyID);
-		this.bathing.add(b);
+	public void addBathroom(List<Bathroom> baths, Integer PropertyID) {
+		for (Bathroom b : baths) {
+			b.setBath(b.getBath(), PropertyID);
+			b.setHair(b.getHairDrier(), PropertyID);
+			b.setShampoo(b.getShampoo(), PropertyID);
+			b.setShared(b.getShared(), PropertyID);
+			b.setShower(b.getShower(), PropertyID);
+			b.setToilet(b.getToilet(), PropertyID);
+			b.setToiletPaper(b.getToiletPaper(), PropertyID);
+		}
+		this.bathing = baths;
 	}
 }
