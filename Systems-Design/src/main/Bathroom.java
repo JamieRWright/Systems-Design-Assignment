@@ -7,7 +7,10 @@
  *
  */
 package main;
+import java.util.Set;
+
 public class Bathroom {
+	static public Set<String> Columns = Set.of("HairDryer","Shampoo", "ToiletPaper", "Toilet", "Bath", "Shower", "IsShared");
 	private boolean hairDrier;
 	private boolean shampoo;
 	private boolean toiletPaper;
