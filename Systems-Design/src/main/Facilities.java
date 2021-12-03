@@ -125,11 +125,15 @@ public class Facilities {
 
 
 	public void addBedroom(List<Bedroom> beds, Integer PropertyID) {
+		Integer i = 1;
 		for (Bedroom br : beds) {
-			br.setLinen(br.getBedLinen(), PropertyID);
-			br.setTowels(br.getTowels(), PropertyID);
-			br.setBed1Type(br.getBedOne(), PropertyID);
-			br.setBed2Type(br.getBedTwo(), PropertyID);
+			if (i == 1) {
+				br.setLinen(br.getBedLinen(), PropertyID);
+				br.setTowels(br.getTowels(), PropertyID);
+				br.setBed1Type(br.getBedOne(), PropertyID);
+				br.setBed2Type(br.getBedTwo(), PropertyID);
+			}
+			else br.addBedroom(br, PropertyID, i);
 		}
 		this.sleeping = (beds);
 	}
@@ -137,14 +141,19 @@ public class Facilities {
 
 
 	public void addBathroom(List<Bathroom> baths, Integer PropertyID) {
+		Integer i = 1;
 		for (Bathroom b : baths) {
-			b.setBath(b.getBath(), PropertyID);
-			b.setHair(b.getHairDrier(), PropertyID);
-			b.setShampoo(b.getShampoo(), PropertyID);
-			b.setShared(b.getShared(), PropertyID);
-			b.setShower(b.getShower(), PropertyID);
-			b.setToilet(b.getToilet(), PropertyID);
-			b.setToiletPaper(b.getToiletPaper(), PropertyID);
+			if (i == 1) {
+				b.setBath(b.getBath(), PropertyID);
+				b.setHair(b.getHairDrier(), PropertyID);
+				b.setShampoo(b.getShampoo(), PropertyID);
+				b.setShared(b.getShared(), PropertyID);
+				b.setShower(b.getShower(), PropertyID);
+				b.setToilet(b.getToilet(), PropertyID);
+				b.setToiletPaper(b.getToiletPaper(), PropertyID);
+			}
+			else b.addBathroom(b, PropertyID, i);
+			i++;
 		}
 		this.bathing = baths;
 	}
