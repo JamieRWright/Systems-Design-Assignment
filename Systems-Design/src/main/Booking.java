@@ -44,6 +44,9 @@ public class Booking {
 	
 	public int getID() {return TDatabase.GetBookingID(this.propertyID, this.guestID);}
 	
+	public void setProvisional(boolean p) {this.provisional = p;}
+	public void setRejected(boolean r) {this.rejected = r;}
+	
 	// Method to check if two bookings overlap
 	public static boolean overlap(String s1, String e1, String s2, String e2) throws ParseException {
 		// Change into Date objects
@@ -89,15 +92,5 @@ public class Booking {
 		}
 		
 		return nights;
-	}
-	
-	public static void main (String [] args) {
-		try {
-			System.out.println(before("2-12-2021", "03-12-2021"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	}	
 }
