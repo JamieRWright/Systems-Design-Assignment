@@ -57,6 +57,13 @@ public class Bathroom {
 		return this.shared;
 	}
 	
+	public boolean addBathroom(Bathroom b, Integer PropertyID, Integer count) {
+		boolean output=false;
+		output = TDatabase.addBathroom(PropertyID, count, b.getHairDrier(), b.getShampoo(), 
+				b.getToiletPaper(), b.getToilet(), b.getBath(), b.getShower(), b.getShared());
+		return output;
+	}
+	
 	public boolean setHair(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
