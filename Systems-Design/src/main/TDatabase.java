@@ -113,7 +113,7 @@ public final class TDatabase {
 					while (table.next()) {
 						boolean rejected = false;
 						boolean provisional = false;
-						Integer BookingID = table.getInt(2);
+						Integer BookingID = table.getInt(1);
 						Integer PropertyID = table.getInt(2);
 						Integer HostID = table.getInt(3);
 						Integer GuestID = table.getInt(4);
@@ -121,6 +121,7 @@ public final class TDatabase {
 						String EndDate = table.getString(6);
 						int Provisional = table.getInt(7);
 						int Rejected = table.getInt(8);
+						
 						if (Rejected > 0) {
 							rejected = true;
 						}
@@ -134,14 +135,15 @@ public final class TDatabase {
 								TDatabase.DeleteBooking(PropertyID, GuestID);
 							}
 							else {
-								Host current_host = Hosts.get(HostID);	
+								//System.out.println(BookingID + " " + StartDate + " " + EndDate);
 								output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
+								//System.out.println("> " + BookingID + " " + StartDate + " " + EndDate);
 							}
 						}
 						catch (ParseException e1) {
-							
+							e1.printStackTrace();
 						}
-						}
+					}
 					disconnect();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -1065,10 +1067,12 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			getConnection();
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,value);
-			pst.setInt(2,bookingID);
+			pst.setInt(2, bookingID);
 			count = pst.executeUpdate();
 			pst.close();
 			disconnect();
+			
+			
 			if (count>0) 
 				output=true;
 			
