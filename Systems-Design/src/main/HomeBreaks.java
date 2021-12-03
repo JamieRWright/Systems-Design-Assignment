@@ -100,10 +100,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		setTitle("HomeBreaks Plc");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//current = "HH";
-		//currentHost = TDatabase.Hosts.get(27);
-		//chosenHouse = TDatabase.Properties.get(71);
-		
 		cards = new CardLayout();
 		c.setLayout(cards);
 		c.add("Home",  home());
@@ -2355,7 +2351,24 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 						if (Booking.before(start, end) && !(Booking.hasPassed(start)) && !(Booking.hasPassed(start))) {
 							TDatabase.AddChargeBand(start, end, chosenHouse.getID(), Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning));
 							showMessageDialog(null, "Charge Band added!");
-							addHostProperties();
+							// Refresh host's property page
+							JPanel p1 = new JPanel();
+							p1.setLayout(new BorderLayout());
+							JScrollPane mp = viewProperties(currentHost, "Host");
+							p1.add(mp, BorderLayout.CENTER);
+							
+							// Button for property creation
+							newPropertyBtn = new JButton("Create New Property");
+							newPropertyBtn.setFont(plain);
+							newPropertyBtn.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									myPropertiesCards.show(myProperties, "New");
+								}
+							});
+							p1.add(newPropertyBtn, BorderLayout.SOUTH);
+							
+							myProperties.add("New Properties", p1);
+							myPropertiesCards.show(myProperties, "New Properties");
 						}
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
@@ -2517,6 +2530,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					int propertyID = chosenHouse.getID();
 					int hostID = Integer.parseInt(chosenHouse.getHost().getID());
 					TDatabase.AddBooking(propertyID, hostID, guestID, start, end);
+					Booking booking = new Booking(propertyID, hostID, guestID, start, end, true, false, true);
+					TDatabase.Bookings.put(booking.getID(), booking);
 					showMessageDialog(null, "Booking successfull!");
 					resultPanelCards.show(resultPanel, "Default");
 				}
