@@ -3,10 +3,6 @@ import java.util.Set;
 /**
  * Class designed for Host and Guest to inherit from
  *
- * @version 1.0 
- *
- * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
- *
  */
 public class User {
 	protected String surname;
@@ -70,7 +66,7 @@ public class User {
 	}
 	
 	public String getEmail() {
-		return this.userID;
+		return this.email;
 	}
 	
 	public String getPassword() {
