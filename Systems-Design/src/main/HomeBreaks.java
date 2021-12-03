@@ -79,6 +79,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	Map<Integer, Property> filterProperties = new HashMap<Integer, Property>();
 	String lastPage;
 	String lp; 
+	List<Bathroom> baths = new ArrayList<Bathroom>();
+	List<Bedroom> beds = new ArrayList<Bedroom>();
 	
 	final Font plain = new Font("Verdana", Font.PLAIN, 25);
 	final Font bold = new Font("Verdana", Font.BOLD, 50);
@@ -1066,9 +1068,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			public void actionPerformed(ActionEvent e) {
 				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
-				//baths.add(bathroom);
-				//facility.addBathroom(baths, chosenHouse.getID());
-				//cards.show(c, "Add Bedroom");
+				baths.add(bathroom);
+				facility.addBathroom(baths, chosenHouse.getID());
 				myProperties.add("Add Bedroom", addBedroom());
 				myPropertiesCards.show(myProperties, "Add Bedroom");
 				current = "AB";
@@ -1082,8 +1083,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			public void actionPerformed(ActionEvent e) {
 				Bathroom bathroom = new Bathroom(check1.isSelected(), check2.isSelected(), check3.isSelected(),
 						check4.isSelected(), check5.isSelected(), check6.isSelected(), check7.isSelected());
-				//baths.add(bathroom);
-				//cards.show(c, "Add Bedroom");
+				baths.add(bathroom);
 				myProperties.add("Add Bath", addBath());
 				myPropertiesCards.show(myProperties, "Add Bath");
 				current = "ABA";
@@ -1177,9 +1177,8 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (king1.isSelected()) {bed2 = BedType.King;}
 				if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
-				//beds.add(bedroom);
-				//facility.addBedroom(beds, chosenHouse.getID());
-				//cards.show(c, "Add Outdoor");
+				beds.add(bedroom);
+				facility.addBedroom(beds, chosenHouse.getID());
 				myProperties.add("Add Outdoor", addOutdoor());
 				myPropertiesCards.show(myProperties, "Add Outdoor");
 				current = "AO";
@@ -1200,8 +1199,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (king1.isSelected()) {bed2 = BedType.King;}
 				if (bunk1.isSelected()) {bed2 = BedType.Bunk;}
 				Bedroom bedroom = new Bedroom(check1.isSelected(), check2.isSelected(), bed1, bed2);
-				//beds.add(bedroom);
-				//cards.show(c, "Add Outdoor");
+				beds.add(bedroom);
 				myProperties.add("Add Bedroom", addBedroom());
 				myPropertiesCards.show(myProperties, "Add Bedroom");
 				current = "AB";
@@ -2745,6 +2743,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				String str = "";
 				for (Bedroom bed : beds) {
 					str += "Bedroom " + i + "\n" + bed.toString();
+					i++;
 				}
 				showMessageDialog(null, "" + str);
 			}
@@ -2758,6 +2757,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				String str = "";
 				for (Bathroom bath : baths) {
 					str += "Bathroom " + i + "\n" + bath.toString();
+					i++;
 				}
 				showMessageDialog(null, "" + str);
 			}
