@@ -63,6 +63,13 @@ public class Bedroom {
 		return nSleeper;
 	}
 	
+	public boolean addBedroom(Bedroom br, Integer PropertyID, Integer count) {
+		boolean output=false;
+		output = TDatabase.addBedroom(PropertyID, count, br.getBedLinen(), br.getTowels(), 
+				br.getBedOne().getString(), br.getBedTwo().getString());
+		return output;
+	}
+	
 	public boolean setLinen(boolean value, Integer PropertyID)
 	{
 		boolean output=false;
