@@ -66,6 +66,10 @@ public class Booking {
 		return (toDate(d).before(new Date()));
 	}
 	
+	public static boolean before(String start, String end) throws ParseException {
+		return (toDate(start).before(toDate(end)));
+	}
+	
 	public static Date toDate(String d) throws ParseException {
 		return (new SimpleDateFormat("yyyy-MM-dd").parse(d));
 	}
@@ -85,6 +89,15 @@ public class Booking {
 		}
 		
 		return nights;
+	}
+	
+	public static void main (String [] args) {
+		try {
+			System.out.println(before("2-12-2021", "03-12-2021"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
