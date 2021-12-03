@@ -384,16 +384,25 @@ public class HBPanels extends HomeBreaks {
 				boolean rightPrices = HomeBreaks.isNumericPrice(price) || HomeBreaks.isNumericPrice(cleaning) || HomeBreaks.isNumericPrice(service);
 				boolean unfilledPrices = price.isEmpty() || cleaning.isEmpty() || service.isEmpty();
 				
+				
 				if (unfilledStart || unfilledEnd || unfilledPrices) {
 					showMessageDialog(null, "All fields must be filled.");
 				}
 				else if (rightStart && rightEnd && rightPrices) {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
+					boolean valid = true;
 					
-					TDatabase.AddChargeBand(start, end, house.getID(), Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning));
-					showMessageDialog(null, "Charge Band added!");
-					card.show(p, "All Properties");
+					try {
+						if (Booking.before(start, end) && !(Booking.hasPassed(start)) && !(Booking.hasPassed(start))) {
+							TDatabase.AddChargeBand(start, end, house.getID(), Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning));
+							showMessageDialog(null, "Charge Band added!");
+							card.show(p, "All Properties");
+						}
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				else {
 					showMessageDialog(null, "Incorrect input");
