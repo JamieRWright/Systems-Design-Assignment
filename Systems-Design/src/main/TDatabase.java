@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -127,8 +128,19 @@ public final class TDatabase {
 							provisional = true;
 						}
 						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
-						Host current_host = Hosts.get(HostID);	
-						output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
+						try {
+							// Delete booking from database if end date has passed
+							if (Booking.hasPassed(EndDate)) {
+								TDatabase.DeleteBooking(PropertyID, GuestID);
+							}
+							else {
+								Host current_host = Hosts.get(HostID);	
+								output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
+							}
+						}
+						catch (ParseException e1) {
+							
+						}
 						}
 					disconnect();
 				} catch (SQLException e) {
