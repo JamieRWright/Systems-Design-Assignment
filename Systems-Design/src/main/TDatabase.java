@@ -132,12 +132,13 @@ public final class TDatabase {
 						try {
 							// Delete booking from database if end date has passed
 							if (Booking.hasPassed(EndDate)) {
-								TDatabase.DeleteBooking(PropertyID, GuestID);
+								// And only if Guest has submitted a review
+								if (TDatabase.GetReviewID(PropertyID, GuestID) != null) {
+									TDatabase.DeleteBooking(PropertyID, GuestID);
+								}
 							}
 							else {
-								//System.out.println(BookingID + " " + StartDate + " " + EndDate);
 								output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
-								//System.out.println("> " + BookingID + " " + StartDate + " " + EndDate);
 							}
 						}
 						catch (ParseException e1) {
@@ -1398,6 +1399,7 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 			pst.execute();
 			pst.close();
 			disconnect();
+			
 			return true;
 
 		}
