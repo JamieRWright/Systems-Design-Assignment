@@ -2630,6 +2630,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	// Default host should be null
 	public JScrollPane viewProperties(Host host, String filter) {
 		JPanel vp = new JPanel();
+		String breakTxt = "";
 		
 		JPanel home = new JPanel();
 		vp.setLayout(new GridBagLayout());
@@ -2690,7 +2691,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			location.setFont(plain);
 			description = new JLabel("Description: " + chosenHouse.getDescription());
 			description.setFont(plain);
-			breakfast = new JLabel("Breakfast: " + chosenHouse.getBreakfast());
+			if (chosenHouse.getBreakfast()) breakTxt = "Breakfast is served";
+			else if (!chosenHouse.getBreakfast()) breakTxt = "Breakfast is not served";
+			breakfast = new JLabel(breakTxt);
 			breakfast.setFont(plain);
 			maxsleep = new JLabel("Maximum Sleep: " + chosenHouse.getMaxSleepers());
 			maxsleep.setFont(plain);
@@ -2783,12 +2786,13 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 	public JPanel houseView(Property house) {
 		chosenHouse = house;
 		facility = house.getFacilities();
+		String breakTxt = "";
 		JPanel hv = new JPanel();
 		hv.setLayout(new GridBagLayout());
 		GridBagConstraints g = new GridBagConstraints();
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
 		
-		hv.setBorder(createTitledBorder("what a lovely property"));
+		hv.setBorder(createTitledBorder("Name: "+ house.getShortName()));
 		hv.setLayout(new GridBagLayout());
 		final Font plain = new Font("Verdana", Font.PLAIN, 20);
 		final Font bold = new Font("Verdana", Font.BOLD, 50);
@@ -2797,15 +2801,17 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JPanel sn, d, h, pl, bekfast, buttons;
 		
 		//house information
-		shortName = new JLabel("Name: "+ house.getShortName());
-		shortName.setFont(bold);
+//		shortName = new JLabel("Name: "+ house.getShortName());
+//		shortName.setFont(bold);
 		description = new JLabel("Description: " + house.getDescription());
 		description.setFont(plain);
 		location = new JLabel("Location: "+ house.getPublicLocation());
 		location.setFont(plain);
 		host = new JLabel("" + house.getHost().getName());
 		host.setFont(plain);
-		breakfast = new JLabel("breakfast: " + house.getBreakfast());
+		if (chosenHouse.getBreakfast()) breakTxt = "Breakfast is served";
+		else if (!chosenHouse.getBreakfast()) breakTxt = "Breakfast is not served";
+		breakfast = new JLabel(breakTxt);
 		breakfast.setFont(plain);
 		
 		JButton bedsBtn = new JButton("View Bedrooms");
@@ -2913,7 +2919,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		BoxLayout bl = new BoxLayout(hv, BoxLayout.Y_AXIS);
 		hv.setLayout(bl);
 		
-		sn.add(shortName);
 		pl.add(location);
 		d.add(description);
 		h.add(host);
@@ -2927,7 +2932,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		buttons.add(bookBtn);
 		buttons.add(back);
 		
-		hv.add(shortName);
 		hv.add(location);
 		hv.add(description);
 		hv.add(host);
