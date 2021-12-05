@@ -1,29 +1,20 @@
 package main;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class HBPanels extends HomeBreaks {
@@ -57,7 +48,7 @@ public class HBPanels extends HomeBreaks {
 		return hp;
 	}
 	
-	public JPanel reviewPanel(Property house, Guest guest, CardLayout card, JPanel p) {
+	public JPanel reviewPanel(Property house, Guest guest) {
 		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		
 		JPanel rp = new JPanel();
@@ -157,7 +148,6 @@ public class HBPanels extends HomeBreaks {
 		HomeBreaks.createRatingButtons(c4_1, c4_2, c4_3, c4_4, c4_5, g5, accuracy);
 		rp.add(g5, g);
 		
-		//
 		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
 		c5 = new JLabel("Location: ");
 		c5.setFont(plain);
@@ -239,7 +229,6 @@ public class HBPanels extends HomeBreaks {
 					loc = HomeBreaks.findSelectedValue(c5_1, c5_2, c5_3, c5_4,c5_5);
 					val = HomeBreaks.findSelectedValue(c6_1, c6_2, c6_3, c6_4, c6_5);
 					TDatabase.AddReview(house.getID(), Integer.parseInt(guest.getID()), cl, com, chk, ac, loc, val, description.getText());
-					card.show(p, "My Bookings");
 				}
 			}
 		});
