@@ -900,13 +900,13 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				}
 				else {
 					address = new Address(houseNo, street, postcode, city, true);
+					
 					chosenHouse = new Property(sName, descr, HomeBreaks.currentHost, address, bfast, null, true);
 					TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 					
 					facility = new Facilities(chosenHouse.getID(), new ArrayList<Bedroom>(), new ArrayList<Bathroom>(), null, null, null, null);
 					chosenHouse.setFacilities(facility);
 
-					//cards.show(c, "Add Living");
 					myProperties.add("Add Living", addLiving());
 					myPropertiesCards.show(myProperties, "Add Living");
 					current = "AL";
@@ -1321,7 +1321,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				chosenHouse.setFacilities(facility);
 				TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 				showMessageDialog(null, "Property successfully added!");
-				myProperties.add("Add Charge Band", HBPanels.chargeBandPanel(chosenHouse, myPropertiesCards, myProperties));
+				myProperties.add("Add Charge Band", chargeBandPanel());
 				myPropertiesCards.show(myProperties, "Add Charge Band");
 			}
 		});
@@ -2398,7 +2398,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 							TDatabase.AddChargeBand(start, end, chosenHouse.getID(), Double.parseDouble(price), Double.parseDouble(service), Double.parseDouble(cleaning));
 							showMessageDialog(null, "Charge Band added!");
 							// Refresh host's property page
-							hostHome();
+							addHostProperties();
 						}
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
@@ -2727,7 +2727,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			addCB.setFont(plain);
 			addCB.addActionListener(new ActionListener() {
 				public void actionPerformed (ActionEvent e) {
-					myProperties.add("Add Charge Band", HBPanels.chargeBandPanel(chosenHouse, myPropertiesCards, myProperties));
+					myProperties.add("Add Charge Band", chargeBandPanel());
 					myPropertiesCards.show(myProperties, "Add Charge Band");
 				}
 			});
