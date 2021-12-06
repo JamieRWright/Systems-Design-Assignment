@@ -18,7 +18,7 @@ public class Property {
 	private Address address;
 	private boolean breakfast;
 	private int maxSleepers;
-	private Rating pRating;
+	private double pRating;
 	private Facilities facility;
 	
 	/**
@@ -43,7 +43,10 @@ public class Property {
 		else 
 			this.breakfast=false;
 		this.maxSleepers = 0;
-		this.pRating = null;
+		for (Bedroom b : facility.getBedroom()) {
+			this.maxSleepers += (b.getMaxSleepers());
+		}
+		this.pRating = 0;
 		this.facility = facility;
 		hostID = host.getID();
 		if (updateBackend)
@@ -76,14 +79,13 @@ public class Property {
 		return this.maxSleepers;
 	}
 	
-	public Rating getPropertyRating() {
+	public double getPropertyRating() {
 		return this.pRating;
 	}
 	
 	public boolean getBreakfast() {
 		return this.breakfast;
 	}
-	
 	
 	public void setFacilities(Facilities facilities) {
 		this.facility = facilities; 
@@ -96,6 +98,8 @@ public class Property {
 	public Integer getID() {
 		return Integer.parseInt(TDatabase.GetPropertyID(address.getID()));
 	}
+	
+	public void setRating(double r) {this.pRating = r;}
 	
 	
 	public String toString() {
