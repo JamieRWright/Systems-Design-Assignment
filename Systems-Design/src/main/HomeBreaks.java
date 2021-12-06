@@ -25,6 +25,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -202,95 +203,48 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JLabel fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		
 		// Input for user's first and last name
-		setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		fName = new JLabel("First Name: ");
-		fName.setFont(plain);
-		gsu.add(fName, g);
-		
-		setConstraints(g, 1, 0, GridBagConstraints.WEST);
 		fName_input_gsu = new JTextField(20);
-		fName_input_gsu.setFont(plain);
-		gsu.add(fName_input_gsu, g);
-		
-		setConstraints(g, 0, 1, GridBagConstraints.EAST);
 		lName = new JLabel("Last Name: ");
-		lName.setFont(plain);
-		gsu.add(lName, g);
-		
-		setConstraints(g, 1, 1, GridBagConstraints.WEST);
 		lName_input_gsu = new JTextField(20);
-		lName_input_gsu.setFont(plain);
-		gsu.add(lName_input_gsu, g);
 		
 		// Input for user's address
-		setConstraints(g, 0, 2, GridBagConstraints.EAST);
 		addA = new JLabel("House No.: ");
-		addA.setFont(plain);
-		gsu.add(addA, g);
-		
-		setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		add1_gsu = new JTextField(20);
-		add1_gsu.setFont(plain);
-		gsu.add(add1_gsu, g);
-		
-		setConstraints(g, 0, 3, GridBagConstraints.EAST);
 		addB = new JLabel("Street Name: ");
-		addB.setFont(plain);
-		gsu.add(addB, g);
-		
-		setConstraints(g, 1, 3, GridBagConstraints.WEST);
 		add2_gsu = new JTextField(20);
-		add2_gsu.setFont(plain);
-		gsu.add(add2_gsu, g);
-		
-		setConstraints(g, 0, 4, GridBagConstraints.EAST);
 		addC = new JLabel("Postcode: ");
-		addC.setFont(plain);
-		gsu.add(addC, g);
-		
-		setConstraints(g, 1, 4, GridBagConstraints.WEST);
 		add3_gsu = new JTextField(20);
-		add3_gsu.setFont(plain);
-		gsu.add(add3_gsu, g);
-		
-		setConstraints(g, 0, 5, GridBagConstraints.EAST);
 		addD = new JLabel("City: ");
-		addD.setFont(plain);
-		gsu.add(addD, g);
-		
-		setConstraints(g, 1, 5, GridBagConstraints.WEST);
 		add4_gsu = new JTextField(20);
-		add4_gsu.setFont(plain);
-		gsu.add(add4_gsu, g);
 		
 		// Input for phone number
-		setConstraints(g, 0, 6, GridBagConstraints.EAST);
 		phone = new JLabel("Phone No.: ");
-		phone.setFont(plain);
-		gsu.add(phone, g);
-		
-		setConstraints(g, 1, 6, GridBagConstraints.WEST);
 		phone_input_gsu = new JTextField(20);
-		phone_input_gsu.setFont(plain);
-		gsu.add(phone_input_gsu, g);
 		
 		// Input for email
-		setConstraints(g, 0, 7, GridBagConstraints.EAST);
 		id = new JLabel("Email: ");
-		id.setFont(plain);
-		gsu.add(id, g);
-		
-		setConstraints(g, 1, 7, GridBagConstraints.WEST);
 		id_input_gsu = new JTextField(20);
-		id_input_gsu.setFont(plain);
-		gsu.add(id_input_gsu, g);
-		
-		// Input for password, use JPassworField and hide password
-		setConstraints(g, 0, 8, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
-		pw.setFont(plain);
-		gsu.add(pw, g);
+		confirm_pw = new JLabel("Confirm Password: ");
 		
+		// Set labels and inputs up using loop
+		JLabel[] labels = {fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw};
+		JTextField[] inputs = {fName_input_gsu, lName_input_gsu, add1_gsu, add2_gsu, add3_gsu, add4_gsu, phone_input_gsu, id_input_gsu};
+		
+		for (int i = 0; i < labels.length; i++) {
+			labels[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.EAST);
+			gsu.add(labels[i], g);
+		}
+		
+		for (int i = 0; i < inputs.length; i++) {
+			inputs[i].setFont(plain);
+			setConstraints(g, 1, i, GridBagConstraints.WEST);
+			gsu.add(inputs[i], g);
+		}
+		
+		// Input for password
 		setConstraints(g, 1, 8, GridBagConstraints.WEST);
 		pw_input_gsu = new JPasswordField(20);
 		pw_input_gsu.setFont(plain);
@@ -298,12 +252,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		pw_input_gsu.getDocument().addDocumentListener(this);
 		gsu.add(pw_input_gsu, g);
 		
-		// Input for confirm password
-		setConstraints(g, 0, 9, GridBagConstraints.EAST);
-		confirm_pw = new JLabel("Confirm Password: ");
-		confirm_pw.setFont(plain);
-		gsu.add(confirm_pw, g);
-		
+		// Input for confirm password		
 		setConstraints(g, 1, 9, GridBagConstraints.WEST);
 		confirm_input_gsu = new JPasswordField(20);
 		confirm_input_gsu.setFont(plain);
@@ -393,94 +342,47 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JLabel fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw;
 		
 		// Input for user's first and last name
-		setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		fName = new JLabel("First Name: ");
-		fName.setFont(plain);
-		hsu.add(fName, g);
-		
-		setConstraints(g, 1, 0, GridBagConstraints.WEST);
 		fName_input_hsu = new JTextField(20);
-		fName_input_hsu.setFont(plain);
-		hsu.add(fName_input_hsu);
-		
-		setConstraints(g, 0, 1, GridBagConstraints.EAST);
 		lName = new JLabel("Last Name: ");
-		lName.setFont(plain);
-		hsu.add(lName, g);
-		
-		setConstraints(g, 1, 1, GridBagConstraints.WEST);
 		lName_input_hsu = new JTextField(20);
-		lName_input_hsu.setFont(plain);
-		hsu.add(lName_input_hsu, g);
 				
 		// Input for user's address
-		setConstraints(g, 0, 2, GridBagConstraints.EAST);
 		addA = new JLabel("House No.: ");
-		addA.setFont(plain);
-		hsu.add(addA, g);
-		
-		setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		add1_hsu = new JTextField(20);
-		add1_hsu.setFont(plain);
-		hsu.add(add1_hsu, g);
-		
-		setConstraints(g, 0, 3, GridBagConstraints.EAST);
 		addB = new JLabel("Street Name: ");
-		addB.setFont(plain);
-		hsu.add(addB, g);
-		
-		setConstraints(g, 1, 3, GridBagConstraints.WEST);
 		add2_hsu = new JTextField(20);
-		add2_hsu.setFont(plain);
-		hsu.add(add2_hsu, g);
-		
-		setConstraints(g, 0, 4, GridBagConstraints.EAST);
 		addC = new JLabel("Postcode: ");
-		addC.setFont(plain);
-		hsu.add(addC, g);
-		
-		setConstraints(g, 1, 4, GridBagConstraints.WEST);
 		add3_hsu = new JTextField(20);
-		add3_hsu.setFont(plain);
-		hsu.add(add3_hsu, g);
-		
-		setConstraints(g, 0, 5, GridBagConstraints.EAST);
 		addD = new JLabel("Place Name: ");
-		addD.setFont(plain);
-		hsu.add(addD, g);
-		
-		setConstraints(g, 1, 5, GridBagConstraints.WEST);
 		add4_hsu = new JTextField(20);
-		add4_hsu.setFont(plain);
-		hsu.add(add4_hsu, g);
 		
 		// Input for phone number
-		setConstraints(g, 0, 6, GridBagConstraints.EAST);
 		phone = new JLabel("Phone No.: ");
-		phone.setFont(plain);
-		hsu.add(phone, g);
-		
-		setConstraints(g, 1, 6, GridBagConstraints.WEST);
 		phone_input_hsu = new JTextField(20);
-		phone_input_hsu.setFont(plain);
-		hsu.add(phone_input_hsu, g);
 		
 		// Input for email
-		setConstraints(g, 0, 7, GridBagConstraints.EAST);
 		id = new JLabel("Email: ");
-		id.setFont(plain);
-		hsu.add(id, g);
-		
-		setConstraints(g, 1, 7, GridBagConstraints.WEST);
 		id_input_hsu = new JTextField(20);
-		id_input_hsu.setFont(plain);
-		hsu.add(id_input_hsu, g);
-			
-		// Input for password
-		setConstraints(g, 0, 8, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
-		pw.setFont(plain);
-		hsu.add(pw, g);
+		confirm_pw = new JLabel("Confirm Password: ");
+		
+		JLabel[] labels = {fName, lName, addA, addB, addC, addD, phone, id, pw, confirm_pw};
+		JTextField[] inputs = {fName_input_hsu, lName_input_hsu, add1_hsu, add2_hsu, add3_hsu, add4_hsu, phone_input_hsu, id_input_hsu};
+		
+		for (int i = 0; i < labels.length; i++) {
+			labels[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.EAST);
+			hsu.add(labels[i], g);
+		}
+		
+		for (int i = 0; i < inputs.length; i++) {
+			inputs[i].setFont(plain);
+			setConstraints(g, 1, i, GridBagConstraints.WEST);
+			hsu.add(inputs[i], g);
+		}
+		
+		// Input for password
 		
 		setConstraints(g, 1, 8, GridBagConstraints.WEST);
 		pw_input_hsu = new JPasswordField(20);
@@ -490,10 +392,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		hsu.add(pw_input_hsu, g);
 			
 		// Input for confirm password
-		setConstraints(g, 0, 9, GridBagConstraints.EAST);
-		confirm_pw = new JLabel("Confirm Password: ");
-		confirm_pw.setFont(plain);
-		hsu.add(confirm_pw, g);
 		
 		setConstraints(g, 1, 9, GridBagConstraints.WEST);
 		confirm_input_hsu = new JPasswordField(20);
@@ -578,31 +476,26 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		// Input for guest's email
 		setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		id = new JLabel("User ID (email): ");
-		id.setFont(plain);
 		gl.add(id, g);
 		
 		setConstraints(g, 1, 0, GridBagConstraints.WEST);
 		id_input_gl = new JTextField(20);
-		id_input_gl.setFont(plain);
 		id_input_gl.getDocument().addDocumentListener(this);
 		gl.add(id_input_gl, g);
 		
 		// Input for password, use JPasswordField and hide password
 		setConstraints(g, 0, 1, GridBagConstraints.EAST);
 		pw = new JLabel("Password: ");
-		pw.setFont(plain);
 		gl.add(pw, g);
 		
 		setConstraints(g, 1, 1, GridBagConstraints.WEST);
 		pw_input_gl = new JPasswordField(20);
-		pw_input_gl.setFont(plain);
 		pw_input_gl.setEchoChar('*');
 		gl.add(pw_input_gl, g);
 		
 		// Login button
 		setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		glBtn = new JButton("Log in");
-		glBtn.setFont(plain);
 		glBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String email = id_input_gl.getText().toLowerCase();
@@ -640,7 +533,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		toGSU = new JButton("Don't have an account? Sign up!");
 		toGSU.setContentAreaFilled(false);
 		toGSU.setBorderPainted(false);
-		toGSU.setFont(plain);
 		toGSU.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				current = "GSU";
@@ -650,6 +542,11 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			}
 		});
 		gl.add(toGSU, g);
+		
+		JComponent[] comps = {id, id_input_gl, pw, pw_input_gl, glBtn, toGSU};
+		for (int i = 0; i < comps.length; i++) {
+			comps[i].setFont(plain);
+		}
 		
 		// Home button
 		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
@@ -791,75 +688,28 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JTextArea desc;
 		JButton create;
 		
-		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		name = new JLabel("Property name: ");
-		name.setFont(plain);
-		np.add(name, g);
-		
-		HomeBreaks.setConstraints(g, 1, 0, GridBagConstraints.WEST);
 		shortName = new JTextField(20);
-		shortName.setFont(plain);
-		np.add(shortName, g);
-		
-		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
 		description = new JLabel("Description: ");
-		description.setFont(plain);
-		np.add(description, g);
-		
-		HomeBreaks.setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		desc = new JTextArea(5, 20);
-		JScrollPane scrollPane = new JScrollPane(desc);
-		desc.setFont(plain);
 		desc.setLineWrap(true);
 		desc.setWrapStyleWord(true);
-		np.add(scrollPane, g);
-		
-		HomeBreaks.setConstraints(g, 0, 3, GridBagConstraints.EAST);	
+
 		houseNo = new JLabel("House Number: ");
-		houseNo.setFont(plain);
-		np.add(houseNo, g);
-		
-		HomeBreaks.setConstraints(g, 1, 3, GridBagConstraints.WEST);
 		add1 = new JTextField(20);
-		add1.setFont(plain);
-		np.add(add1, g);
-		
-		HomeBreaks.setConstraints(g, 0, 4, GridBagConstraints.EAST);
 		stNo = new JLabel("Street Name: ");
 		stNo.setFont(plain);
-		np.add(stNo, g);
-		
-		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
 		add2 = new JTextField(20);
-		add2.setFont(plain);
-		np.add(add2, g);
-		
-		HomeBreaks.setConstraints(g, 0, 5, GridBagConstraints.EAST);
 		postcode = new JLabel("Postcode: ");
-		postcode.setFont(plain);
-		np.add(postcode, g);
-		
-		HomeBreaks.setConstraints(g, 1, 5, GridBagConstraints.WEST);
 		add3 = new JTextField(20);
-		add3.setFont(plain);
-		np.add(add3, g);
-		
-		HomeBreaks.setConstraints(g, 0, 6, GridBagConstraints.EAST);
 		place = new JLabel("City: ");
-		place.setFont(plain);
-		np.add(place, g);
-		
-		HomeBreaks.setConstraints(g, 1, 6, GridBagConstraints.WEST);
 		add4 = new JTextField(20);
 		add4.setFont(plain);
 		np.add(add4, g);
 		
-		HomeBreaks.setConstraints(g, 0, 7, GridBagConstraints.EAST);
 		bfast = new JLabel("Is breakfast served?");	
-		bfast.setFont(plain);
-		np.add(bfast, g);
 		
-		HomeBreaks.setConstraints(g, 1, 7, GridBagConstraints.WEST);
+		HomeBreaks.setConstraints(g, 1, 6, GridBagConstraints.WEST);
 		ButtonGroup grp = new ButtonGroup();
 		JRadioButton yes_bfast = new JRadioButton("Yes");
 		yes_bfast.setFont(plain);
@@ -870,7 +720,29 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		JPanel breakfast = new JPanel();
 		breakfast.add(yes_bfast);
 		breakfast.add(no_bfast);
-		np.add(breakfast, g);		
+		np.add(breakfast, g);	
+		
+		JLabel[] labels = {name, description, houseNo, stNo, postcode, place, bfast};
+		JComponent[] inputs = {shortName, desc, add1, add2, add3, add4};
+		
+		for (int i = 0; i < labels.length; i++) {
+			labels[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.EAST);
+			np.add(labels[i], g);
+		}
+		
+		for (int i = 0; i < inputs.length; i++) {
+			inputs[i].setFont(plain);
+			if (i < 1 || i > 1) {
+				setConstraints(g, 1, i, GridBagConstraints.WEST);
+				np.add(inputs[i], g);
+			}
+			else if (i == 1) {
+				setConstraints(g, 1, i, GridBagConstraints.WEST);
+				JScrollPane scrollPane = new JScrollPane(inputs[i]);
+				np.add(scrollPane, g);
+			} 
+		}
 		
 		HomeBreaks.setConstraints(g, 1, 8, GridBagConstraints.WEST);
 		create = new JButton("Create Property");
@@ -902,10 +774,16 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					address = new Address(houseNo, street, postcode, city, true);
 					
 					chosenHouse = new Property(sName, descr, HomeBreaks.currentHost, address, bfast, null, true);
-					TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
 					
-					facility = new Facilities(chosenHouse.getID(), new ArrayList<Bedroom>(), new ArrayList<Bathroom>(), null, null, null, null);
-					chosenHouse.setFacilities(facility);
+					try {
+						TDatabase.Properties.put(chosenHouse.getID(), chosenHouse);
+						facility = new Facilities(chosenHouse.getID(), new ArrayList<Bedroom>(), new ArrayList<Bathroom>(), null, null, null, null);
+						chosenHouse.setFacilities(facility);
+					}
+					catch (NumberFormatException e1) {
+						e1.printStackTrace();
+						showMessageDialog(null, "Oops, something went wrong :( Please try again later.");
+					}
 
 					myProperties.add("Add Living", addLiving());
 					myPropertiesCards.show(myProperties, "Add Living");
@@ -924,28 +802,19 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 
 	// Creates page for adding living facilities
 	public JPanel addLiving() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		JPanel al = new JPanel();
 		JPanel buttons;
 		
 		al.setBorder(HomeBreaks.createTitledBorder("New Living Space"));
 		al.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox checkWifi = new JCheckBox("Wifi", true);
-		checkWifi.setBounds(100,100, 50,50);
 		JCheckBox checkTV = new JCheckBox("TV", true);
-		checkTV.setBounds(100,150, 50,50);
 		JCheckBox checkSat = new JCheckBox("Satellite", true);
-		checkSat.setBounds(100,200, 50,50);
 		JCheckBox checkStream = new JCheckBox("Streaming", true);
-		checkStream.setBounds(100,250, 50,50);
 		JCheckBox checkDvd = new JCheckBox("DVD Player", true);
-		checkDvd.setBounds(100,300, 50,50);
 		JCheckBox checkBoard = new JCheckBox("Board Games", true);
-		checkBoard.setBounds(100,350, 50,50);
 		
 		JButton create = new JButton("Create Living Space");
 		create.setFont(plain);
@@ -964,14 +833,19 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		buttons = new JPanel();
 		buttons.add(create);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JCheckBox[] boxes = {checkWifi, checkTV, checkSat, checkStream, checkDvd, checkBoard};
 		
-		al.add(checkWifi);
-		al.add(checkTV);
-		al.add(checkSat);
-		al.add(checkStream);
-		al.add(checkDvd);
-		al.add(checkBoard);
-		al.add(buttons);
+		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(boxes[i], g);
+		}
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		al.add(hp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		al.add(buttons, g);
 		
 		return al;	        
 	}
@@ -984,22 +858,14 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		au.setBorder(HomeBreaks.createTitledBorder("New Utilities"));
 		au.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Heating", true);
-		check1.setBounds(100,100, 50,50);
 		JCheckBox check2 = new JCheckBox("Washing Machine", true);
-		check2.setBounds(100,150, 50,50);
 		JCheckBox check3 = new JCheckBox("Drying Machine", true);
-		check3.setBounds(100,200, 50,50);
 		JCheckBox check4 = new JCheckBox("Fire Extinguisher", true);
-		check4.setBounds(100,250, 50,50);
 		JCheckBox check5 = new JCheckBox("Smoke Alarm", true);
-		check5.setBounds(100,300, 50,50);
 		JCheckBox check6 = new JCheckBox("First Aid Kit", true);
-		check6.setBounds(100,350, 50,50);
 		
 		JButton create = new JButton("Create Utilities");
 		create.setFont(plain);
@@ -1018,44 +884,38 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		buttons = new JPanel();
 		buttons.add(create);
-		
-		au.add(check1);
-		au.add(check2);
-		au.add(check3);
-		au.add(check4);
-		au.add(check5);
-		au.add(check6);
-		au.add(buttons);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JCheckBox[] boxes = {check1, check2, check3, check4, check5, check6};
+		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(boxes[i], g);
+		}
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		au.add(hp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.WEST);
+		au.add(buttons, g);
 		
 		return au;	        
 	}
     
 	// Creates page for adding bathrooms
 	public JPanel addBath() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 25);
 		JPanel aba = new JPanel();
 		JPanel buttons;
 		
 		aba.setBorder(HomeBreaks.createTitledBorder("New Bathroom"));
 		aba.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Hair Drier", true);
-		check1.setBounds(100,100, 50,50);
 		JCheckBox check2 = new JCheckBox("Shampoo", true);
-		check2.setBounds(100,150, 50,50);
 		JCheckBox check3 = new JCheckBox("Toilet Paper", true);
-		check3.setBounds(100,150, 50,50);
 		JCheckBox check4 = new JCheckBox("Toilet", true);
-		check4.setBounds(100,200, 50,50);
 		JCheckBox check5 = new JCheckBox("Bath", true);
-		check5.setBounds(100,250, 50,50);
 		JCheckBox check6 = new JCheckBox("Shower", true);
-		check6.setBounds(100,300, 50,50);
 		JCheckBox check7 = new JCheckBox("Shared?", true);
-		check7.setBounds(100,350, 50,50);
 		
 		JButton create = new JButton("Create Bathroom(s)");
 		create.setFont(plain);
@@ -1090,74 +950,60 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		buttons.add(create);
 		buttons.add(another);
 		
-		aba.add(check1);
-		aba.add(check2);
-		aba.add(check3);
-		aba.add(check4);
-		aba.add(check5);
-		aba.add(check6);
-		aba.add(check7);
-		aba.add(buttons);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JCheckBox[] boxes = {check1, check2, check3, check4, check5, check6, check7};
+		
+		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(boxes[i], g);
+		}
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		aba.add(hp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		aba.add(buttons, g);
 		
 		return aba;	        
 	}
 	
 	// Creates page for adding bedrooms
 	public JPanel addBedroom() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 15);
 		JPanel ab = new JPanel();
 		JPanel buttons;
 		
 		ab.setBorder(HomeBreaks.createTitledBorder("New Bedroom"));
 		ab.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		ButtonGroup grp = new ButtonGroup();
 		JRadioButton single1 = new JRadioButton("Bed 1 = Single");
-		single1.setFont(plain);
 		JRadioButton double1 = new JRadioButton("Bed 1 = Double");
-		double1.setFont(plain);
 		JRadioButton king1 = new JRadioButton("Bed 1 = King");
-		king1.setFont(plain);
 		JRadioButton bunk1 = new JRadioButton("Bed 1 = Bunk");
-		bunk1.setFont(plain);
-		grp.add(single1);
-		grp.add(double1);
-		grp.add(king1);
-		grp.add(bunk1);
 		JPanel bedOne = new JPanel();
-		bedOne.add(single1);
-		bedOne.add(double1);
-		bedOne.add(king1);
-		bedOne.add(bunk1);
-		
+
 		ButtonGroup grp2 = new ButtonGroup();
 		JRadioButton single2 = new JRadioButton("Bed 2 = Single");
-		single2.setFont(plain);
 		JRadioButton double2 = new JRadioButton("Bed 2 = Double");
-		double2.setFont(plain);
 		JRadioButton king2 = new JRadioButton("Bed 2 = King");
-		king2.setFont(plain);
 		JRadioButton bunk2 = new JRadioButton("Bed 2 = Bunk");
-		bunk2.setFont(plain);
-		grp2.add(single2);
-		grp2.add(double2);
-		grp2.add(king2);
-		grp2.add(bunk2);
 		JPanel bedTwo = new JPanel();
-		bedTwo.add(single2);
-		bedTwo.add(double2);
-		bedTwo.add(king2);
-		bedTwo.add(bunk2);
+		
+		JRadioButton[] r1 = {single1, double1, king1, bunk1};
+		JRadioButton[] r2 = {single2, double2, king2, bunk2};
+		
+		for (int i = 0; i < r1.length; i++) {
+			r1[i].setFont(plain);
+			grp.add(r1[i]);
+			bedOne.add(r1[i]);
+			r2[i].setFont(plain);
+			grp2.add(r2[i]);
+			bedTwo.add(r2[i]);
+		}
 		
 		JCheckBox check1 = new JCheckBox("Bed Linen", true);
-		check1.setBounds(100,100, 50,50);
-		check1.setFont(plain);
 		JCheckBox check2 = new JCheckBox("Towels", true);
-		check2.setBounds(100,150, 50,50);
-		check2.setFont(plain);
 		
 		JButton create = new JButton("Create Bedroom(s)");
 		create.setFont(plain);
@@ -1206,35 +1052,38 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		buttons.add(create);
 		buttons.add(another);
 		
-		buttons = new JPanel();
-		buttons.add(create);
-		
-		ab.add(check1);
-		ab.add(check2);
-		ab.add(bedOne);
-		ab.add(bedTwo);
-		ab.add(buttons);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JCheckBox[] boxes = {check1, check2};
+		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(boxes[i], g);
+		}
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		ab.add(hp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		ab.add(bedOne, g);
+		setConstraints(g, 0, 2, GridBagConstraints.CENTER);
+		ab.add(bedTwo, g);
+		setConstraints(g, 0, 3, GridBagConstraints.CENTER);
+		ab.add(buttons, g);
 		
 		return ab;	        
 	}
     
 	// Create page for adding outdoor facilities
 	public JPanel addOutdoor() {
-		final Font plain = new Font("Verdana", Font.PLAIN, 10);
 		JPanel ao = new JPanel();
 		JPanel buttons;
 		
 		ao.setBorder(HomeBreaks.createTitledBorder("New Outdoor Facility"));
 		ao.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox check1 = new JCheckBox("Patio", true);
-		check1.setBounds(100,100, 50,50);
 		check1.setFont(plain);
 		JCheckBox check2 = new JCheckBox("BBQ", true);
-		check2.setBounds(100,150, 50,50);
 		check2.setFont(plain);
 
 		ButtonGroup grp = new ButtonGroup();
@@ -1271,11 +1120,20 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		buttons = new JPanel();
 		buttons.add(create);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JComponent[] components = {check1, check2};
 		
-		ao.add(check1);
-		ao.add(check2);
-		ao.add(park);
-		ao.add(buttons);
+		for (int i = 0; i < components.length; i++) {
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(components[i], g);
+		}
+		
+		JPanel[] more = {hp, park, buttons};
+		for (int i = 0; i < more.length; i++) {
+			setConstraints(g, 0, i, GridBagConstraints.CENTER);
+			ao.add(more[i], g);
+		}
 		
 		return ao;	        
 	}
@@ -1288,26 +1146,16 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		ak.setBorder(HomeBreaks.createTitledBorder("New Kitchen"));
 		ak.setLayout(new GridBagLayout());
-		
-		JPanel hp = new JPanel();
-		hp.setLayout(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
 		
 		JCheckBox checkFridge = new JCheckBox("Fridge", true);
-		checkFridge.setBounds(100,100, 50,50);
 		JCheckBox checkMicro = new JCheckBox("Microwave", true);
-		checkMicro.setBounds(100,150, 50,50);
 		JCheckBox checkOven = new JCheckBox("Oven", true);
-		checkOven.setBounds(100,200, 50,50);
 		JCheckBox checkStore = new JCheckBox("Storage", true);
-		checkStore.setBounds(100,250, 50,50);
 		JCheckBox checkDish = new JCheckBox("Dishwasher", true);
-		checkDish.setBounds(100,300, 50,50);
 		JCheckBox checkTable = new JCheckBox("Tableware", true);
-		checkTable.setBounds(100,350, 50,50);
 		JCheckBox checkCook = new JCheckBox("Cookware", true);
-		checkCook.setBounds(100,400, 50,50);
 		JCheckBox checkBasic = new JCheckBox("Basic Provisions", true);
-		checkBasic.setBounds(100,450, 50,50);
 		
 		JButton create = new JButton("Create Kitchen");
 		create.setFont(plain);
@@ -1328,16 +1176,18 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		buttons = new JPanel();
 		buttons.add(create);
-		
-		ak.add(checkFridge);
-		ak.add(checkMicro);
-		ak.add(checkOven);
-		ak.add(checkStore);
-		ak.add(checkDish);
-		ak.add(checkTable);
-		ak.add(checkCook);
-		ak.add(checkBasic);
-		ak.add(buttons);
+		JPanel hp = new JPanel();
+		hp.setLayout(new GridBagLayout());
+		JCheckBox[] boxes = {checkFridge, checkMicro, checkOven, checkStore, checkDish, checkTable, checkCook, checkBasic};
+		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].setFont(plain);
+			setConstraints(g, 0, i, GridBagConstraints.WEST);
+			hp.add(boxes[i], g);
+		}
+		setConstraints(g, 0, 0, GridBagConstraints.CENTER);
+		ak.add(hp, g);
+		setConstraints(g, 0, 1, GridBagConstraints.CENTER);
+		ak.add(buttons, g);
 		
 		return ak;	        
 	}
@@ -1541,7 +1391,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			current = "HH";
 			myBooking.add("My Bookings", viewBookings());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		hostTabs.add("My Bookings", myBooking);
@@ -1579,7 +1428,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 			current = "GH";
 			guestTabs.add("My Bookings", viewBookings());
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			guestTabs.add("My Bookings", pBookings);
 		}
@@ -1630,42 +1478,35 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		// Input and label for changing first name
 		HomeBreaks.setConstraints(g, 0, 0, GridBagConstraints.EAST);
 		fName = new JLabel("First Name: ");
-		fName.setFont(plain);
 		ci.add(fName, g);
 		
 		HomeBreaks.setConstraints(g, 1, 0, GridBagConstraints.WEST);
 		f = new JTextField(20);
 		f.setText(fname);
-		f.setFont(plain);
 		ci.add(f, g);
 		
 		// Input and label for changing last name
 		HomeBreaks.setConstraints(g, 0, 1, GridBagConstraints.EAST);
 		lName = new JLabel("Last Name: ");
-		lName.setFont(plain);
 		ci.add(lName, g);
 		
 		HomeBreaks.setConstraints(g, 1, 1, GridBagConstraints.WEST);
 		l = new JTextField(20);
 		l.setText(lname);
-		l.setFont(plain);
 		ci.add(l, g);
 		
 		// Input and label for changing phone number
 		HomeBreaks.setConstraints(g, 0, 2, GridBagConstraints.EAST);
 		phone = new JLabel("Phone Number: ");
-		phone.setFont(plain);
 		ci.add(phone, g);
 		
 		HomeBreaks.setConstraints(g, 1, 2, GridBagConstraints.WEST);
 		p = new JTextField(20);
 		p.setText(phonenum);
-		p.setFont(plain);
 		ci.add(p, g);
 		
 		HomeBreaks.setConstraints(g, 1, 3, GridBagConstraints.WEST);
 		JButton confirm = new JButton("Confirm");
-		confirm.setFont(plain);
 		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fn = f.getText();
@@ -1692,7 +1533,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		
 		HomeBreaks.setConstraints(g, 1, 4, GridBagConstraints.WEST);
 		JButton back = new JButton("Back");
-		back.setFont(plain);
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				myAccountCards.show(myAccount, "My Account");
@@ -1700,6 +1540,9 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				setTitle(lastPage);
 			}
 		});
+		
+		JComponent[] comps = {fName, lName, phone, f, l, p, confirm, back};
+		for (int i = 0; i < comps.length; i++) {comps[i].setFont(plain);}
 		
 		buttons.add(confirm);
 		buttons.add(back);
@@ -1896,6 +1739,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 						acceptedBookings.put(bookingID, booking);
 					}
 					else {
+						System.out.println("Goes into provisional: " + bookingID);
 						provisionalBookings.put(bookingID, booking);
 					}
 				}
@@ -2504,36 +2348,41 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		request.setFont(plain);
 		request.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Clicked");
 				boolean overlap = false;
 				boolean passed = false;
 				String sY = startYY.getText();
 				String sM = startMM.getText();
 				String sD = startDD.getText();
 				boolean rightStart = HomeBreaks.isNumericDate(sY) && HomeBreaks.isNumericDate(sM) && HomeBreaks.isNumericDate(sD);
-				rightStart = rightStart && (sY.length() == 4) && (sM.length() == 2) && (sY.length() == 2);
+				//rightStart = rightStart && (sY.length() == 4) && (sM.length() == 2) && (sY.length() == 2);
+				System.out.println("Length of year=" + sY.length() + " " + sM.length() + " " + sD.length());
 				boolean unfilledStart = sY.isEmpty() || sM.isEmpty() || sD.isEmpty();
 				
 				String eY = endYY.getText();
 				String eM = endMM.getText();
 				String eD = endDD.getText();
 				boolean rightEnd = HomeBreaks.isNumericDate(eY) && HomeBreaks.isNumericDate(eM) && HomeBreaks.isNumericDate(eD);
-				rightEnd = rightEnd && (eY.length() == 4) && (eM.length() == 2) && (eD.length() == 2);
+				//rightEnd = rightEnd && (eY.length() == 4) && (eM.length() == 2) && (eD.length() == 2);
 				boolean unfilledEnd = eY.isEmpty() || eM.isEmpty() || eD.isEmpty();
+				System.out.println("Length of year=" + eY.length() + " " + eM.length() + " " + eD.length());
 				
 				String start = sY + "-" + sM + "-" + sD;
 				String end = eY + "-" + eM + "-" + eD;
 				
 				try {
+					System.out.println("Checks if passed");
 					if (Booking.hasPassed(start) || Booking.hasPassed(end)) {
 						showMessageDialog(null, "Cannot book for dates already passed!");
 					}
 					else {
 						// get list of all bookings, check if any overlaps with given date
 						for (Booking b : TDatabase.Bookings.values()) {
+							System.out.println("Check against " + b.getID());
 							String sd = b.getStartDate();
 							String ed = b.getEndDate();
 							
-							boolean accepted = !(b.getProvisional());
+							boolean accepted = !(b.getProvisional()) && !(b.getRejected());
 							
 							try {
 								if (!(overlap)) {
@@ -2550,13 +2399,15 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 						}
 						
 						boolean validDates = !overlap && !passed;
-						
+						System.out.println("Validity= " + validDates);
+						System.out.println("Right start: " + rightStart + "Right end:" + rightEnd);
 						if (unfilledStart || unfilledEnd) {showMessageDialog(null, "Please fill in all blanks.");}
 						else if (rightStart && rightEnd && validDates) {
+							System.out.println("Create booking");
 							int guestID = Integer.parseInt(currentGuest.getID());
 							int propertyID = chosenHouse.getID();
 							int hostID = Integer.parseInt(chosenHouse.getHost().getID());
-							Booking booking = new Booking(propertyID, hostID, guestID, start, end, true, false, true);
+							Booking booking = new Booking(propertyID, hostID,guestID, start, end, true, false, true);
 							TDatabase.Bookings.put(booking.getID(), booking);
 							showMessageDialog(null, "Booking successfull!");
 							resultPanelCards.show(resultPanel, "Default");
