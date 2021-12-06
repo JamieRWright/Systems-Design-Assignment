@@ -115,12 +115,11 @@ public final class TDatabase {
 						boolean provisional = false;
 						Integer BookingID = table.getInt(1);
 						Integer PropertyID = table.getInt(2);
-						Integer HostID = table.getInt(3);
-						Integer GuestID = table.getInt(4);
-						String StartDate = table.getString(5);
-						String EndDate = table.getString(6);
-						int Provisional = table.getInt(7);
-						int Rejected = table.getInt(8);
+						Integer GuestID = table.getInt(3);
+						String StartDate = table.getString(4);
+						String EndDate = table.getString(5);
+						int Provisional = table.getInt(6);
+						int Rejected = table.getInt(7);
 						
 						if (Rejected > 0) {
 							rejected = true;
@@ -1384,18 +1383,17 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 
 
 	// A method for adding a booking to the Bookings table
-	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
+		public static boolean AddBooking(int propertyID, int guestID, String startDate, String endDate) {
 		try {
 			getConnection();
-			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?,?);";
+			String sql="INSERT INTO Bookings(PropertyID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?);";
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,propertyID);
-			pst.setInt(2,hostID);
-			pst.setInt(3,guestID);
-			pst.setString(4,startDate);
-			pst.setString(5,endDate);
-			pst.setInt(6, 1);
-			pst.setInt(7, 0);
+			pst.setInt(2,guestID);
+			pst.setString(3,startDate);
+			pst.setString(4,endDate);
+			pst.setInt(5, 1);
+			pst.setInt(6, 0);
 			pst.execute();
 			pst.close();
 			disconnect();
