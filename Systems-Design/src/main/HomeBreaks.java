@@ -1309,7 +1309,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
 					try {
-						if (Booking.before(start, end)) {
+						if (!(Booking.before(start, end))) {
 							showMessageDialog(null, "Invalid dates (please check that start date is before end date)");
 						}
 						else {
