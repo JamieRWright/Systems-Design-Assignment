@@ -1384,18 +1384,17 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 
 
 	// A method for adding a booking to the Bookings table
-	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
+	public static boolean AddBooking(int propertyID, int guestID, String startDate, String endDate) {
 		try {
 			getConnection();
-			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?,?);";
+			String sql="INSERT INTO Bookings(PropertyID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?);";
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,propertyID);
-			pst.setInt(2,hostID);
-			pst.setInt(3,guestID);
-			pst.setString(4,startDate);
-			pst.setString(5,endDate);
-			pst.setInt(6, 1);
-			pst.setInt(7, 0);
+			pst.setInt(2,guestID);
+			pst.setString(3,startDate);
+			pst.setString(4,endDate);
+			pst.setInt(5, 1);
+			pst.setInt(6, 0);
 			pst.execute();
 			pst.close();
 			disconnect();
