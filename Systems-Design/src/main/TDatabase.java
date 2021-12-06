@@ -130,13 +130,14 @@ public final class TDatabase {
 						// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 						try {
 							// Delete booking from database if end date has passed
-							if (Booking.hasPassed(EndDate)) {
-								// And only if Guest has submitted a review
-								if (TDatabase.GetReviewID(PropertyID, GuestID) != null) {
-									TDatabase.DeleteBooking(PropertyID, GuestID);
-								}
+							// And only if Guest has submitted a review
+							if (Booking.hasPassed(EndDate) && TDatabase.GetReviewID(PropertyID, GuestID) != null) {
+							    TDatabase.DeleteBooking(PropertyID, GuestID);
+							
 							}
 							else {
+								System.out.println("Goes into Bookings: " + BookingID);
+								Integer HostID = Integer.parseInt(TDatabase.Properties.get(PropertyID).getHost().getID());
 								output.put(BookingID, new Booking(PropertyID, HostID, GuestID, StartDate, EndDate, provisional, rejected, false));
 							}
 						}
@@ -222,10 +223,10 @@ public final class TDatabase {
 				while (table.next()) {
 					Integer PropertyID = table.getInt(1);
 					Integer HostID = table.getInt(2);
-					String ShortName = table.getString(4);
-					String Description = table.getString(5);
-					String AddressID = table.getString(6);
-					int Breakfast = table.getInt(7);
+					String ShortName = table.getString(3);
+					String Description = table.getString(4);
+					String AddressID = table.getString(5);
+					int Breakfast = table.getInt(6);
 					// System.out.println(HostID + Street + Postcode + City + Country + ShortName);
 					Address address_temp = getAddress(AddressID);
 					Host current_host = Hosts.get(HostID);	
@@ -1383,17 +1384,18 @@ private static List<Bathroom> loadBathrooms(Integer PropertyID)
 
 
 	// A method for adding a booking to the Bookings table
-		public static boolean AddBooking(int propertyID, int guestID, String startDate, String endDate) {
+	public static boolean AddBooking(int propertyID, int hostID, int guestID, String startDate, String endDate) {
 		try {
 			getConnection();
-			String sql="INSERT INTO Bookings(PropertyID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?);";
+			String sql="INSERT INTO Bookings(PropertyID, HostID, GuestID, StartDate, EndDate, Provisional, Rejected) VALUES (?,?,?,?,?,?,?);";
 			PreparedStatement pst=con.prepareStatement(sql);
 			pst.setInt(1,propertyID);
-			pst.setInt(2,guestID);
-			pst.setString(3,startDate);
-			pst.setString(4,endDate);
-			pst.setInt(5, 1);
-			pst.setInt(6, 0);
+			pst.setInt(2,hostID);
+			pst.setInt(3,guestID);
+			pst.setString(4,startDate);
+			pst.setString(5,endDate);
+			pst.setInt(6, 1);
+			pst.setInt(7, 0);
 			pst.execute();
 			pst.close();
 			disconnect();
