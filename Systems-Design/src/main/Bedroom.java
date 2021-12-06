@@ -1,10 +1,5 @@
 /**
  * Class designed to be used to create Bedroom objects
- * 
- * @version 1.0 
- *
- * @author Nur Yasmeen Rashdiah Binti Nor Azman Rashed
- *
  */
 package main;
 import java.util.Set;
@@ -61,6 +56,10 @@ public class Bedroom {
 		}
 		
 		return nSleeper;
+	}
+	
+	public int getMaxSleepers() {
+		return maxSleep(this.bedOne, this.bedTwo);
 	}
 	
 	public boolean addBedroom(Bedroom br, Integer PropertyID, Integer count) {
