@@ -31,7 +31,7 @@ public class Booking {
 		this.provisional = provisional;
 		this.rejected = rejected;
 		if (updateBackend)
-			TDatabase.AddBooking(propertyID, hostID, guestID, startDate, endDate);
+			TDatabase.AddBooking(propertyID, guestID, startDate, endDate);
 	}
 	
 	public int getPropertyID() {return this.propertyID;}
