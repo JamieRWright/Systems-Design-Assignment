@@ -20,7 +20,6 @@ public class Property {
 	private int maxSleepers;
 	private Rating pRating;
 	private Facilities facility;
-	private List<DatesAvailable> datesAvailable;
 	
 	/**
      * Constructor
@@ -45,7 +44,6 @@ public class Property {
 			this.breakfast=false;
 		this.maxSleepers = 0;
 		this.pRating = null;
-		this.datesAvailable = null;
 		this.facility = facility;
 		hostID = host.getID();
 		if (updateBackend)
@@ -86,9 +84,6 @@ public class Property {
 		return this.breakfast;
 	}
 	
-	public List<DatesAvailable> getAvailableDates() {
-		return this.datesAvailable;
-	}
 	
 	public void setFacilities(Facilities facilities) {
 		this.facility = facilities; 
