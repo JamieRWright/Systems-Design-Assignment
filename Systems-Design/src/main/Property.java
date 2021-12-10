@@ -42,10 +42,12 @@ public class Property {
 			this.breakfast=true;
 		else 
 			this.breakfast=false;
-		this.maxSleepers = 0;
-		for (Bedroom b : facility.getBedroom()) {
-			this.maxSleepers += (b.getMaxSleepers());
-		}
+		this.facility = facility;
+		if (facility != null)
+			this.maxSleepers = facility.getMaxSleepers();
+		else this.maxSleepers = 0;
+		this.pRating = 0;
+		
 		this.pRating = 0;
 		this.facility = facility;
 		hostID = host.getID();
@@ -89,6 +91,7 @@ public class Property {
 	
 	public void setFacilities(Facilities facilities) {
 		this.facility = facilities; 
+		this.maxSleepers = facilities.getMaxSleepers();
 	}
 	
 	public Facilities getFacilities(){
