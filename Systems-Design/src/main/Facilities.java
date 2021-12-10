@@ -78,6 +78,20 @@ public class Facilities {
 		return this.outdoor;
 	}
 	
+	public int getMaxSleepers()
+	{
+		int maxSleepers=0;
+		for (Bedroom br : this.sleeping)
+		{
+			if (br.getBedOne() != null)
+					maxSleepers = maxSleepers + br.getBedOne().getNumSleeper();
+			if (br.getBedTwo() != null)
+				maxSleepers = maxSleepers + br.getBedTwo().getNumSleeper();
+		
+		}
+		return maxSleepers;
+	}
+	
 	// Set methods
 	public void setPropertyID(Integer ID) {
 		this.propertyID = ID;
