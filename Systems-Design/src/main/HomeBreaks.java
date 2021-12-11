@@ -2234,6 +2234,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 					showMessageDialog(null, "All fields must be filled.");
 				}
 				else if (Integer.parseInt(sM) > 12 || Integer.parseInt(eM) > 12) {showMessageDialog(null, "Invalid months input.");}
+				else if (Integer.parseInt(sD) > 31 || Integer.parseInt(eD) > 32) {showMessageDialog(null, "Invalid day input.");}
 				else if (rightStart && rightEnd && rightPrices) {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
@@ -2368,6 +2369,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (Integer.parseInt(sM) > 12 || Integer.parseInt(eM) > 12) {
 					showMessageDialog(null, "Invalid month input");
 				}
+				else if (Integer.parseInt(sD) > 31 || Integer.parseInt(eD) > 32) {showMessageDialog(null, "Invalid day input.");}
 				else {
 					try {
 						if (Booking.hasPassed(start) || Booking.hasPassed(end)) {
