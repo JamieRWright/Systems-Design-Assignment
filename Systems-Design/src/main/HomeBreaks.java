@@ -2233,6 +2233,7 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 				if (unfilledStart || unfilledEnd || unfilledPrices) {
 					showMessageDialog(null, "All fields must be filled.");
 				}
+				else if (Integer.parseInt(sM) > 12 || Integer.parseInt(eM) > 12) {showMessageDialog(null, "Invalid months input.");}
 				else if (rightStart && rightEnd && rightPrices) {
 					String start = sY + "-" + sM + "-" + sD;
 					String end = eY + "-" + eM + "-" + eD;
@@ -2245,7 +2246,6 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 							addHostProperties();
 						}
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -2348,74 +2348,69 @@ public class HomeBreaks extends JFrame implements DocumentListener {
 		request.setFont(plain);
 		request.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Clicked");
 				boolean overlap = false;
 				boolean passed = false;
 				String sY = startYY.getText();
 				String sM = startMM.getText();
 				String sD = startDD.getText();
 				boolean rightStart = HomeBreaks.isNumericDate(sY) && HomeBreaks.isNumericDate(sM) && HomeBreaks.isNumericDate(sD);
-				//rightStart = rightStart && (sY.length() == 4) && (sM.length() == 2) && (sY.length() == 2);
-				System.out.println("Length of year=" + sY.length() + " " + sM.length() + " " + sD.length());
 				boolean unfilledStart = sY.isEmpty() || sM.isEmpty() || sD.isEmpty();
 				
 				String eY = endYY.getText();
 				String eM = endMM.getText();
 				String eD = endDD.getText();
 				boolean rightEnd = HomeBreaks.isNumericDate(eY) && HomeBreaks.isNumericDate(eM) && HomeBreaks.isNumericDate(eD);
-				//rightEnd = rightEnd && (eY.length() == 4) && (eM.length() == 2) && (eD.length() == 2);
 				boolean unfilledEnd = eY.isEmpty() || eM.isEmpty() || eD.isEmpty();
-				System.out.println("Length of year=" + eY.length() + " " + eM.length() + " " + eD.length());
 				
 				String start = sY + "-" + sM + "-" + sD;
 				String end = eY + "-" + eM + "-" + eD;
 				
-				try {
-					System.out.println("Checks if passed");
-					if (Booking.hasPassed(start) || Booking.hasPassed(end)) {
-						showMessageDialog(null, "Cannot book for dates already passed!");
-					}
-					else {
-						// get list of all bookings, check if any overlaps with given date
-						for (Booking b : TDatabase.Bookings.values()) {
-							System.out.println("Check against " + b.getID());
-							String sd = b.getStartDate();
-							String ed = b.getEndDate();
-							
-							boolean accepted = !(b.getProvisional()) && !(b.getRejected());
-							
-							try {
-								if (!(overlap)) {
-									if (Booking.overlap(sd, ed, start, end) && !(accepted)) {
-										showMessageDialog(null, "Property is already booked for that date.");
-										overlap = true;
+				if (Integer.parseInt(sM) > 12 || Integer.parseInt(eM) > 12) {
+					showMessageDialog(null, "Invalid month input");
+				}
+				else {
+					try {
+						if (Booking.hasPassed(start) || Booking.hasPassed(end)) {
+							showMessageDialog(null, "Cannot book for dates already passed!");
+						}
+						else {
+							// get list of all bookings, check if any overlaps with given date
+							for (Booking b : TDatabase.Bookings.values()) {
+								String sd = b.getStartDate();
+								String ed = b.getEndDate();
+								
+								boolean accepted = !(b.getProvisional()) && !(b.getRejected());
+								
+								try {
+									if (!(overlap)) {
+										if (Booking.overlap(sd, ed, start, end) && !(accepted)) {
+											showMessageDialog(null, "Property is already booked for that date.");
+											overlap = true;
+										}
 									}
 								}
-							}
-							catch (ParseException p) {
-								p.printStackTrace();
+								catch (ParseException p) {
+									p.printStackTrace();
+								}
+								
 							}
 							
-						}
-						
-						boolean validDates = !overlap && !passed;
-						System.out.println("Validity= " + validDates);
-						System.out.println("Right start: " + rightStart + "Right end:" + rightEnd);
-						if (unfilledStart || unfilledEnd) {showMessageDialog(null, "Please fill in all blanks.");}
-						else if (rightStart && rightEnd && validDates) {
-							System.out.println("Create booking");
-							int guestID = Integer.parseInt(currentGuest.getID());
-							int propertyID = chosenHouse.getID();
-							int hostID = Integer.parseInt(chosenHouse.getHost().getID());
-							Booking booking = new Booking(propertyID, hostID,guestID, start, end, true, false, true);
-							TDatabase.Bookings.put(booking.getID(), booking);
-							showMessageDialog(null, "Booking successfull!");
-							resultPanelCards.show(resultPanel, "Default");
+							boolean validDates = !overlap && !passed;
+							if (unfilledStart || unfilledEnd) {showMessageDialog(null, "Please fill in all blanks.");}
+							else if (rightStart && rightEnd && validDates) {
+								int guestID = Integer.parseInt(currentGuest.getID());
+								int propertyID = chosenHouse.getID();
+								int hostID = Integer.parseInt(chosenHouse.getHost().getID());
+								Booking booking = new Booking(propertyID, hostID,guestID, start, end, true, false, true);
+								TDatabase.Bookings.put(booking.getID(), booking);
+								showMessageDialog(null, "Booking successfull!");
+								resultPanelCards.show(resultPanel, "Default");
+							}
 						}
 					}
-				}
-				catch (ParseException p) {
-					p.printStackTrace();
+					catch (ParseException p) {
+						p.printStackTrace();
+					}
 				}
 			}
 		});
